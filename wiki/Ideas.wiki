@@ -1,0 +1,21 @@
+#summary Scratch sheet to note ideas down as they come out. :)
+#labels Phase-Design
+
+= Introduction =
+
+This is the ideas sheet to jot information down. Unfiltered, unformatted.
+
+
+= Details =
+
+Things to keep in mind going forward:
+  *  tab layout; order of information and navigation workflow to match the real user workflow. For example
+  *  help in identifying symbols, ambiguous information - something to be aware of when user-testing
+  *  information grouping on the page - again match the workflow
+ 
+
+Layout ideas (to experiment):
+  *  I forget.
+
+Design concerns/ideas:
+  *  Help user make informed decisions.  But check that design/features does not interfere with the decision/responsibility distribution of the relief organization.

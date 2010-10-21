@@ -15,6 +15,9 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
 import android.widget.TableRow.LayoutParams;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import java.util.Date;
@@ -28,13 +31,17 @@ public class SubmitForm extends Activity {
 	private IncidentReport.Category newCategory;
 	private Reporter newReporter;
 	private Location newLocation;
+	private DBConnector db;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.form);
 	    
+	    //newImpact = new Impact();
+	    
 	    //TODO:Instantiate Database Connection
+	    db = new DBConnector(this);
 	    
         //Set Current Timestamp
         TextView timestamp_TextView = (TextView)findViewById(R.id.timestampText);
@@ -96,10 +103,9 @@ public class SubmitForm extends Activity {
         		        	   String selected_impact_type_string = impact_type_spinner.getSelectedItem().toString();
         		        	   String selected_impact_value_string = (String)impact_value_edittext.getText().toString();
         		        	   
-        		        	   /* TODO:Convert to impact instance
-        		        	    * Impact.ImpactType impact_type_enum = Impact.ImpactType.values()[impact_type_spinner.getSelectedItemPosition()];
-        		        	   	* newImpact = new Impact(impact_type_enum, Integer.getInteger(impact_value_edittext.getText().toString()));
-        		        	   */
+        		        	   /* TODO:Convert to impact instance */
+        		        	   //Impact.ImpactType impact_type_enum = Impact.ImpactType.values()[impact_type_spinner.getSelectedItemPosition()];
+        		        	   //newImpact.setImpact(impact_type_enum, Integer.getInteger(impact_value_edittext.getText().toString()));
         		        	   
         		        	   Log.i("impact_type", selected_impact_type_string);
         		        	   Log.i("impact_value", selected_impact_value_string);
@@ -185,15 +191,22 @@ public class SubmitForm extends Activity {
 		});
         
     }
+    
+    @Override
     public void onPause() {
 	    super.onPause();
 	    //TODO:Close DB connection
+	    db.close();
     }
+    
+    @Override
     public void onResume() {
 	    super.onResume();
 	    //TODO:Open DB connection
+	    db.open();
     }
 	
+    @Override
     public void onActivityResult (int requestCode, int resultCode, Intent data){
     	
     	if (requestCode == RESULT_IMAGE_RETURNED){
@@ -201,5 +214,26 @@ public class SubmitForm extends Activity {
     		//TODO:Handle returned image
     		}
     	}
+    }
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.form_menu, menu);
+        return true;
+    }
+    
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+        case R.id.menu_about:
+            //TODO:About activity
+            return true;
+        case R.id.menu_preferences:
+            //TODO:preferences activity
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
     }
 }

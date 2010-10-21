@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="impact_prompt">Select the type of incident</string>
+  <string-array name="impact_array">
+    <item>People Affected</item>
+    <item>People Injured</item>
+    <item>People Deceased</item>
+    <item>Houses Destroyed</item>
+    <item>Houses Damaged</item>
+    <item>Cows Lost</item>
+  </string-array>
+</resources>

@@ -28,6 +28,11 @@ Photo(s)
 	private Impact				incidentImpact; 
 	private	ArrayList<String>	photoFileLocations; 
 
+	public IncidentReport()
+	{
+ 
+	}
+	
 	public IncidentReport(Date IncidentDate, Location IncidentLocation, Category IncidentCategory, 
 			Reporter IncidentReporter, String IncidentComments, Impact IncidentImpact, 
 			ArrayList<String> PhotoFileLocations)

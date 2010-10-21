@@ -23,8 +23,13 @@ public class Impact {
 	
 	private Map<ImpactType, Integer> incidentImpact; 
 	
-	public Impact()
-	{}
+	public Impact() {
+	 
+	}
+	
+	public Impact(ImpactType impactType, int impactValue) {
+		this.incidentImpact.put(impactType, impactValue); 
+	}
 	
 	public Map<ImpactType, Integer> getImpact(){
 		Map<ImpactType, Integer> map = new HashMap<ImpactType, Integer>(); 

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="category_prompt">Select the type of incident</string>
+  <string-array name="category_array">
+    <item>Flood</item>
+    <item>Landslide</item>
+    <item>Roads Broken</item>
+    <item>Bridges Broken</item>
+    <item>Buildings Collapsed</item>
+    <item>People Trapped</item>
+    <item>Power Failure</item>
+  </string-array>
+</resources>

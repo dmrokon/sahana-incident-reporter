@@ -6,13 +6,16 @@ import android.widget.Toast;
 
 public class DBConnector {
 	private static final String DATABASE_NAME = "incidentReporter.db";
-	private static final String DATABASE_TABLE = "incidents";
-	private static final String DATABASE_CREATE = "create table " + DATABASE_TABLE + " (_id integer primary key autoincrement, " +
-			"column_one text not null);";
+	private static final String DATABASE_INCIDENTS_TABLE = "incidents";
+	private static final String DATABASE_IMAGES_TABLE = "images";
+	private static final String DATABASE_IMPACTS_TABLE = "impacts";
+	private static final String DATABASE_CREATE = "create table " + DATABASE_INCIDENTS_TABLE + " (_id integer primary key autoincrement, " + "column_one text not null);" +
+			"create table " + DATABASE_IMAGES_TABLE + " (_id integer primary key autoincrement, " +	"image_uri text not null);" +
+			"create table " + DATABASE_IMPACTS_TABLE + " (_id integer primary key autoincrement, " + "column_one text not null);";
 	
 	private Context context;
 	
-	public SQLiteDatabase db;
+	public SQLiteDatabase sqldb;
 	
 	public DBConnector(Context context) {
 		this.context = context;
@@ -23,9 +26,9 @@ public class DBConnector {
 		
 		// TODO: open or create the database
 		try {
-			db = context.openOrCreateDatabase(DATABASE_NAME, SQLiteDatabase.CREATE_IF_NECESSARY, null);
+			sqldb = context.openOrCreateDatabase(DATABASE_NAME, SQLiteDatabase.CREATE_IF_NECESSARY, null);
 			
-			db.execSQL(DATABASE_CREATE);
+			sqldb.execSQL(DATABASE_CREATE);
 			
 			//Toast.makeText(context, "Database and Table created", Toast.LENGTH_SHORT).show();
 			
@@ -37,14 +40,15 @@ public class DBConnector {
 	public void close(){
 		try {
 			
-			db.close();
+			sqldb.close();
 			
-			Toast.makeText(context, "Database and Table created", Toast.LENGTH_SHORT).show();
+			//Toast.makeText(context, "Database and Table created", Toast.LENGTH_SHORT).show();
 			
 		} catch(Exception e) {
-			Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+			//Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
 		}
 	}
+	
 /*	
 	public void insertReport(IncidentReport report){
 		
@@ -52,6 +56,10 @@ public class DBConnector {
 	
 	public IncidentReport[] getReports(int numReports){
 		
+	}
+	
+	public IncidentReport getReport(){
+		return this.getReports(1);
 	}
 */
 }

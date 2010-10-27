@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/LinearLayout01" 
+    android:id="@+id/ContainerLayout" 
     android:orientation="vertical"
     android:layout_width="fill_parent" 
     android:layout_height="fill_parent"
+    android:padding="0dp"
+    
     >
     <ScrollView 
-        android:id="@+id/ScrollView01"
+        android:id="@+id/MainScrollView"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
+        
+        android:padding="0dp"
         >
 	    
 	    <LinearLayout
-	    android:id="@+id/LinearLayout10" 
+	    android:id="@+id/FormLayout" 
 	    android:orientation="vertical"
 	    android:layout_width="fill_parent" 
 	    android:layout_height="fill_parent"
@@ -24,7 +28,15 @@
 		        android:id="@+id/timestampLabel"
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
+		        android:layout_marginTop="5dp"
 		        />
+		        <View
+		          android:layout_width="fill_parent"
+		          android:layout_height="1dp"
+		          android:background="#ffffff"
+		           
+                  android:layout_marginBottom="2dp"
+		          />
 		   
 		    <TextView
 		        android:id="@+id/timestampText"
@@ -32,15 +44,24 @@
 		        android:layout_height="wrap_content"
 		        android:editable="true"
 		        android:padding="5dp"
-		        android:textSize="16dp"/>
+		        android:textSize="16dp"
+		        />
 		    
 		    <!-- Location/coords -->
 		    <TextView 
 		        android:text="Location"
-		        android:id="@+id/TextView02"
+		        android:id="@+id/location_label"
 		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content">
-		    </TextView>
+		        android:layout_height="wrap_content"
+		        android:layout_marginTop="5dp"
+		      />
+		      <View
+                  android:layout_width="fill_parent"
+                  android:layout_height="1dp"
+                  android:background="#ffffff"
+                   
+                  android:layout_marginBottom="2dp"
+                  />
 		    <LinearLayout
 		        android:orientation="horizontal"
 		        android:layout_width="fill_parent"
@@ -66,13 +87,22 @@
 			        android:padding="2dp"
 			     />
 		     </LinearLayout>
+
 		     <!-- Comments -->
 		     <TextView 
 		        android:text="Comments"
 		        android:id="@+id/comments_label"
 		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content">
-		    </TextView>
+		        android:layout_height="wrap_content"
+		        android:layout_marginTop="5dp"
+			    />
+			    <View
+                  android:layout_width="fill_parent"
+                  android:layout_height="1dp"
+                  android:background="#ffffff"
+                   
+                    android:layout_marginBottom="2dp"
+                  />
 		    <EditText
 		        android:text="Please describe the incident..."
 		        android:id="@+id/comments_text"
@@ -80,8 +110,8 @@
 		        android:layout_height="wrap_content"
 		        android:padding="5dp"
 		        android:minLines="3"
-		        android:gravity="top">
-		    </EditText>
+		        android:gravity="top"/>
+		    />
 		    
 		    <!-- Category -->
 		    <TextView
@@ -89,7 +119,15 @@
 		        android:text="Category"
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
+		        android:layout_marginTop="5dp"
 		        />
+	           <View
+                 android:layout_width="fill_parent"
+                 android:layout_height="1dp"
+                 android:background="#ffffff"
+                  
+                 android:layout_marginBottom="2dp"
+                 />
 		    <Spinner
 		        android:id="@+id/category_spinner"
 		        android:layout_width="fill_parent"
@@ -103,8 +141,15 @@
 		        android:text="Impact"
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
+		        android:layout_marginTop="5dp"
 		        />
-		    
+		      <View
+                  android:layout_width="fill_parent"
+                  android:layout_height="1dp"
+                  android:background="#ffffff"
+                   
+                  android:layout_marginBottom="2dp"
+                  />
 		    <LinearLayout
 		        android:orientation="vertical"
 		        android:layout_width="fill_parent"
@@ -150,28 +195,61 @@
 		        android:text="Photos"
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
+		        android:layout_marginTop="5dp"
 		        />
+		      <View
+                  android:layout_width="fill_parent"
+                  android:layout_height="1dp"
+                  android:background="#ffffff"
+                   
+                  android:layout_marginBottom="2dp"
+                  />
+	        <Button
+	            android:id="@+id/photo_add_button"
+	            android:text="Add Photo"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:drawableLeft="@drawable/ic_menu_camera"
+	            android:layout_gravity="right"
+	            android:padding="2dp"
+	         />
 		    
+		    <!-- Reporter -->
+		    <TextView
+                android:id="@+id/reporter_label"
+                android:text="Reporter"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                />
+                <View
+                  android:layout_width="fill_parent"
+                  android:layout_height="1dp"
+                  android:background="#ffffff"
+                   
+                  android:layout_marginBottom="2dp"
+                  />
 		    <LinearLayout
-		        android:orientation="horizontal"
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content">
-		        <Button
-		            android:id="@+id/photo_add_button"
-		            android:text="Add Photo"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:drawableLeft="@drawable/ic_menu_camera"
-		            android:layout_gravity="right"
-		            android:padding="2dp"
-		         />
-		    </LinearLayout>
-		    
+		        android:id="@+id/reporter_container"
+		        android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/reporter_add"
+                    android:text="Add Your Contact Information"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_menu_add"
+                    android:padding="2dp"
+                 />
+            </LinearLayout>
+
 		    <Button
 		        android:id="@+id/submit_button"
 		        android:text="Submit Report"
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
+		        android:layout_marginTop="10dp"
 		    />
 	    </LinearLayout>
     </ScrollView>

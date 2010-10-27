@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
@@ -14,7 +15,9 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.widget.TableRow.LayoutParams;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -24,10 +27,11 @@ import java.util.Date;
 
 public class SubmitForm extends Activity {
 	
+	public static final String SHARED_PREFERENCES = "incidentreporter_prefs";
 	static int RESULT_IMAGE_RETURNED = 1;
 	
 	private IncidentReport newIncidentReport;
-	private Impact newImpact;
+	private Impact newImpact = new Impact();
 	private IncidentReport.Category newCategory;
 	private Reporter newReporter;
 	private Location newLocation;
@@ -94,8 +98,8 @@ public class SubmitForm extends Activity {
         		impact_widget.addView(impact_value_label);
         		impact_widget.addView(impact_value_edittext);
         		
-        		AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
-        		builder.setMessage("Please add an impact")
+        		AlertDialog.Builder impact_builder = new AlertDialog.Builder(view.getContext());
+        		impact_builder.setMessage("Please add an impact")
         		       .setCancelable(true)
         		       .setPositiveButton("Add", new DialogInterface.OnClickListener() {
         		           public void onClick(DialogInterface dialog, int id) {
@@ -103,15 +107,13 @@ public class SubmitForm extends Activity {
         		        	   String selected_impact_type_string = impact_type_spinner.getSelectedItem().toString();
         		        	   String selected_impact_value_string = (String)impact_value_edittext.getText().toString();
         		        	   
-        		        	   /* TODO:Convert to impact instance */
-        		        	   //Impact.ImpactType impact_type_enum = Impact.ImpactType.values()[impact_type_spinner.getSelectedItemPosition()];
-        		        	   //newImpact.setImpact(impact_type_enum, Integer.getInteger(impact_value_edittext.getText().toString()));
-        		        	   
-        		        	   Log.i("impact_type", selected_impact_type_string);
-        		        	   Log.i("impact_value", selected_impact_value_string);
+        		        	   Impact.ImpactType impact_type_enum = Impact.ImpactType.values()[impact_type_spinner.getSelectedItemPosition()];
+        		        	   selected_impact_value_string = impact_value_edittext.getText().toString();
+        		        	   int impact_value_int = Integer.parseInt(selected_impact_value_string);
+        		        	   newImpact.setImpact(impact_type_enum, impact_value_int);
         		        	   
         		        	   //generate new table row
-        		        	   TableRow newRow = new TableRow(view.getContext());
+        		        	   final TableRow newRow = new TableRow(view.getContext());
         		        	   
         		        	   //generate textview for type
         		        	   TextView impact_type_view = new TextView(view.getContext());
@@ -123,18 +125,27 @@ public class SubmitForm extends Activity {
         		        	   TextView impact_value_view = new TextView(view.getContext());
         		        	   impact_value_view.setText(selected_impact_value_string);
         		        	   impact_value_view.setLayoutParams(new TableRow.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+        		        	   impact_value_view.setGravity(Gravity.RIGHT);
         		        	   
         		        	   //add textviews to new row
         		        	   newRow.addView(impact_type_view);
         		        	   newRow.addView(impact_value_view);
+        		        	   
+        		        	   //TODO: Provide undo for added impacts
+        		        	   /* newRow.setOnLongClickListener(new OnLongClickListener(){
+        		        		   public boolean onLongClick(View view){
+        		        			   newRow.removeView(view);
+        		        			   return true;
+        		        		   }
+        		        	   });*/
         		        	   
         		        	   //add new row to impact table
         		        	   TableLayout impact_table = (TableLayout)findViewById(R.id.impact_table);		        	   
         		        	   impact_table.addView(newRow, new TableLayout.LayoutParams(
         		                       LayoutParams.FILL_PARENT,
         		                       LayoutParams.WRAP_CONTENT));
+        		        	   impact_table.setPadding(10, 10, 10, 10);
         		        	   
-        		        	   //TODO: Provide undo for added impacts
         		           }
         		       })
         		       .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -144,10 +155,12 @@ public class SubmitForm extends Activity {
         		           }
         		       })
         		       .setView(impact_widget); //add the display widget to the dialog
-        		AlertDialog alert = builder.create();
+        		AlertDialog impact_alert = impact_builder.create();
         		//launch the alert dialog
-        		alert.show();
+        		impact_alert.show();
         	}
+        	
+        	
         });
         
         //Photo OnClick
@@ -162,6 +175,91 @@ public class SubmitForm extends Activity {
         	}
         });
         
+        //load Reporter preferences
+    	final Button add_reporter = (Button)findViewById(R.id.reporter_add);
+    	add_reporter.setOnClickListener(new OnClickListener(){
+        	public void onClick(final View view) {
+	    	    //build reporter name edittext
+        		final EditText reporter_name_edittext = new EditText(view.getContext());
+        		final EditText reporter_contact_edittext = new EditText(view.getContext());
+        		
+        		//create textview labels
+        		TextView reporter_name_label = new TextView(view.getContext());
+        		reporter_name_label.setText("Name");
+        		
+        		TextView reporter_contact_label = new TextView(view.getContext());
+        		reporter_contact_label.setText("Email Address");
+        		
+        		//programatically implement layout widget
+        		LinearLayout reporter_widget = new LinearLayout(view.getContext());
+        		reporter_widget.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT ));
+        		reporter_widget.setOrientation(LinearLayout.VERTICAL);
+        		reporter_widget.setPadding(5,5,5,5);
+        		reporter_widget.addView(reporter_name_label);
+        		reporter_widget.addView(reporter_name_edittext);
+        		reporter_widget.addView(reporter_contact_label);
+        		reporter_widget.addView(reporter_contact_edittext);
+        		
+        		AlertDialog.Builder impact_builder = new AlertDialog.Builder(view.getContext());
+        		impact_builder.setMessage("Please add your information")
+        		       .setCancelable(true)
+        		       .setPositiveButton("Add", new DialogInterface.OnClickListener() {
+        		           public void onClick(DialogInterface dialog, int id) {
+        		        	   String reporter_name = reporter_name_edittext.getText().toString();
+        		        	   String reporter_contact = reporter_contact_edittext.getText().toString();
+        		        	   Log.i("reporter_contact", reporter_contact);
+        		        	   newReporter = new Reporter(reporter_name, reporter_contact);
+        		        	   //LinearLayout reporter_container = new LinearLayout(view.getContext());
+        		        	   //reporter_container.setLayoutParams(new LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+        		        	   
+        		        	   //generate textview for name
+        		        	   TextView reporter_name_view = new TextView(view.getContext());
+        		        	   reporter_name_view.setText(reporter_name);
+        		        	   reporter_name_view.setLayoutParams(new LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+        		        	   
+        		        	   //generate textview for contact
+        		        	   TextView reporter_contact_view = new TextView(view.getContext());
+        		        	   reporter_contact_view.setText(reporter_contact);
+        		        	   reporter_contact_view.setLayoutParams(new LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+        		        	   
+        		        	   LinearLayout reporter_container = (LinearLayout)findViewById(R.id.reporter_container);
+        		        	   
+        		        	   reporter_container.addView(reporter_name_view);
+        		        	   reporter_container.addView(reporter_contact_view);
+
+        		        	   add_reporter.setVisibility(View.GONE);
+
+        		        	   // Save reporter in shared preferences
+        		        	   SharedPreferences settings = getSharedPreferences(SHARED_PREFERENCES, 0);
+        		        	   SharedPreferences.Editor editor = settings.edit();
+        		        	   editor.putString("reporter_name", reporter_name);
+        		        	   editor.putString("reporter_contact", reporter_contact);
+        		        	   editor.commit();
+        		          }
+        		       })
+        		       .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        		           public void onClick(DialogInterface dialog, int id) {
+        		               //return nothing if the dialog is canceled 
+        		        	   dialog.cancel();
+        		           }
+        		       })
+        		       .setView(reporter_widget); //add the display widget to the dialog
+        		
+        		AlertDialog reporter_alert = impact_builder.create();
+        		//launch the alert dialog
+        		reporter_alert.show();
+        	}	
+        });
+    	
+    	
+        // Restore preferences
+        SharedPreferences settings = getSharedPreferences(SHARED_PREFERENCES, 0);
+        String reporter_name = settings.getString("reporter_name", null);
+        
+        if (reporter_name == null) {
+        	add_reporter.setVisibility(View.VISIBLE);
+        }
+        
         //Submission OnClick
         Button submitButton = (Button)findViewById(R.id.submit_button);
         submitButton.setOnClickListener(new OnClickListener() {
@@ -173,14 +271,15 @@ public class SubmitForm extends Activity {
 				
 				newIncidentReport = new IncidentReport();
 				newIncidentReport.setIncidentDate(new Date());
-				//newIncidentReport.setIncidentReporter(newReporter);
+				newIncidentReport.setIncidentReporter(new Reporter("Mark", "mshuster@cmu.edu"));
 				//newIncidentReport.setLocation(newLocation);
 				newIncidentReport.setIncidentCategory(newCategory);
 				newIncidentReport.setIncidentComments(((EditText)findViewById(R.id.comments_text)).toString());
 				newIncidentReport.setIncidentImpact(newImpact);
+				newIncidentReport.setIncidentReporter(newReporter);
 				//newIncidentReport.setPhotoFileLocations(photoFileLocations);
-		
-				//TODO:Store into Database
+
+				db.insertReport(newIncidentReport);
 				
 				//TODO:Launch Individual Report Page
 				/*
@@ -205,16 +304,14 @@ public class SubmitForm extends Activity {
 	    //TODO:Open DB connection
 	    db.open();
     }
-	
+
+    /*
     @Override
-    public void onActivityResult (int requestCode, int resultCode, Intent data){
-    	
-    	if (requestCode == RESULT_IMAGE_RETURNED){
-    		if (resultCode == RESULT_OK) {
-    		//TODO:Handle returned image
-    		}
-    	}
+    protected void onStop(){
+       super.onStop();
+
     }
+    */
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

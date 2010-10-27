@@ -22,3 +22,6 @@ Design concerns/ideas:
   *  Help user make informed decisions.  But check that design/features does not interfere with the decision/responsibility distribution of the relief organization.
   *  When people scroll through incident list, have some identifier in the list (preferably picto- because it's easier/quicker to visually distinguish) so people can tell different incidents of the same category or impact apart.
   *   UI of recording location on the form?  (Goal: (1) accurately record location so that it's retraceable but (2) save recorder's time.)
+
+Code: 
+ * Passing Objects around in intents: [http://developer.android.com/reference/android/os/Parcelable.html]

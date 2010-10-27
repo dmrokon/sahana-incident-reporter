@@ -15,7 +15,8 @@ Things to keep in mind going forward:
  
 
 Layout ideas (to experiment):
-  *  I forget.
+  *  Helper screen when first start application. 
+  *  [Can apply layout themes | http://developer.android.com/guide/topics/ui/themes.html like css for all screens]
 
 Design concerns/ideas:
   *  Help user make informed decisions.  But check that design/features does not interfere with the decision/responsibility distribution of the relief organization.

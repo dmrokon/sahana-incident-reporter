@@ -4,6 +4,7 @@ public class Location
 {
 	private double latitude; 
 	private double longitude;
+	//private String locationLabel;
 	
 	public Location(double Latitude, double Longitude)
 	{

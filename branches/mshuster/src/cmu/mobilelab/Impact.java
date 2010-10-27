@@ -24,10 +24,11 @@ public class Impact {
 	private Map<ImpactType, Integer> incidentImpact; 
 	
 	public Impact() {
-	 
+		this.incidentImpact = new HashMap<ImpactType, Integer>();
 	}
 	
 	public Impact(ImpactType impactType, int impactValue) {
+		this.incidentImpact = new HashMap<ImpactType, Integer>();
 		this.incidentImpact.put(impactType, impactValue); 
 	}
 	

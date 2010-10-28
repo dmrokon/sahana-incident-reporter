@@ -69,8 +69,7 @@
 		        android:layout_gravity="right"
 		        >
 			    <TextView
-			        android:text="@+id/EditText02"
-			        android:id="@+id/EditText02"
+			        android:id="@+id/currLocTextView"
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
 			        android:layout_gravity="fill_horizontal"
@@ -79,7 +78,7 @@
 			        android:textSize="16dp">
 			    </TextView>
 			    <Button
-			        android:id="@+id/Button01"
+			        android:id="@+id/currLocButton"
 			        android:layout_width="wrap_content"
 			        android:layout_height="wrap_content"
 			        android:drawableLeft="@drawable/ic_menu_mapmode"

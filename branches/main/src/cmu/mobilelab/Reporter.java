@@ -5,6 +5,11 @@ public class Reporter {
 	private String	reporterName; 
 	private String 	contactDetails;
 	
+	public Reporter() {
+		this.reporterName = new String();
+		this.contactDetails = new String();
+	}
+	
 	public Reporter(String ReporterName, String ContactDetails)
 	{
 		reporterName = ReporterName; 
@@ -23,4 +28,8 @@ public class Reporter {
 	public String getContactDetails() {
 		return contactDetails;
 	} 
+	public String toString()
+	{
+		return reporterName + ", " + contactDetails; 
+	}
 }

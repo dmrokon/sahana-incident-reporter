@@ -30,7 +30,7 @@ public class IncidentReporter extends TabActivity {
         tabHost.addTab(spec);
 
         // Do the same for the other tabs
-        intent = new Intent().setClass(this, ReportList.class);
+        intent = new Intent().setClass(this, SahanaListView.class);
         spec = tabHost.newTabSpec("reports").setIndicator("List Reports",
                           res.getDrawable(R.drawable.ic_menu_friendslist))
                       .setContent(intent);
@@ -43,7 +43,6 @@ public class IncidentReporter extends TabActivity {
         tabHost.addTab(spec);
 
         tabHost.setCurrentTab(0);
-       
 
     }
 }

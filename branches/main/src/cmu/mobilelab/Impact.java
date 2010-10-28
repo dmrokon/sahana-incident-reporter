@@ -2,6 +2,7 @@ package cmu.mobilelab;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class Impact {
 	
@@ -40,5 +41,18 @@ public class Impact {
 	
 	public void setImpact(ImpactType impactType, int impactValue) {
 		this.incidentImpact.put(impactType, impactValue); 
+	}
+	
+	public String toString()
+	{
+		Set<ImpactType> incidentSet = incidentImpact.keySet();   
+		String impactString = ""; 
+		
+		for(ImpactType it : incidentSet)
+		{
+			impactString += it.toString() + ": " + incidentImpact.get(it).toString() + "\n"; 
+		}
+		
+		return impactString; 
 	}
 }

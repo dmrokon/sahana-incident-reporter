@@ -2,13 +2,19 @@ package cmu.mobilelab;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore.Images;
+import android.provider.MediaStore.Images.Media;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TableLayout;
@@ -23,19 +29,28 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class SubmitForm extends Activity {
 	
 	public static final String SHARED_PREFERENCES = "incidentreporter_prefs";
-	static int RESULT_IMAGE_RETURNED = 1;
+	private static final int RESULT_IMAGE_RETURNED = 1;
 	
 	private IncidentReport newIncidentReport;
 	private Impact newImpact = new Impact();
 	private IncidentReport.Category newCategory;
-	private Reporter newReporter;
+	private Reporter newReporter = new Reporter();
 	private Location newLocation;
 	private DBConnector db;
+	private ArrayList<String> PicturesArray = new ArrayList<String>();
+	
+	EditText reporter_name_edittext;
+	EditText reporter_contact_edittext;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,6 +61,11 @@ public class SubmitForm extends Activity {
 	    
 	    //TODO:Instantiate Database Connection
 	    db = new DBConnector(this);
+	    
+	    //Place images
+	    if (PicturesArray.size() > 0) {
+	    	loadAttachedImages();
+	    }
 	    
         //Set Current Timestamp
         TextView timestamp_TextView = (TextView)findViewById(R.id.timestampText);
@@ -60,7 +80,6 @@ public class SubmitForm extends Activity {
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 this, R.array.category_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        Log.i("adapter", adapter.toString());
         spinner.setAdapter(adapter);
         
         //Add an impact button listener
@@ -167,9 +186,16 @@ public class SubmitForm extends Activity {
         Button photoButton = (Button)findViewById(R.id.photo_add_button);
         photoButton.setOnClickListener(new OnClickListener() {
         	public void onClick(View view) {
+        		/*
         		Intent photoIntent = new Intent(Intent.ACTION_GET_CONTENT );
         		photoIntent.setType("image/jpeg");
         		startActivityForResult(photoIntent, RESULT_IMAGE_RETURNED);
+        		*/
+        		
+
+				Intent cameraIntent = new Intent("android.media.action.IMAGE_CAPTURE");
+				startActivityForResult(cameraIntent, RESULT_IMAGE_RETURNED);
+
         		
         		//TODO:Display image files in table, add remove function
         	}
@@ -180,8 +206,8 @@ public class SubmitForm extends Activity {
     	add_reporter.setOnClickListener(new OnClickListener(){
         	public void onClick(final View view) {
 	    	    //build reporter name edittext
-        		final EditText reporter_name_edittext = new EditText(view.getContext());
-        		final EditText reporter_contact_edittext = new EditText(view.getContext());
+        		reporter_name_edittext = new EditText(view.getContext());
+        		reporter_contact_edittext = new EditText(view.getContext());
         		
         		//create textview labels
         		TextView reporter_name_label = new TextView(view.getContext());
@@ -207,34 +233,34 @@ public class SubmitForm extends Activity {
         		           public void onClick(DialogInterface dialog, int id) {
         		        	   String reporter_name = reporter_name_edittext.getText().toString();
         		        	   String reporter_contact = reporter_contact_edittext.getText().toString();
-        		        	   Log.i("reporter_contact", reporter_contact);
-        		        	   newReporter = new Reporter(reporter_name, reporter_contact);
-        		        	   //LinearLayout reporter_container = new LinearLayout(view.getContext());
-        		        	   //reporter_container.setLayoutParams(new LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+        		        	   //Log.i("reporter_contact", reporter_contact);
+        		        	   newReporter.setReporterName(reporter_name);
+        		        	   newReporter.setContactDetails(reporter_contact);
         		        	   
-        		        	   //generate textview for name
-        		        	   TextView reporter_name_view = new TextView(view.getContext());
-        		        	   reporter_name_view.setText(reporter_name);
-        		        	   reporter_name_view.setLayoutParams(new LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+        		        	   /*
+	        		        	   //LinearLayout reporter_container = new LinearLayout(view.getContext());
+	        		        	   //reporter_container.setLayoutParams(new LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+	        		        	   
+	        		        	   //generate textview for name
+	        		        	   TextView reporter_name_view = new TextView(view.getContext());
+	        		        	   reporter_name_view.setText(reporter_name);
+	        		        	   reporter_name_view.setLayoutParams(new LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+	        		        	   
+	        		        	   //generate textview for contact
+	        		        	   TextView reporter_contact_view = new TextView(view.getContext());
+	        		        	   reporter_contact_view.setText(reporter_contact);
+	        		        	   reporter_contact_view.setLayoutParams(new LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+	        		        	   
+	        		        	   LinearLayout reporter_container = (LinearLayout)findViewById(R.id.reporter_container);
+	        		        	   
+	        		        	   reporter_container.addView(reporter_name_view);
+	        		        	   reporter_container.addView(reporter_contact_view);
+        		        	   */
         		        	   
-        		        	   //generate textview for contact
-        		        	   TextView reporter_contact_view = new TextView(view.getContext());
-        		        	   reporter_contact_view.setText(reporter_contact);
-        		        	   reporter_contact_view.setLayoutParams(new LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-        		        	   
-        		        	   LinearLayout reporter_container = (LinearLayout)findViewById(R.id.reporter_container);
-        		        	   
-        		        	   reporter_container.addView(reporter_name_view);
-        		        	   reporter_container.addView(reporter_contact_view);
-
+        		        	   displayReporter();
         		        	   add_reporter.setVisibility(View.GONE);
 
-        		        	   // Save reporter in shared preferences
-        		        	   SharedPreferences settings = getSharedPreferences(SHARED_PREFERENCES, 0);
-        		        	   SharedPreferences.Editor editor = settings.edit();
-        		        	   editor.putString("reporter_name", reporter_name);
-        		        	   editor.putString("reporter_contact", reporter_contact);
-        		        	   editor.commit();
+
         		          }
         		       })
         		       .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -255,9 +281,16 @@ public class SubmitForm extends Activity {
         // Restore preferences
         SharedPreferences settings = getSharedPreferences(SHARED_PREFERENCES, 0);
         String reporter_name = settings.getString("reporter_name", null);
+        String reporter_contact = settings.getString("reporter_contact", null);
         
         if (reporter_name == null) {
         	add_reporter.setVisibility(View.VISIBLE);
+        }
+        else{
+        	add_reporter.setVisibility(View.GONE);
+        	newReporter.setReporterName(reporter_name);
+        	newReporter.setContactDetails(reporter_contact);        	
+        	displayReporter();
         }
         
         //Submission OnClick
@@ -274,7 +307,7 @@ public class SubmitForm extends Activity {
 				newIncidentReport.setIncidentReporter(new Reporter("Mark", "mshuster@cmu.edu"));
 				//newIncidentReport.setLocation(newLocation);
 				newIncidentReport.setIncidentCategory(newCategory);
-				newIncidentReport.setIncidentComments(((EditText)findViewById(R.id.comments_text)).toString());
+				newIncidentReport.setIncidentComments(((EditText)findViewById(R.id.comments_text)).getText().toString());
 				newIncidentReport.setIncidentImpact(newImpact);
 				newIncidentReport.setIncidentReporter(newReporter);
 				//newIncidentReport.setPhotoFileLocations(photoFileLocations);
@@ -296,6 +329,7 @@ public class SubmitForm extends Activity {
 	    super.onPause();
 	    //TODO:Close DB connection
 	    db.close();
+	    Log.i("db", "close");
     }
     
     @Override
@@ -303,15 +337,21 @@ public class SubmitForm extends Activity {
 	    super.onResume();
 	    //TODO:Open DB connection
 	    db.open();
+	    Log.i("db", "open");
     }
 
-    /*
     @Override
     protected void onStop(){
        super.onStop();
 
+	   // Save reporter in shared preferences
+	   SharedPreferences settings = getSharedPreferences(SHARED_PREFERENCES, 0);
+	   SharedPreferences.Editor editor = settings.edit();
+	   editor.putString("reporter_name", newReporter.getReporterName());
+	   editor.putString("reporter_contact", newReporter.getContactDetails());
+	   editor.commit();
     }
-    */
+
     
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -332,5 +372,101 @@ public class SubmitForm extends Activity {
         default:
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+	super.onActivityResult(requestCode, resultCode, data);
+	switch (requestCode) {
+		case (RESULT_IMAGE_RETURNED): {
+			if (resultCode == Activity.RESULT_OK) {
+				Bitmap picture = (Bitmap) data.getExtras().get("data");
+				//((ImageView)findViewById(R.id.profile_pic)).setImageBitmap(picture);
+                ContentValues values = new ContentValues();
+                	values.put(Images.Media.TITLE, "title");
+                	values.put(Images.Media.BUCKET_ID, "test");
+                	values.put(Images.Media.DATE_ADDED, System.currentTimeMillis());
+                	values.put(Images.Media.DESCRIPTION, "Sahana Incident Image");
+                	values.put(Images.Media.MIME_TYPE, "image/jpeg");
+                Uri uri = getContentResolver().insert(Media.EXTERNAL_CONTENT_URI, values);
+                
+                String picturePath = uri.getPath();
+                Log.i("picturePath", picturePath);
+                //PicturesArray.add(picturePath);
+                
+    	        ImageView thumbnail = new ImageView(getApplicationContext());
+    	        //thumbnail.setImageURI(uri);
+    	        thumbnail.setImageBitmap(picture);
+    	        
+    	        thumbnail.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT ));
+    	        TableRow newRow = new TableRow(getApplicationContext());
+    	        newRow.addView(thumbnail);
+    	        TableLayout photo_table = (TableLayout)findViewById(R.id.photo_thumb_table);
+    	        photo_table.addView(newRow);
+                
+        		OutputStream outputstream;
+                try {
+                        outputstream = getContentResolver().openOutputStream(uri);
+                        picture.compress(Bitmap.CompressFormat.JPEG, 70, outputstream);
+                        outputstream.flush();
+                        outputstream.close();
+                        
+                        //loadAttachedImages();
+                } catch (FileNotFoundException e) {
+                        //
+                } catch (IOException e){
+                        //
+                }
+			}
+			break;
+		}/*
+		case(SELECT_IMAGE):{
+			if (requestCode == SELECT_IMAGE)
+			    if (resultCode == Activity.RESULT_OK) {
+			      uri = data.getData();
+			      picturePath = uri.getPath();
+			      	Uri u = Uri.parse("content://media" + picturePath);
+			    } 
+			}*/
+
+		}
+    }
+    
+		
+    
+    public void displayReporter() {
+	    String reporter_name = newReporter.getReporterName();
+	    String reporter_contact = newReporter.getContactDetails();
+	    //Log.i("reporter_contact", reporter_contact);
+	   
+	    //generate textview for name
+	    TextView reporter_name_view = new TextView(this);
+	    reporter_name_view.setText(reporter_name);
+	    reporter_name_view.setLayoutParams(new LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+	    
+ 	    //generate textview for contact
+ 	    TextView reporter_contact_view = new TextView(this);
+	    reporter_contact_view.setText(reporter_contact);
+	    reporter_contact_view.setLayoutParams(new LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+ 	   
+	    LinearLayout reporter_container = (LinearLayout)findViewById(R.id.reporter_container);
+ 	   
+	    reporter_container.addView(reporter_name_view);
+	    reporter_container.addView(reporter_contact_view);
+    }
+    
+    public void loadAttachedImages(){
+    	for (String uriString : PicturesArray){
+	    	Uri uri = Uri.parse(uriString);
+	        ImageView thumbnail = new ImageView(getApplicationContext());
+	        thumbnail.setImageURI(uri);
+	        
+	        thumbnail.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT ));
+	        TableRow newRow = new TableRow(getApplicationContext());
+	        newRow.addView(thumbnail);
+	        TableLayout photo_table = (TableLayout)findViewById(R.id.photo_thumb_table);
+	        photo_table.addView(newRow);
+    	}
     }
 }

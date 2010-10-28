@@ -3,10 +3,14 @@ package cmu.mobilelab;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore.Images;
@@ -38,6 +42,114 @@ import java.util.Date;
 
 public class SubmitForm extends Activity {
 	
+	/** 
+	 *  GPS STUFF 
+	 */
+	
+	private static int UPDATE_TIME = 30000; 
+	private static int UPDATE_DISTANCE = 500; 
+	private static final int UPDATE_INTERVAL = 1000 * 60 * 1;
+	private Location mCurrentBestLocation = null;
+	private LocationManager mLocationManager = null; 
+	private LocationListener mLocationListener = null; 
+	
+	private void doGpsSetup()
+    {
+    	// Acquire a reference to the system Location Manager
+        mLocationManager = 
+        	(LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        
+        // Define a listener that responds to location updates
+        mLocationListener = new LocationListener() {
+            public void onLocationChanged(Location location) {
+              // Called when a new location is found by the network location provider.
+               processNewLocation(location);
+            }
+
+            public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+            public void onProviderEnabled(String provider) {}
+
+            public void onProviderDisabled(String provider) {}
+          };
+
+        // Register the listener with the Location Manager to receive location updates
+        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, UPDATE_TIME, UPDATE_DISTANCE, mLocationListener);
+    }
+    
+	public void processNewLocation(Location loc)
+	{
+		if(isBetterLocation(loc, mCurrentBestLocation))
+		{
+			mCurrentBestLocation = loc; 
+		}
+	}
+	
+    /** Determines whether one Location reading is better than the current Location fix
+	  * @param location  The new Location that you want to evaluate
+	  * @param currentBestLocation  The current Location fix, to which you want to compare the new one
+	  */
+	protected boolean isBetterLocation(Location location, Location currentBestLocation) {
+	    if (currentBestLocation == null) {
+	        // A new location is always better than no location
+	        return true;
+	    }
+
+	    // Check whether the new location fix is newer or older
+	    long timeDelta = location.getTime() - currentBestLocation.getTime();
+	    boolean isSignificantlyNewer = timeDelta > UPDATE_INTERVAL;
+	    boolean isSignificantlyOlder = timeDelta < -UPDATE_INTERVAL;
+	    boolean isNewer = timeDelta > 0;
+
+	    // If it's been more than one minutes since the current location, use the new location
+	    // because the user has likely moved
+	    if (isSignificantlyNewer) {
+	        return true;
+	    // If the new location is more than one minutes older, it must be worse
+	    } else if (isSignificantlyOlder) {
+	        return false;
+	    }
+
+	    // Check whether the new location fix is more or less accurate
+	    int accuracyDelta = (int) (location.getAccuracy() - currentBestLocation.getAccuracy());
+	    boolean isLessAccurate = accuracyDelta > 0;
+	    boolean isMoreAccurate = accuracyDelta < 0;
+	    
+	    // Determine location quality using a combination of timeliness and accuracy
+	    if (isMoreAccurate) {
+	        return true;
+	    } else if (isNewer && !isLessAccurate) {
+	        return true;
+	    }
+	    return false;
+	}
+	
+	public SahanaLocation getCurrentBestLocation()
+	{
+		if(mCurrentBestLocation != null)
+			return new SahanaLocation(mCurrentBestLocation.getLatitude(), mCurrentBestLocation.getLongitude()); 
+		else
+		{
+			// this is just so we can immediately get some location even if it isn't accurate
+			Location lastKnownLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+			if(lastKnownLocation != null)
+				return new SahanaLocation(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude()); 
+			else
+				return new SahanaLocation(0,0); 
+		}
+	}
+
+    @Override
+    protected void onDestroy ()
+    {
+    	super.onDestroy(); 
+    	mLocationManager.removeUpdates(mLocationListener); 
+    }
+	
+	/**
+	 *  END GPS STUFF
+	 */
+	
 	public static final String SHARED_PREFERENCES = "incidentreporter_prefs";
 	private static final int RESULT_IMAGE_RETURNED = 1;
 	
@@ -58,6 +170,7 @@ public class SubmitForm extends Activity {
 	    setContentView(R.layout.form);
 	    
 	    //newImpact = new Impact();
+	    doGpsSetup(); 
 	    
 	    //TODO:Instantiate Database Connection
 	    db = new DBConnector(this);
@@ -198,6 +311,16 @@ public class SubmitForm extends Activity {
 
         		
         		//TODO:Display image files in table, add remove function
+        	}
+        });
+        
+      //GPS OnClick
+        Button currLocationButton = (Button)findViewById(R.id.currLocButton);
+        currLocationButton.setOnClickListener(new OnClickListener() {
+        	public void onClick(View view) {
+        		newLocation = getCurrentBestLocation(); 
+        		TextView currLocationTextView = (TextView)findViewById(R.id.currLocTextView); 
+        		currLocationTextView.setText(newLocation.toString());
         	}
         });
         

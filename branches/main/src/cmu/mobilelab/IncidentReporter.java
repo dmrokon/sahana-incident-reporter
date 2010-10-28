@@ -36,8 +36,8 @@ public class IncidentReporter extends TabActivity {
                       .setContent(intent);
         tabHost.addTab(spec);
 
-        intent = new Intent().setClass(this, MapList.class);
-        spec = tabHost.newTabSpec("map").setIndicator("Map Reports",
+        intent = new Intent().setClass(this, IncidentReportSummary.class);
+        spec = tabHost.newTabSpec("summary").setIndicator("Incident Summary Report",
                           res.getDrawable(R.drawable.ic_menu_mapmode))
                       .setContent(intent);
         tabHost.addTab(spec);

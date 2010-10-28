@@ -45,7 +45,7 @@ public class SahanaListView extends ListActivity {
             public void onItemClick(AdapterView<?> parent, View view,
                 int position, long id) {
             	
-            	
+            
               // When clicked, show a toast with the TextView text
        //       Toast.makeText(getApplicationContext(), ((TextView) view).getText(),
         //          Toast.LENGTH_SHORT).show();

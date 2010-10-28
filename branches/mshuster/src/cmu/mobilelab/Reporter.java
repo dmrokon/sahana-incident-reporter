@@ -11,6 +11,11 @@ public class Reporter {
 		contactDetails = ContactDetails; 
 	}
 	
+	public Reporter() {
+		this.reporterName = new String();
+		this.contactDetails = new String();
+	}
+	
 	public void setReporterName(String reporterName) {
 		this.reporterName = reporterName;
 	}

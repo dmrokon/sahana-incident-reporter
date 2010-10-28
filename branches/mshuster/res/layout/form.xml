@@ -5,7 +5,7 @@
     android:layout_width="fill_parent" 
     android:layout_height="fill_parent"
     android:padding="0dp"
-    
+    android:screenOrientation="portrait"
     >
     <ScrollView 
         android:id="@+id/MainScrollView"
@@ -104,7 +104,6 @@
                     android:layout_marginBottom="2dp"
                   />
 		    <EditText
-		        android:text="Please describe the incident..."
 		        android:id="@+id/comments_text"
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
@@ -213,7 +212,17 @@
 	            android:layout_gravity="right"
 	            android:padding="2dp"
 	         />
-		    
+                 <TableLayout 
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:stretchColumns="1"
+                    android:id="@+id/photo_thumb_table"
+                    >
+                    <TableRow>
+                    
+                    </TableRow>
+                 </TableLayout>
+                 		    
 		    <!-- Reporter -->
 		    <TextView
                 android:id="@+id/reporter_label"
@@ -233,7 +242,8 @@
 		        android:id="@+id/reporter_container"
 		        android:orientation="vertical"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:padding="10dp">
                 <Button
                     android:id="@+id/reporter_add"
                     android:text="Add Your Contact Information"

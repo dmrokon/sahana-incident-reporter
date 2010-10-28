@@ -3,6 +3,8 @@ package cmu.mobilelab;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,11 +34,18 @@ class IncidentReportAdapter extends ArrayAdapter<IncidentReport> {
             	ImageView iv = (ImageView) v.findViewById(R.id.photo); 
                 TextView tt = (TextView) v.findViewById(R.id.body);
                 TextView bt = (TextView) v.findViewById(R.id.header);
+                
+            	Resources res = v.getContext().getResources();
+            	Drawable drawable = res.getDrawable(R.drawable.ic_menu_camera);
+            	iv.setImageDrawable(drawable);
+                
                 if (iv != null && ir.getPhotoFileLocations().size() != 0)
                 {
-                	String ir_str = ir.getPhotoFileLocations().get(0); 
-                	Uri uri = Uri.parse(ir_str); 
-                	iv.setImageURI(uri); 
+                
+                	//String ir_str = ir.getPhotoFileLocations().get(0); 
+                	//Uri uri = Uri.parse(ir_str); 
+                	//iv.setImageURI(uri); 
+                	
                 }
                 if (tt != null) {
                       tt.setText("Date: "+ ir.getIncidentDate().toString() + 

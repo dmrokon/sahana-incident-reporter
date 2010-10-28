@@ -14,7 +14,7 @@
         <activity android:name=".SubmitForm"></activity>
 		<activity android:name=".MapList"></activity>
 		<activity android:name=".SahanaListView"></activity>
-	    <service android:name=".SahanaLocatorService" android:enabled="true"/>
+	   <!--   <service android:name=".SahanaLocatorService" android:enabled="true"/> -->
     </application>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-sdk android:minSdkVersion="6" />

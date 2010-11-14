@@ -102,6 +102,37 @@ Photo(s)
 		return photoFileLocations;
 	}
 	
+	@Override public boolean equals(Object that)
+	{
+		if ( this == that ) return true;
+		else if (!( that instanceof IncidentReport) ) return false; 
+		else
+		{
+			IncidentReport thatReport = (IncidentReport) that; 
+			if(this.incidentDate.equals(thatReport.incidentDate) &&
+				this.incidentLocation.equals(thatReport.incidentLocation) &&
+				this.incidentCategory.equals(thatReport.incidentCategory) &&
+				this.incidentReporter.equals(thatReport.incidentReporter) &&
+				this.incidentImpact.equals(thatReport.incidentImpact))
+					return true; 
+		}
+		return false; 
+	}
+	
+	private int hashCode = 0; 
+	@Override public int hashCode () {
+        if (hashCode == 0) {
+        	int code = Utilities.getStartingHashCode();
+            code = Utilities.getHashMultiplier() * code + this.incidentDate.hashCode();
+            code = Utilities.getHashMultiplier() * code + this.incidentLocation.hashCode();
+            code = Utilities.getHashMultiplier() * code + this.incidentCategory.hashCode();
+            code = Utilities.getHashMultiplier() * code + this.incidentReporter.hashCode();
+            code = Utilities.getHashMultiplier() * code + this.incidentImpact.hashCode();
+            hashCode = code;
+        }
+        return hashCode;
+    }
+	
 	public String toString()
 	{
 		String photoFileLocationStr = "{"; 

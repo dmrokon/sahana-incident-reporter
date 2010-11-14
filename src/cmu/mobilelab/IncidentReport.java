@@ -21,7 +21,7 @@ Photo(s)
 	 **/
 	
 	private Date 				incidentDate; 
-	private SahanaLocation 		incidentLocation; 
+	private IncidentLocation 		incidentLocation; 
 	private Category 			incidentCategory; 
 	private Reporter 			incidentReporter; 
 	private String				incidentComments; 
@@ -33,7 +33,7 @@ Photo(s)
  
 	}
 	
-	public IncidentReport(Date IncidentDate, SahanaLocation IncidentLocation, Category IncidentCategory, 
+	public IncidentReport(Date IncidentDate, IncidentLocation IncidentLocation, Category IncidentCategory, 
 			Reporter IncidentReporter, String IncidentComments, Impact IncidentImpact, 
 			ArrayList<String> PhotoFileLocations)
 	{
@@ -54,11 +54,11 @@ Photo(s)
 		return incidentDate;
 	}
 	
-	public void setIncidentLocation(SahanaLocation incidentLocation) {
+	public void setIncidentLocation(IncidentLocation incidentLocation) {
 		this.incidentLocation = incidentLocation;
 	}
 
-	public SahanaLocation getIncidentLocation() {
+	public IncidentLocation getIncidentLocation() {
 		return incidentLocation;
 	}
 

@@ -1,11 +1,11 @@
 package cmu.mobilelab;
 
-public class SahanaLocation 
+public class IncidentLocation 
 {
 	private double mLatitude; 
 	private double mLongitude;
 	
-	public SahanaLocation(double Latitude, double Longitude)
+	public IncidentLocation(double Latitude, double Longitude)
 	{
 		mLatitude = Latitude; 
 		mLongitude = Longitude; 
@@ -27,10 +27,10 @@ public class SahanaLocation
 	@Override public boolean equals(Object that)
 	{
 		if ( this == that ) return true;
-		else if (!( that instanceof SahanaLocation) ) return false; 
+		else if (!( that instanceof IncidentLocation) ) return false; 
 		else
 		{
-			SahanaLocation thatLocation = (SahanaLocation) that; 
+			IncidentLocation thatLocation = (IncidentLocation) that; 
 			if(this.mLatitude == thatLocation.mLatitude &&
 					this.mLongitude == thatLocation.mLongitude)
 				return true; 

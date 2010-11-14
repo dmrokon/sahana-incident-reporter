@@ -13,7 +13,7 @@
         </activity>
         <activity android:name=".SubmitForm"></activity>
 		<activity android:name=".MapList"></activity>
-		<activity android:name=".SahanaListView"></activity>
+		<activity android:name=".IncidentListView"></activity>
 		<activity android:name=".IncidentReportSummary"></activity>
 	   <!--   <service android:name=".SahanaLocatorService" android:enabled="true"/> -->
     </application>

@@ -436,15 +436,23 @@ public class SubmitForm extends Activity {
 				//newIncidentReport.setPhotoFileLocations(photoFileLocations);
 
 				db.insertReport(newIncidentReport);
-				
-				//TODO:Launch Individual Report Page
-				/*
-				 * Intent reportPageIntent = new Intent(view.getContext(), IndividualReport.class);
-				 * startActivity(reportPageIntent);
-				 */
+				lastIncidentReportSubmitted = newIncidentReport; 
+			
+				//Launch Individual Report Page
+				Intent intent = new Intent(SubmitForm.this, IncidentReporter.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				intent.putExtra("switch_to", IncidentReportSummary.class.toString()); 
+				intent.setAction(Intent.ACTION_VIEW);
+				startActivity(intent);
 			}
 		});
         
+    }
+    
+    private static IncidentReport lastIncidentReportSubmitted = null; 
+    public static IncidentReport getLastIncidentReportSubmitted()
+    {
+    	return lastIncidentReportSubmitted; 
     }
     
     @Override

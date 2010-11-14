@@ -28,6 +28,32 @@ public class Reporter {
 	public String getContactDetails() {
 		return contactDetails;
 	} 
+	
+	@Override public boolean equals(Object that)
+	{
+		if ( this == that ) return true;
+		else if (!( that instanceof Reporter) ) return false; 
+		else
+		{
+			Reporter thatReporter = (Reporter) that; 
+			if(this.reporterName.equals(thatReporter.reporterName) &&
+				this.contactDetails.equals(thatReporter.contactDetails))
+					return true; 
+		}
+		return false; 
+	}
+	
+	private int hashCode = 0; 
+	@Override public int hashCode () {
+        if (hashCode == 0) {
+        	int code = Utilities.getStartingHashCode();
+            code = Utilities.getHashMultiplier() * code + this.reporterName.hashCode();
+            code = Utilities.getHashMultiplier() * code + this.contactDetails.hashCode();
+            hashCode = code;
+        }
+        return hashCode;
+    }
+	
 	public String toString()
 	{
 		return reporterName + ", " + contactDetails; 

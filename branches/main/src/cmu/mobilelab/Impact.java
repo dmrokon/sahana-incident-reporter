@@ -43,6 +43,44 @@ public class Impact {
 		this.incidentImpact.put(impactType, impactValue); 
 	}
 	
+	@Override public boolean equals(Object that)
+	{
+		if ( this == that ) return true;
+		else if (!( that instanceof Impact) ) return false; 
+		else
+		{
+			Impact thatImpact = (Impact) that; 
+			if (this.incidentImpact.size() != thatImpact.incidentImpact.size())
+				return false; 
+			
+			for(ImpactType it : this.incidentImpact.keySet())
+			{
+				// if not equal
+				if(!thatImpact.incidentImpact.containsKey(it) || 
+						(this.incidentImpact.get(it) != thatImpact.incidentImpact.get(it)))
+					return false; 
+				// else assume (ANDing) true
+			}
+			
+			return true; 
+		}
+	}
+	
+	private int hashCode = 0; 
+	@Override public int hashCode () 
+	{
+        if (hashCode == 0) {
+        	int code = Utilities.getStartingHashCode();
+        	for(ImpactType it : this.incidentImpact.keySet())
+			{
+        		code = Utilities.getHashMultiplier() * code + it.hashCode();
+        		code = Utilities.getHashMultiplier() * code + this.incidentImpact.get(it);
+			}
+        	hashCode = code;
+        }
+        return hashCode;
+	}
+	
 	public String toString()
 	{
 		Set<ImpactType> incidentSet = incidentImpact.keySet();   

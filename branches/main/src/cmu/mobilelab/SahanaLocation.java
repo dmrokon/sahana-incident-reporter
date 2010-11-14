@@ -24,6 +24,31 @@ public class SahanaLocation
 		return mLongitude;
 	} 
 	
+	@Override public boolean equals(Object that)
+	{
+		if ( this == that ) return true;
+		else if (!( that instanceof SahanaLocation) ) return false; 
+		else
+		{
+			SahanaLocation thatLocation = (SahanaLocation) that; 
+			if(this.mLatitude == thatLocation.mLatitude &&
+					this.mLongitude == thatLocation.mLongitude)
+				return true; 
+		}
+		return false; 
+	}
+	
+	private int hashCode = 0; 
+	@Override public int hashCode () {
+        if (hashCode == 0) {
+        	int code = Utilities.getStartingHashCode();
+            code = Utilities.getHashMultiplier() * code + Utilities.getHashFromDouble(this.mLatitude);
+            code = Utilities.getHashMultiplier() * code + Utilities.getHashFromDouble(this.mLongitude);
+            hashCode = code;
+        }
+        return hashCode;
+    }
+	
 	public String toString()
 	{
 		return this.mLatitude + ", " + this.mLongitude; 

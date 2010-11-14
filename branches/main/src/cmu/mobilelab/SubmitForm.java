@@ -124,18 +124,18 @@ public class SubmitForm extends Activity {
 	    return false;
 	}
 	
-	public SahanaLocation getCurrentBestLocation()
+	public IncidentLocation getCurrentBestLocation()
 	{
 		if(mCurrentBestLocation != null)
-			return new SahanaLocation(mCurrentBestLocation.getLatitude(), mCurrentBestLocation.getLongitude()); 
+			return new IncidentLocation(mCurrentBestLocation.getLatitude(), mCurrentBestLocation.getLongitude()); 
 		else
 		{
 			// this is just so we can immediately get some location even if it isn't accurate
 			Location lastKnownLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 			if(lastKnownLocation != null)
-				return new SahanaLocation(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude()); 
+				return new IncidentLocation(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude()); 
 			else
-				return new SahanaLocation(0,0); 
+				return new IncidentLocation(0,0); 
 		}
 	}
 
@@ -157,7 +157,7 @@ public class SubmitForm extends Activity {
 	private Impact newImpact = new Impact();
 	private IncidentReport.Category newCategory;
 	private Reporter newReporter = new Reporter();
-	private SahanaLocation newLocation;
+	private IncidentLocation newLocation;
 	private DBConnector db;
 	private ArrayList<String> PicturesArray = new ArrayList<String>();
 	

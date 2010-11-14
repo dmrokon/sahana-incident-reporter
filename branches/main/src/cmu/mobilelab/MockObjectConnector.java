@@ -17,7 +17,7 @@ public class MockObjectConnector implements IDataAccessConnector {
 		Calendar currentCal = Calendar.getInstance(); 
 		currentCal.set(2010, 10, 12); 
 		Date incidentDate = currentCal.getTime(); 
-		SahanaLocation incidentLocation = new SahanaLocation(25, 40); 
+		IncidentLocation incidentLocation = new IncidentLocation(25, 40); 
 		Reporter incidentReporter = new Reporter("Reporter1", "555-555-5555"); 
 		Impact incidentImpact = new Impact(ImpactType.COWS_LOST, 20); 
 		ArrayList<String> photoFileLocations = new ArrayList<String>(); 
@@ -31,7 +31,7 @@ public class MockObjectConnector implements IDataAccessConnector {
 
 		currentCal.set(2010, 11, 12); 
 		incidentDate = currentCal.getTime(); 
-		incidentLocation = new SahanaLocation(145, 260); 
+		incidentLocation = new IncidentLocation(145, 260); 
 		incidentReporter = new Reporter("Reporter2", "111-111-1111"); 
 		incidentImpact = new Impact(ImpactType.HOUSES_DAMAGED, 10); 
 		photoFileLocations = new ArrayList<String>(); 

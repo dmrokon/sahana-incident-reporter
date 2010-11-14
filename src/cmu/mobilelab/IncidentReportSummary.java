@@ -28,6 +28,20 @@ public class IncidentReportSummary extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ir_summary);
  
+        // This is what will be used to populate the summary form
+        IncidentReport reportToShow = null; 
+        
+        if (IncidentReporter.getLastTab() == SubmitForm.class.toString())
+        {// check if this was a result of a submit form action
+        	reportToShow = SubmitForm.getLastIncidentReportSubmitted(); 
+        }
+        else if(IncidentReporter.getLastTab() == IncidentListView.class.toString())
+        {// check if this was a result of a list incident clicked action
+        	reportToShow = IncidentListView.getLastSelectedIncident(); 
+        }
+        
+        // TODO: check if reportToShow is not null, then fill summary with data from it
+        
         GridView gridView = (GridView) findViewById(R.id.photo_grid);
         gridView.setAdapter(new ImageAdapter(this));
  

@@ -3,6 +3,7 @@ package cmu.mobilelab;
 import java.util.ArrayList;
 
 import android.app.ListActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -44,12 +45,21 @@ public class IncidentListView extends ListActivity {
         lv.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                 int position, long id) {
+            	currentSelectedIncident = items.get(position);
             	
-            
-              // When clicked, show a toast with the TextView text
-       //       Toast.makeText(getApplicationContext(), ((TextView) view).getText(),
-        //          Toast.LENGTH_SHORT).show();
+            	//Launch Individual Report Page
+				Intent intent = new Intent(IncidentListView.this, IncidentReporter.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); 
+				intent.putExtra("switch_to", IncidentReportSummary.class.toString()); 
+				intent.setAction(Intent.ACTION_VIEW);
+				startActivity(intent);
             }
           });
+    }
+    
+    private static IncidentReport currentSelectedIncident = null; 
+    public static IncidentReport getLastSelectedIncident()
+    {
+    	return currentSelectedIncident; 
     }
 }

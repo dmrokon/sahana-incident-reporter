@@ -9,7 +9,7 @@ import android.widget.ListView;
 import android.view.View;
 import android.widget.AdapterView.OnItemClickListener;
 
-public class SahanaListView extends ListActivity {
+public class IncidentListView extends ListActivity {
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {

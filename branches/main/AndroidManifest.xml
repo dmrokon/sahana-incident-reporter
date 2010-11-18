@@ -12,7 +12,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".SubmitForm"></activity>
-		<activity android:name=".MapList"></activity>
+	<!--  <activity android:name=".MapList"></activity>  NOT INCLUDED AS TAB IN MAIN, SO CAUSES CRASH ON APP LAUNCH-->
 		<activity android:name=".IncidentListView"></activity>
 		<activity android:name=".IncidentReportSummary"></activity>
 	   <!--   <service android:name=".SahanaLocatorService" android:enabled="true"/> -->

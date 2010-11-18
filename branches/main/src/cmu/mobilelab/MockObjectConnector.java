@@ -11,7 +11,7 @@ public class MockObjectConnector implements IDataAccessConnector {
 
 	ArrayList<IncidentReport> incidentReports = new ArrayList<IncidentReport>(); 
 	
-	@Override
+	//@Override
 	public void open() {
 		
 		Calendar currentCal = Calendar.getInstance(); 
@@ -44,17 +44,17 @@ public class MockObjectConnector implements IDataAccessConnector {
 		
 	}
 	
-	@Override
+	//@Override
 	public void close() {
 		// TODO Auto-generated method stub
 	}
 
-	@Override
+	//@Override
 	public ArrayList<IncidentReport> getReports(int numReports) {
 		return this.incidentReports; 
 	}
 
-	@Override
+	//@Override
 	public void insertReport(IncidentReport report) {
 		this.incidentReports.add(report); 
 	}

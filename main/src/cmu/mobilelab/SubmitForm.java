@@ -158,7 +158,7 @@ public class SubmitForm extends Activity {
 	private IncidentReport.Category newCategory;
 	private Reporter newReporter = new Reporter();
 	private IncidentLocation newLocation;
-	private DatabaseAdapter db;
+	private DatabaseAdapter db = new DatabaseAdapter(this);
 	private ArrayList<String> PicturesArray = new ArrayList<String>();
 	
 	EditText reporter_name_edittext;
@@ -173,7 +173,7 @@ public class SubmitForm extends Activity {
 	    doGpsSetup(); 
 	    
 	    //TODO:Instantiate Database Connection
-	    db = new DatabaseAdapter(this);
+	    db.open();
 	    
 	    //Place images
 	    if (PicturesArray.size() > 0) {
@@ -402,9 +402,10 @@ public class SubmitForm extends Activity {
     	
     	
         // Restore preferences
-        SharedPreferences settings = getSharedPreferences(SHARED_PREFERENCES, 0);
+        /*SharedPreferences settings = getSharedPreferences(SHARED_PREFERENCES, 0);
         String reporter_name = settings.getString("reporter_name", null);
         String reporter_contact = settings.getString("reporter_contact", null);
+        Log.i("reporter_name", reporter_name);
         
         if (reporter_name == null) {
         	add_reporter.setVisibility(View.VISIBLE);
@@ -414,7 +415,7 @@ public class SubmitForm extends Activity {
         	newReporter.setReporterName(reporter_name);
         	newReporter.setContactDetails(reporter_contact);        	
         	displayReporter();
-        }
+        }*/
         
         //Submission OnClick
         Button submitButton = (Button)findViewById(R.id.submit_button);
@@ -469,6 +470,7 @@ public class SubmitForm extends Activity {
     public void onResume() {
 	    super.onResume();
 	    //TODO:Open DB connection
+	    db = new DatabaseAdapter(this);
 	    db.open();
 	    Log.i("db", "open");
     }

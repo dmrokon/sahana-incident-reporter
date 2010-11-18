@@ -19,37 +19,38 @@ import android.text.method.DateTimeKeyListener;
 import android.util.Log;
 import android.widget.Toast;
 
-public class DatabaseAdapter{
+public class DatabaseAdapter implements IDataAccessConnector{
 	private static final String TAG = "DatabaseAdapter";
 	private static final String DATABASE_NAME = "incidentReporter.db";
-	private static final int DATABASE_VERSION = 1;
+	private static final int DATABASE_VERSION = 11;
 	private static final String DATABASE_INCIDENTS_TABLE = "incidents";
 	private static final String DATABASE_IMAGES_TABLE = "images";
 	private static final String DATABASE_IMPACTS_TABLE = "impacts";
 	private static final String LAST_INSERT_ROW_ID = "SELECT last_insert_rowid();";
-	private static final String DATABASE_CREATE = "create table " + DATABASE_INCIDENTS_TABLE + 
-		" (incident_id INTEGER PRIMARY KEY AUTOINCREMENT, " + 
-		"timestamp TEXT, " +
-		"reporter_name TEXT, " +
-		"reporter_contact TEXT, " + 
-		"category INTEGER, " +
-		"location_name TEXT, " +
-		"location_lat REAL, " +
-		"location_long REAL, " +
-		"comments TEXT" +
-		");" +
-			"create table " + DATABASE_IMAGES_TABLE + 
-		" (image_id INTEGER PRIMARY KEY AUTOINCREMENT, " + 
-		"incident_id INTEGER, " +
-		"image_uri TEXT NOT NULL, " +
-		"FOREIGN KEY(incident_id) REFERENCES incidents(incident_id));" +
-			"create table " + DATABASE_IMPACTS_TABLE + 
-		" (impact_id INTEGER PRIMARY KEY AUTOINCREMENT, " + 
-		"impact_type INTEGER, " +
-		"impact_value INTEGER, " +
-		"incident_id INTEGER, " +
-		"FOREIGN KEY(incident_id) REFERENCES incidents(incident_id)" +
-		");";
+	
+	private static final String DATABASE_CREATE_INCIDENTS = "create table " + DATABASE_INCIDENTS_TABLE + 
+	" (incident_id INTEGER PRIMARY KEY AUTOINCREMENT, " + 
+	"timestamp TEXT, " +
+	"reporter_name TEXT, " +
+	"reporter_contact TEXT, " + 
+	"category INTEGER, " +
+	"location_name TEXT, " +
+	"location_lat REAL, " +
+	"location_long REAL, " +
+	"comments TEXT" +
+	");";
+	private static final String DATABASE_CREATE_IMPACTS= "create table " + DATABASE_IMPACTS_TABLE + 
+	" (impact_id INTEGER PRIMARY KEY AUTOINCREMENT, " + 
+	"impact_type INTEGER, " +
+	"impact_value INTEGER, " +
+	"incident_id INTEGER, " +
+	"FOREIGN KEY(incident_id) REFERENCES incidents(incident_id)" +
+	");";
+	private static final String DATABASE_CREATE_IMAGES = "create table " + DATABASE_IMAGES_TABLE + 
+	" (image_id INTEGER PRIMARY KEY AUTOINCREMENT, " + 
+	"incident_id INTEGER, " +
+	"image_uri TEXT NOT NULL, " +
+	"FOREIGN KEY(incident_id) REFERENCES incidents(incident_id));";
 	
 	private Context context;
 	
@@ -62,14 +63,19 @@ public class DatabaseAdapter{
 		
 	    @Override
 	    public void onCreate(SQLiteDatabase db) {
-	        db.execSQL(DATABASE_CREATE);
+	        db.execSQL(DATABASE_CREATE_INCIDENTS);
+	        db.execSQL(DATABASE_CREATE_IMPACTS);
+	        db.execSQL(DATABASE_CREATE_IMAGES);
+	        //Log.i("database_create", DATABASE_CREATE);
 	    }
 	
 	    @Override
 	    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 	        Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
 	                + newVersion + ", which will destroy all old data");
-	        db.execSQL("DROP TABLE IF EXISTS " + DATABASE_INCIDENTS_TABLE + ", " + DATABASE_IMAGES_TABLE + ", " + DATABASE_IMPACTS_TABLE + ";");
+	        db.execSQL("DROP TABLE IF EXISTS " + DATABASE_INCIDENTS_TABLE + ";");
+	        db.execSQL("DROP TABLE IF EXISTS " + DATABASE_IMAGES_TABLE + ";");
+	        db.execSQL("DROP TABLE IF EXISTS " + DATABASE_IMPACTS_TABLE + ";");
 	        onCreate(db);
 	    }
 	}
@@ -80,6 +86,7 @@ public class DatabaseAdapter{
 		this.context = context;
 	}
 	
+	@Override
 	public void open() {
 		this.openHelper  = new OpenHelper(this.context);
 		this.sqldb = openHelper.getWritableDatabase();
@@ -99,6 +106,7 @@ public class DatabaseAdapter{
 		}*/
 	}
 	
+	@Override
 	public void close(){
 		try {
 			openHelper.close();
@@ -109,7 +117,7 @@ public class DatabaseAdapter{
 		}
 	}
 	
-
+	@Override
 	public void insertReport(IncidentReport report){
 		Integer incident_id = null;
 		Date date = report.getIncidentDate();
@@ -126,11 +134,11 @@ public class DatabaseAdapter{
 		Map<ImpactType, Integer> impactMap = report.getIncidentImpact().getImpact();
 		Iterator impactIterator = impactMap.entrySet().iterator();
 		
-		SimpleDateFormat date_format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.sss");
+		//SimpleDateFormat date_format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.sss");
 		
 		String incidentInsertString = "INSERT INTO incidents VALUES (" +
 			"NULL,'" +
-			date_format.format(date) + "','" + 
+			date.toGMTString() + "','" + 
 			reporter.getReporterName() + "','" + 
 			reporter.getContactDetails() + "'," +
 			category.toString() + ",'" +
@@ -146,70 +154,68 @@ public class DatabaseAdapter{
 			Log.i("Error", e.getMessage());
 		}
 		
-		SQLiteCursor c = null;
-		
 		try {
-			c = (SQLiteCursor)sqldb.rawQuery(LAST_INSERT_ROW_ID, null);
-			Integer columns = c.getColumnCount();
+			SQLiteCursor c = (SQLiteCursor)sqldb.rawQuery(LAST_INSERT_ROW_ID, null);
 			c.moveToFirst();
-			Log.i("num_columns", columns.toString());
 			incident_id = c.getInt(0);
+			c.close();
 			Log.i("incident_id", incident_id.toString());
 		} catch(Exception e) {
 			Log.i("Error", e.getMessage());		
 		}
 		
-		String impactInsertString = "";
-		
 	    while (impactIterator.hasNext()) {
-	    	//String impactString = "";
+	    	String impactInsertString;
 	        Map.Entry pairs = (Map.Entry)impactIterator.next();
 	        Log.i("impact", pairs.getKey() + " = " + (Integer)pairs.getValue());
 	        
 	        Impact.ImpactType impactType = ImpactType.valueOf(pairs.getKey().toString());
 	        Integer impactValue = (Integer)pairs.getValue();
 	        
-	        impactInsertString += "INSERT INTO impacts VALUES (" +
+	        impactInsertString = "INSERT INTO impacts VALUES (" +
 			"NULL," + 
 			impactType.ordinal() + "," +
 			(Integer)pairs.getValue() + "," +
 			incident_id +
 			"); ";
-		}
-	    
-		try {
-			Log.i("impactInsertString", impactInsertString);
-			sqldb.execSQL(incidentInsertString);
-		} catch(Exception e) {
-			Log.i("Error", e.getMessage());
+	        
+			try {
+				Log.i("impactInsertString", impactInsertString);
+				sqldb.execSQL(impactInsertString);
+			} catch(Exception e) {
+				Log.i("Error", e.getMessage());
+			}
 		}
 		
 	}
 
-	
-	public ArrayList<IncidentReport> getReports(Integer numReports){
+	@Override
+	public ArrayList<IncidentReport> getReports(int numReports){
 		ArrayList<IncidentReport> reports = new ArrayList<IncidentReport>();
 		IncidentReport report = new IncidentReport();
-		
-		String getIncidentString = "SELECT * FROM incidents LIMIT " + numReports.toString() + ";";
+		Integer intNumReports = numReports;
+		String getIncidentString = "SELECT * FROM incidents LIMIT " + intNumReports.toString() + ";";
 		SQLiteCursor c = null;
 		
 		try {
-			Log.i("getString", getIncidentString);
+			Log.i("incidentString", getIncidentString);
 			c = (SQLiteCursor)sqldb.rawQuery(getIncidentString, null);
+			//Cursor cursor = sqldb.query("incidents", null, null, null, null, null, null, "1");
+			//Integer num_rows = (Integer)c.getCount();
+			//Log.i("getString", );
 		} catch(Exception e) {
-			Log.i("Error", e.getMessage());		
+			Log.i("Error", e.toString());//e.getMessage());		
 		}
 		
 		c.moveToFirst();
 		while(!(c.isAfterLast())) {
-			Log.i("cursor", c.getString(1));
-			for (int column = 0; column < c.getColumnCount(); column+=1) {
+			Log.i("cursor", c.getColumnName(1));
+			Reporter newReporter = new Reporter();
+			IncidentLocation newLocation = new IncidentLocation();
+			for (int column = 0; column < c.getColumnCount(); column++) {
 				String column_name = c.getColumnName(column);
-				Reporter newReporter = new Reporter();
-				IncidentLocation newLocation = new IncidentLocation();
+				Log.i("column", column_name);
 				int incident_id;
-				Impact newImpact = new Impact();
 				
 				if (column_name.equals("_id")) {
 					incident_id = c.getInt(column);
@@ -237,25 +243,39 @@ public class DatabaseAdapter{
 				else if (column_name.equals("comments")) {
 					report.setIncidentComments(c.getString(column));
 				}
-				
-				String getImpactString = "SELECT impact_type, impact_value FROM impacts WHERE incidents._id = impacts.incident_id LIMIT " + numReports.toString() + ";";
-				SQLiteCursor c_impact = (SQLiteCursor)sqldb.rawQuery(getImpactString, null);
-				
-				try {
-					Log.i("getString", getImpactString);
-					c = (SQLiteCursor)sqldb.rawQuery(getImpactString, null);
-				} catch(Exception e) {
-					Log.i("Error", e.getMessage());		
+				else if (column_name.equals("category")) {
+					IncidentReport.Category newCategory = IncidentReport.Category.values()[c.getInt(column)];
+					Log.i("category", newCategory.toString());
+					report.setIncidentCategory(newCategory);
+					//report.setIncidentCategory(incidentCategory)
 				}
-				
-				c_impact.moveToFirst();
-				while(!(c_impact.isAfterLast())) {
-					Log.i("cursor", c.getString(1));
-					for (int impact_column = 0;impact_column < c_impact.getColumnCount(); impact_column +=1) {
-						int impact_type_int;
-						Impact.ImpactType impact_type = null;
-						int impact_value = 0;
-						
+			}
+			
+			/*
+			String getImpactString = "SELECT impact_type, impact_value FROM incidents, impacts WHERE incidents.incident_id = impacts.incident_id LIMIT " + intNumReports.toString() + ";";
+			SQLiteCursor c_impact = (SQLiteCursor)sqldb.rawQuery(getImpactString, null);
+			
+			try {
+				Log.i("impactString", getImpactString);
+				c = (SQLiteCursor)sqldb.rawQuery(getImpactString, null);
+				Integer count = (Integer)c.getCount();
+				Log.i("count", count.toString());
+			} catch(Exception e) {
+				Log.i("Error", e.getMessage());		
+			}
+
+			c_impact.moveToFirst();
+			
+			Impact newImpact = new Impact();
+			while(!(c_impact.isAfterLast())) {
+				Impact.ImpactType impact_type = null;
+				int impact_value = 0;
+				//Log.i("cursor", c.getString(1));
+				for (int impact_column = 0;impact_column < c_impact.getColumnCount(); impact_column +=1) {
+					int impact_type_int;
+					for (int column = 0; column < c.getColumnCount(); column++) {
+						String column_name = c.getColumnName(column);
+						Log.i("column", column_name);
 						if (column_name.equals("impact_type")) {
 							impact_type_int = c_impact.getInt(impact_column);
 							impact_type = Impact.ImpactType.values()[impact_type_int];
@@ -264,16 +284,25 @@ public class DatabaseAdapter{
 						else if (column_name.equals("impact_value")) {
 							impact_value = c_impact.getInt(impact_column);
 						}
-						newImpact.setImpact(impact_type, impact_value);
 					}
-					c_impact.moveToNext();
-				};
-				
-				report.setIncidentLocation(newLocation);
-				report.setIncidentReporter(newReporter);
-				report.setIncidentImpact(newImpact);				
-				
-			}
+					
+				}
+				newImpact.setImpact(impact_type, impact_value);
+				c_impact.moveToNext();
+			};
+			report.setIncidentImpact(newImpact);
+			Log.i("impact", newImpact.toString());
+			*/
+			
+			report.setIncidentLocation(newLocation);
+			report.setIncidentReporter(newReporter);
+
+			
+			ArrayList<String> photos = new ArrayList<String>();
+			photos.add("None");
+			report.setPhotoFileLocations(photos);
+
+			
 			reports.add(report);
 			c.moveToNext();
 		}

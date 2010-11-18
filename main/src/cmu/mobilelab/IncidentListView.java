@@ -7,22 +7,29 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView.OnItemClickListener;
 
 public class IncidentListView extends ListActivity {
     /** Called when the activity is first created. */
+	private DatabaseAdapter db = new DatabaseAdapter(this);
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.incidentlist);
         
         // Create an array of to-do items
-        MockObjectConnector conn = new MockObjectConnector();
-        conn.open(); 
-        final ArrayList<IncidentReport> items = conn.getReports(5); 
-        conn.close(); 
-        
+        //db = new MockObjectConnector();
+        //db = new DatabaseAdapter(this);
+        db.open(); 
+        final ArrayList<IncidentReport> items = db.getReports(1); 
+        //db.close();
+        Log.i("count",((Integer)items.size()).toString());
+        IncidentReport report = items.get(0);
+        Log.i("report_comments", report.getIncidentComments());
+        Log.i("report_reporter", report.getIncidentReporter().getReporterName());
         // Create the array adapter to bind the array to the listview
         final IncidentReportAdapter arrayAdapter;
         
@@ -55,6 +62,23 @@ public class IncidentListView extends ListActivity {
 				startActivity(intent);
             }
           });
+    }
+    
+    @Override
+    public void onPause() {
+	    super.onPause();
+	    //TODO:Close DB connection
+	    db.close();
+	    Log.i("db", "close");
+    }
+    
+    @Override
+    public void onResume() {
+	    super.onResume();
+	    //TODO:Open DB connection
+	    db = new DatabaseAdapter(this);
+	    db.open();
+	    Log.i("db", "open");
     }
     
     private static IncidentReport currentSelectedIncident = null; 

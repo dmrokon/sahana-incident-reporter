@@ -52,7 +52,7 @@ class IncidentReportAdapter extends ArrayAdapter<IncidentReport> {
                     		  ", Location: " + ir.getIncidentLocation().toString());                           
                       }
                 if(bt != null){
-                      bt.setText("Status: "+ ir.getIncidentImpact().toString() + 
+                      bt.setText("Status: "+ /*ir.getIncidentImpact().toString() + */ 
                     		  ", Reporter: " + ir.getIncidentReporter().toString() + 
                     		  ", Category: " + ir.getIncidentCategory().toString());
                 }

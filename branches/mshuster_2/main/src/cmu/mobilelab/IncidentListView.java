@@ -24,7 +24,7 @@ public class IncidentListView extends ListActivity {
         //db = new MockObjectConnector();
         //db = new DatabaseAdapter(this);
         db.open(); 
-        final ArrayList<IncidentReport> items = db.getReports(1); 
+        final ArrayList<IncidentReport> items = db.getReports(2); 
         //db.close();
         Log.i("count",((Integer)items.size()).toString());
         IncidentReport report = items.get(0);

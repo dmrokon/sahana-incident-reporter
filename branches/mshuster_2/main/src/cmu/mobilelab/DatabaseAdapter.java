@@ -3,6 +3,7 @@ package cmu.mobilelab;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -90,31 +91,11 @@ public class DatabaseAdapter implements IDataAccessConnector{
 	public void open() {
 		this.openHelper  = new OpenHelper(this.context);
 		this.sqldb = openHelper.getWritableDatabase();
-		
-		/*if (this.sqldb.isOpen() == false) {
-			// TODO: open or create the database
-			try {
-				this.sqldb = context.openOrCreateDatabase(DATABASE_NAME, SQLiteDatabase.CREATE_IF_NECESSARY, null);
-				Cursor c = this.sqldb.rawQuery("SELECT COUNT(_id) FROM incidents;", null);
-				if (c.getInt(0) < 1) {
-					this.sqldb.execSQL(DATABASE_CREATE);
-				}
-				
-			} catch(Exception e) {
-				//Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
-			}
-		}*/
 	}
 	
 	@Override
 	public void close(){
-		try {
 			openHelper.close();
-			//this.sqldb.close();
-			
-		} catch(Exception e) {
-			//Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
-		}
 	}
 	
 	@Override
@@ -186,16 +167,20 @@ public class DatabaseAdapter implements IDataAccessConnector{
 				Log.i("Error", e.getMessage());
 			}
 		}
+	    
+	    //TODO: Insert photos
+	    
+	    
 		
 	}
 
 	@Override
 	public ArrayList<IncidentReport> getReports(int numReports){
 		ArrayList<IncidentReport> reports = new ArrayList<IncidentReport>();
-		IncidentReport report = new IncidentReport();
 		Integer intNumReports = numReports;
 		String getIncidentString = "SELECT * FROM incidents LIMIT " + intNumReports.toString() + ";";
 		SQLiteCursor c = null;
+		//HashMap<Integer, IncidentReport> reports_map = new HashMap<Integer, IncidentReport>();
 		
 		try {
 			Log.i("incidentString", getIncidentString);
@@ -209,16 +194,18 @@ public class DatabaseAdapter implements IDataAccessConnector{
 		
 		c.moveToFirst();
 		while(!(c.isAfterLast())) {
+			IncidentReport report = new IncidentReport();
 			Log.i("cursor", c.getColumnName(1));
 			Reporter newReporter = new Reporter();
 			IncidentLocation newLocation = new IncidentLocation();
+			Integer incident_id = null;
+			
 			for (int column = 0; column < c.getColumnCount(); column++) {
 				String column_name = c.getColumnName(column);
 				Log.i("column", column_name);
-				int incident_id;
 				
-				if (column_name.equals("_id")) {
-					incident_id = c.getInt(column);
+				if (column_name.equals("incident_id")) {
+					incident_id = (Integer)c.getInt(column);
 				}
 				else if (column_name.equals("timestamp")) {
 					String date_string = c.getString(column);
@@ -247,18 +234,19 @@ public class DatabaseAdapter implements IDataAccessConnector{
 					IncidentReport.Category newCategory = IncidentReport.Category.values()[c.getInt(column)];
 					Log.i("category", newCategory.toString());
 					report.setIncidentCategory(newCategory);
-					//report.setIncidentCategory(incidentCategory)
 				}
 			}
 			
-			/*
-			String getImpactString = "SELECT impact_type, impact_value FROM incidents, impacts WHERE incidents.incident_id = impacts.incident_id LIMIT " + intNumReports.toString() + ";";
+			Log.i("incident_id", incident_id.toString());
+			
+			
+			String getImpactString = "SELECT impact_type, impact_value FROM incidents, impacts WHERE impacts.incident_id = "+ incident_id.toString() + " LIMIT " + intNumReports.toString() + ";";
 			SQLiteCursor c_impact = (SQLiteCursor)sqldb.rawQuery(getImpactString, null);
 			
 			try {
 				Log.i("impactString", getImpactString);
-				c = (SQLiteCursor)sqldb.rawQuery(getImpactString, null);
-				Integer count = (Integer)c.getCount();
+				c_impact = (SQLiteCursor)sqldb.rawQuery(getImpactString, null);
+				Integer count = (Integer)c_impact.getCount();
 				Log.i("count", count.toString());
 			} catch(Exception e) {
 				Log.i("Error", e.getMessage());		
@@ -267,36 +255,39 @@ public class DatabaseAdapter implements IDataAccessConnector{
 			c_impact.moveToFirst();
 			
 			Impact newImpact = new Impact();
+			
 			while(!(c_impact.isAfterLast())) {
 				Impact.ImpactType impact_type = null;
 				int impact_value = 0;
-				//Log.i("cursor", c.getString(1));
-				for (int impact_column = 0;impact_column < c_impact.getColumnCount(); impact_column +=1) {
+
+				for (int impact_column = 0;impact_column < c_impact.getColumnCount(); impact_column++) {
 					int impact_type_int;
-					for (int column = 0; column < c.getColumnCount(); column++) {
-						String column_name = c.getColumnName(column);
-						Log.i("column", column_name);
-						if (column_name.equals("impact_type")) {
-							impact_type_int = c_impact.getInt(impact_column);
-							impact_type = Impact.ImpactType.values()[impact_type_int];
-							
-						}
-						else if (column_name.equals("impact_value")) {
-							impact_value = c_impact.getInt(impact_column);
-						}
-					}
+					String column_name = c_impact.getColumnName(impact_column);
 					
+					if (column_name.equals("impact_type")) {
+						impact_type_int = c_impact.getInt(impact_column);
+						impact_type = Impact.ImpactType.values()[impact_type_int];
+						
+					}
+					else if (column_name.equals("impact_value")) {
+						impact_value = c_impact.getInt(impact_column);
+					}
 				}
+				
 				newImpact.setImpact(impact_type, impact_value);
+				
+				Log.i("impact", newImpact.toString());
 				c_impact.moveToNext();
 			};
+			
+			Log.i("newImpact", newImpact.toString());
+			
 			report.setIncidentImpact(newImpact);
-			Log.i("impact", newImpact.toString());
-			*/
 			
 			report.setIncidentLocation(newLocation);
 			report.setIncidentReporter(newReporter);
 
+			//TODO: Photos
 			
 			ArrayList<String> photos = new ArrayList<String>();
 			photos.add("None");

@@ -8,11 +8,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.provider.MediaStore.Images;
 import android.provider.MediaStore.Images.Media;
 import android.util.Log;
@@ -34,8 +37,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
+import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
@@ -304,11 +310,10 @@ public class SubmitForm extends Activity {
         		photoIntent.setType("image/jpeg");
         		startActivityForResult(photoIntent, RESULT_IMAGE_RETURNED);
         		*/
-        		
-
+        	
 				Intent cameraIntent = new Intent("android.media.action.IMAGE_CAPTURE");
+		//		cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
 				startActivityForResult(cameraIntent, RESULT_IMAGE_RETURNED);
-
         		
         		//TODO:Display image files in table, add remove function
         	}
@@ -504,7 +509,7 @@ public class SubmitForm extends Activity {
             return super.onOptionsItemSelected(item);
         }
     }
-
+    
     @Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -512,7 +517,9 @@ public class SubmitForm extends Activity {
 	switch (requestCode) {
 		case (RESULT_IMAGE_RETURNED): {
 			if (resultCode == Activity.RESULT_OK) {
+				Log.i("BEGINNING OF ACTIVITY RESULT_OK", "hello world");
 				Bitmap picture = (Bitmap) data.getExtras().get("data");
+				
 				//((ImageView)findViewById(R.id.profile_pic)).setImageBitmap(picture);
                 ContentValues values = new ContentValues();
                 	values.put(Images.Media.TITLE, "title");
@@ -520,35 +527,41 @@ public class SubmitForm extends Activity {
                 	values.put(Images.Media.DATE_ADDED, System.currentTimeMillis());
                 	values.put(Images.Media.DESCRIPTION, "Sahana Incident Image");
                 	values.put(Images.Media.MIME_TYPE, "image/jpeg");
+                //make the URI
                 Uri uri = getContentResolver().insert(Media.EXTERNAL_CONTENT_URI, values);
-                
-                String picturePath = uri.getPath();
-                Log.i("picturePath", picturePath);
-                //PicturesArray.add(picturePath);
-                
-    	        ImageView thumbnail = new ImageView(getApplicationContext());
-    	        //thumbnail.setImageURI(uri);
-    	        thumbnail.setImageBitmap(picture);
-    	        
-    	        thumbnail.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT ));
-    	        TableRow newRow = new TableRow(getApplicationContext());
-    	        newRow.addView(thumbnail);
-    	        TableLayout photo_table = (TableLayout)findViewById(R.id.photo_thumb_table);
-    	        photo_table.addView(newRow);
-                
-        		OutputStream outputstream;
+
+                //save the picture to refer to it later
+                OutputStream outputstream;
                 try {
                         outputstream = getContentResolver().openOutputStream(uri);
-                        picture.compress(Bitmap.CompressFormat.JPEG, 70, outputstream);
+                        picture.compress(Bitmap.CompressFormat.JPEG, 100, outputstream);
                         outputstream.flush();
                         outputstream.close();
-                        
                         //loadAttachedImages();
                 } catch (FileNotFoundException e) {
                         //
                 } catch (IOException e){
                         //
                 }
+                                
+                //use database helper to add uri string to database
+                DataHelper dh = new DataHelper(SubmitForm.this);
+                dh.insert(1, uri.toString()); //using 1 as place-holder for incident report ID
+                
+                //add uri string to add picture to PicturesArray
+                PicturesArray.add(uri.toString());
+                
+                //display image using URI
+    	        ImageView thumbnail = new ImageView(getApplicationContext());
+    	        thumbnail.setImageURI(uri);
+
+    	        //thumbnail.setImageBitmap(picture);	//old method of using bitmap to display pic
+
+    	        thumbnail.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT ));
+    	        TableRow newRow = new TableRow(getApplicationContext());
+    	        newRow.addView(thumbnail);
+    	        TableLayout photo_table = (TableLayout)findViewById(R.id.photo_thumb_table);
+    	        photo_table.addView(newRow);        		
 			}
 			break;
 		}/*
@@ -590,6 +603,7 @@ public class SubmitForm extends Activity {
     public void loadAttachedImages(){
     	for (String uriString : PicturesArray){
 	    	Uri uri = Uri.parse(uriString);
+	    	Log.i("URI", uri.toString());
 	        ImageView thumbnail = new ImageView(getApplicationContext());
 	        thumbnail.setImageURI(uri);
 	        

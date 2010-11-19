@@ -1,8 +1,12 @@
 package cmu.mobilelab;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
-import android.os.Bundle;
 import android.content.Context;
+import android.net.Uri;
+import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,11 +22,10 @@ import android.widget.AdapterView.OnItemClickListener;
 public class IncidentReportSummary extends Activity {
 
     //---the images to display---
-    Integer[] imageIDs = {
-           R.drawable.ic_menu_camera, 
-           R.drawable.ic_menu_camera
-    };
-
+	
+	
+	private ArrayList<String> imageIDs;
+    private ArrayList<Uri> imageURIs;
 	
 	/** Called when the activity is first created. */
     @Override
@@ -72,7 +75,18 @@ public class IncidentReportSummary extends Activity {
         	//IN PROGRESS... 11/16/10 - SONY
         	
         	//reportToShow.getPhotoFileLocations();
-        	//returns array of URIs. make imageID from that to display in grid.
+
+        	//retrieve array of strings (the image paths)
+            DataHelper dh = new DataHelper(IncidentReportSummary.this);
+            imageIDs = dh.selectAll(1);
+            
+            //convert to URIs
+            for(String imageID : imageIDs)
+            {
+            	Uri uri = Uri.parse("content://media/" + imageID);
+            	Log.i("CHECK URI!!", uri.toString());
+				imageURIs.add(uri);
+		    }
         
 	        GridView gridView = (GridView) findViewById(R.id.photo_grid);
 	        gridView.setAdapter(new ImageAdapter(this));
@@ -105,7 +119,7 @@ public class IncidentReportSummary extends Activity {
  
         //---returns the number of images---
         public int getCount() {
-            return imageIDs.length;
+            return imageIDs.size();
         }
  
         //---returns the ID of an item--- 
@@ -123,13 +137,13 @@ public class IncidentReportSummary extends Activity {
             ImageView imageView;
             if (convertView == null) {
                 imageView = new ImageView(context);
+                imageView.setImageURI(imageURIs.get(position));
                 imageView.setLayoutParams(new GridView.LayoutParams(85, 85));
                 imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                 imageView.setPadding(5, 5, 5, 5);
             } else {
                 imageView = (ImageView) convertView;
             }
-            imageView.setImageResource(imageIDs[position]);
             return imageView;
         }
     }    

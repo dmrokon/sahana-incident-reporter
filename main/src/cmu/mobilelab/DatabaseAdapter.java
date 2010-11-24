@@ -169,9 +169,6 @@ public class DatabaseAdapter implements IDataAccessConnector{
 		}
 	    
 	    //TODO: Insert photos
-	    
-	    
-		
 	}
 
 	@Override
@@ -306,4 +303,24 @@ public class DatabaseAdapter implements IDataAccessConnector{
 		return reports.get(0);
 	}
 
+	public boolean isEmpty() {
+		String getIncidentString = "SELECT count(*) FROM incidents;";
+		SQLiteCursor c = null;
+		
+		try {
+			Log.i("incidentString", getIncidentString);
+			c = (SQLiteCursor)sqldb.rawQuery(getIncidentString, null);
+			//Integer num_rows = (Integer)c.getCount();
+			//Log.i("num_rows", num_rows.toString());
+			c.moveToFirst();
+			if (c.getInt(0) > 0) {
+				return false;
+			}
+			//Log.i("getString", );
+		} catch(Exception e) {
+			Log.i("Error", e.toString());//e.getMessage());		
+		}
+		
+		return true;
+	}
 }

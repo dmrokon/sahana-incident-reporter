@@ -1,5 +1,10 @@
 package cmu.mobilelab;
 
+
+
+import java.util.ArrayList;
+import java.util.Date;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentValues;
@@ -7,25 +12,34 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.CursorIndexOutOfBoundsException;
 import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore.Images;
-import android.provider.MediaStore.Images.Media;
+import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.view.View.OnClickListener;
-import android.view.View.OnLongClickListener;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TableRow.LayoutParams;
 import android.view.Gravity;
 import android.view.Menu;
@@ -39,8 +53,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
+import cmu.mobilelab.ImageAdapter;
 
-public class SubmitForm extends Activity {
+public class SubmitForm extends Activity implements OnItemClickListener{
 	
 	/** 
 	 *  GPS STUFF 
@@ -52,6 +67,18 @@ public class SubmitForm extends Activity {
 	private Location mCurrentBestLocation = null;
 	private LocationManager mLocationManager = null; 
 	private LocationListener mLocationListener = null; 
+	
+	/*
+	 * PHOTO GALLERY STUFF
+	 */
+	private static final String TAG = "CameraGallery";
+	private static final int CAMERA_ACTIVITY = 0;
+
+	private Cursor mCursor;
+	private Gallery mGallery;
+	private ImageView mImageView;
+	private Intent mIntent;
+
 	
 	private void doGpsSetup()
     {
@@ -159,6 +186,7 @@ public class SubmitForm extends Activity {
 	private Reporter newReporter = new Reporter();
 	private IncidentLocation newLocation;
 	private DatabaseAdapter db = new DatabaseAdapter(this);
+	private ArrayList<String> ThumbnailsArray = new ArrayList<String>();
 	private ArrayList<String> PicturesArray = new ArrayList<String>();
 	
 	EditText reporter_name_edittext;
@@ -176,7 +204,7 @@ public class SubmitForm extends Activity {
 	    db.open();
 	    
 	    //Place images
-	    if (PicturesArray.size() > 0) {
+	    if (ThumbnailsArray.size() > 0) {
 	    	loadAttachedImages();
 	    }
 	    
@@ -307,9 +335,9 @@ public class SubmitForm extends Activity {
         		
 
 				Intent cameraIntent = new Intent("android.media.action.IMAGE_CAPTURE");
-				startActivityForResult(cameraIntent, RESULT_IMAGE_RETURNED);
-
-        		
+	
+				cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,MediaStore.Images.Media.EXTERNAL_CONTENT_URI.toString());
+				startActivityForResult(cameraIntent, CAMERA_ACTIVITY);
         		//TODO:Display image files in table, add remove function
         	}
         });
@@ -323,6 +351,11 @@ public class SubmitForm extends Activity {
         		currLocationTextView.setText(newLocation.toString());
         	}
         });
+        
+		//photo gallery set up
+		mGallery = (Gallery)findViewById(R.id.picturesTaken);
+		mImageView = (ImageView)findViewById(R.id.thumbnail);
+		displayGallery();
         
         //load Reporter preferences
     	final Button add_reporter = (Button)findViewById(R.id.reporter_add);
@@ -466,6 +499,11 @@ public class SubmitForm extends Activity {
 	    Log.i("db", "close");
     }
     
+    
+	/**
+	 * Reloads the Gallery to prevent crashes in case the user
+	 *  has deleted an image in a sub-Activity.
+	 */
     @Override
     public void onResume() {
 	    super.onResume();
@@ -473,6 +511,10 @@ public class SubmitForm extends Activity {
 	    db = new DatabaseAdapter(this);
 	    db.open();
 	    Log.i("db", "open");
+	    
+		mImageView.setImageResource(R.drawable.androidmarker);
+		displayGallery();
+		Log.i("photo gallery", "restored");
     }
 
     @Override
@@ -495,6 +537,34 @@ public class SubmitForm extends Activity {
         return true;
     }
     
+	/**
+	 * Standard Intent action that can be sent to have the camera application 
+	 * capture an image and return it.
+	 * The caller may pass an extra EXTRA_OUTPUT to control where this 
+	 * image will be written. If the EXTRA_OUTPUT is not present, then 
+	 * a small sized image is returned as a Bitmap object in the extra field. 
+	 * This is useful for applications that only need a small image. If the 
+	 * EXTRA_OUTPUT is present, then the full-sized image 
+	 * will be written to the Uri value of EXTRA_OUTPUT. (non-Javadoc)
+	 */
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		mIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);	
+		
+		switch(item.getItemId()) {
+		case R.id.big_picture:
+			mIntent.putExtra(MediaStore.EXTRA_OUTPUT, 
+					MediaStore.Images.Media.EXTERNAL_CONTENT_URI.toString()); 
+			startActivityForResult(mIntent, CAMERA_ACTIVITY);
+			break;
+		case R.id.small_picture:
+			startActivityForResult(mIntent, CAMERA_ACTIVITY);
+			break;
+		}
+		return true;	
+	}
+
+    
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
@@ -513,62 +583,71 @@ public class SubmitForm extends Activity {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
 	super.onActivityResult(requestCode, resultCode, data);
+	
+	if (resultCode == RESULT_CANCELED) {
+		showToast(this,"Activity cancelled");
+		return;
+	}
+	
 	switch (requestCode) {
-		case (RESULT_IMAGE_RETURNED): {
-			if (resultCode == Activity.RESULT_OK) {
-				Bitmap picture = (Bitmap) data.getExtras().get("data");
-				//((ImageView)findViewById(R.id.profile_pic)).setImageBitmap(picture);
-                ContentValues values = new ContentValues();
-                	values.put(Images.Media.TITLE, "title");
-                	values.put(Images.Media.BUCKET_ID, "test");
-                	values.put(Images.Media.DATE_ADDED, System.currentTimeMillis());
-                	values.put(Images.Media.DESCRIPTION, "Sahana Incident Image");
-                	values.put(Images.Media.MIME_TYPE, "image/jpeg");
-                Uri uri = getContentResolver().insert(Media.EXTERNAL_CONTENT_URI, values);
-                
-                String picturePath = uri.getPath();
-                Log.i("picturePath", picturePath);
-                //PicturesArray.add(picturePath);
-                
-    	        ImageView thumbnail = new ImageView(getApplicationContext());
-    	        //thumbnail.setImageURI(uri);
-    	        thumbnail.setImageBitmap(picture);
-    	        
-    	        thumbnail.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT ));
-    	        TableRow newRow = new TableRow(getApplicationContext());
-    	        newRow.addView(thumbnail);
-    	        TableLayout photo_table = (TableLayout)findViewById(R.id.photo_thumb_table);
-    	        photo_table.addView(newRow);
-                
-        		OutputStream outputstream;
-                try {
-                        outputstream = getContentResolver().openOutputStream(uri);
-                        picture.compress(Bitmap.CompressFormat.JPEG, 70, outputstream);
-                        outputstream.flush();
-                        outputstream.close();
-                        
-                        //loadAttachedImages();
-                } catch (FileNotFoundException e) {
-                        //
-                } catch (IOException e){
-                        //
-                }
-			}
-			break;
-		}/*
-		case(SELECT_IMAGE):{
-			if (requestCode == SELECT_IMAGE)
-			    if (resultCode == Activity.RESULT_OK) {
-			      uri = data.getData();
-			      picturePath = uri.getPath();
-			      	Uri u = Uri.parse("content://media" + picturePath);
-			    } 
-			}*/
 
+	case CAMERA_ACTIVITY: 
+		Bundle b = data.getExtras();
+		Bitmap bm = (Bitmap) b.get("data");
+		mImageView.setImageBitmap(bm); // Display image in the View
+
+//		Bundle b = mIntent.getExtras();
+//		Bundle b = intent.getExtras();
+		//if (b != null && b.containsKey(MediaStore.EXTRA_OUTPUT)) { // large image?
+		if (b.containsKey(MediaStore.EXTRA_OUTPUT)) { // large image?
+			Log.i(TAG, "This is a large image");
+			showToast(this,"Large image");
+			// Should have to do nothing for big images -- should already saved in MediaStore ... but
+			MediaStore.Images.Media.insertImage(getContentResolver(), bm, null, null);
+		} else {
+			Log.i(TAG, "This is a small image");
+			showToast(this,"Small image");
+			MediaStore.Images.Media.insertImage(getContentResolver(), bm, null, null);
 		}
-    }
+		break;
+	}
+	displayGallery();
+
+}	
     
-		
+	/**
+	 * Queries for images for this Find and shows them in a Gallery at the bottom of the View.
+	 * managedQuery() is a Wrapper around query(android.net.Uri, String[], String, String[], String)  
+	 * that gives the resulting Cursor to call startManagingCursor(Cursor) so that the 
+	 * activity will manage its lifecycle for you. It parameters are:
+	 *	uri 	The URI of the content provider to query.
+	 *	projection 	List of columns to return.
+	 *	selection 	SQL WHERE clause.
+	 *	selectionArgs 	The arguments to selection, if any ?s are pesent
+	 *	sortOrder 	SQL ORDER BY clause.
+	 *
+	 * Here we all the MINI_KIND thumbnails.
+	 */
+	private void displayGallery() {
+		Uri uri = MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI; // Where images are stored
+	//	displaySdCard();
+		String[] projection = {
+				MediaStore.Images.ImageColumns._ID,  // The columns we want
+				MediaStore.Images.Thumbnails.IMAGE_ID,  
+				MediaStore.Images.Thumbnails.KIND };
+		String selection = MediaStore.Images.Thumbnails.KIND + "="  + // Select only mini's
+		MediaStore.Images.Thumbnails.MINI_KIND;
+		mCursor = this.managedQuery(uri, projection, selection, null, null);	
+		if (mCursor != null) { 
+			mCursor.moveToFirst();
+			ImageAdapter adapter = new ImageAdapter(mCursor, this);
+			Log.i(TAG, "displayGallery(), adapter = " + adapter.getCount());
+			mGallery.setAdapter(adapter);
+			mGallery.setOnItemClickListener(this);
+		} else 
+			showToast(this, "Gallery is empty.");
+	}
+
     
     public void displayReporter() {
 	    String reporter_name = newReporter.getReporterName();
@@ -592,8 +671,9 @@ public class SubmitForm extends Activity {
     }
     
     public void loadAttachedImages(){
-    	for (String uriString : PicturesArray){
+    	for (String uriString : ThumbnailsArray){
 	    	Uri uri = Uri.parse(uriString);
+	    	Log.i("URI", uri.toString());
 	        ImageView thumbnail = new ImageView(getApplicationContext());
 	        thumbnail.setImageURI(uri);
 	        
@@ -604,4 +684,72 @@ public class SubmitForm extends Activity {
 	        photo_table.addView(newRow);
     	}
     }
+
+	/**
+	 * Debugging method. Call this to display the columns and values for images and
+	 * thumbnails in the MediaStore.
+	 */
+	private void displaySdCard() {
+		Uri uri = MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI; // Where images are stored
+		Cursor c = this.managedQuery(uri, null, null, null, null);
+		Log.i(TAG, "DISPLAYING THUMBNAILS  = " + c.getCount());
+		c.moveToFirst();
+		for (int k = 0; k < c.getCount(); k++) {
+			Log.i(TAG, "ID = " + c.getString(c.getColumnIndexOrThrow("_id")));
+			for (String column : c.getColumnNames()) {
+				Log.i(TAG, column + "=" +  c.getString(c.getColumnIndexOrThrow(column)));
+			}
+			c.moveToNext();
+		}
+
+		uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI; // Where images are stored
+		c = this.managedQuery(uri, null, null, null, null);
+
+		Log.i(TAG, "DISPLAYING IMAGES  = " + c.getCount());
+		c.moveToFirst();
+		for (int k = 0; k < c.getCount(); k++) {
+			Log.i(TAG, "ID = " + c.getString(c.getColumnIndexOrThrow("_id")));
+			for (String column : c.getColumnNames()) {
+				Log.i(TAG, column + "=" +  c.getString(c.getColumnIndexOrThrow(column)));
+			}
+			c.moveToNext();
+		}
+	}
+	
+	
+	/**
+	 *  Called when the user clicks on a thumbnail in the Gallery. It retrieves the
+	 *  associated image and starts an ACTION_VIEW activity, which brings up a slide show.
+	 *  @param arg0 is the Adapter used by the Gallery, the calling object
+	 *  @param arg1 is the thumbnail's View
+	 *  @param position is the thumbnail's position in the Gallery
+	 *  @param rowId is the Adapter's RowId
+	 */
+	@Override
+	public void onItemClick(AdapterView<?> arg0, View arg1, int position, long rowId) {
+		Log.i(TAG,"onImageClick position= " + position +  " rowId= " 
+				+ rowId + " nCursor=" + mCursor.getCount());
+		try {
+			mCursor.moveToPosition(position);
+			long id = mCursor.getLong(mCursor.getColumnIndexOrThrow(MediaStore.Images.Thumbnails.IMAGE_ID));
+			//create the Uri for the Image 
+			Uri uri = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id+"");
+			Intent intent = new Intent(Intent.ACTION_VIEW);
+			intent.setData(uri);
+			startActivity(intent);
+		} catch (CursorIndexOutOfBoundsException e) {
+			Log.i(TAG, "CursorIndexOutOfBoundsException " + e.getStackTrace());
+		}
+	}
+
+	
+	/**
+	 * Utility method for displaying a Toast.
+	 * @param mContext
+	 * @param text
+	 */
+	private void showToast(Context mContext, String text) {
+		//Toast.makeText(mContext, text, Toast.LENGTH_SHORT).show();
+	}
+
 }

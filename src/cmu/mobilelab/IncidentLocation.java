@@ -4,6 +4,9 @@ public class IncidentLocation
 {
 	private double mLatitude; 
 	private double mLongitude;
+	private String locationName;
+	
+	public IncidentLocation(){};
 	
 	public IncidentLocation(double Latitude, double Longitude)
 	{
@@ -23,6 +26,14 @@ public class IncidentLocation
 	public double getLongitude() {
 		return mLongitude;
 	} 
+	
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
+	}
+	
+	public String getLocationName(){
+		return locationName;
+	}
 	
 	@Override public boolean equals(Object that)
 	{

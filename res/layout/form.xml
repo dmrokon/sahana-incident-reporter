@@ -185,6 +185,7 @@
                         android:background="#FF00CC00"
                         /> -->
 				 </TableLayout>
+
 		    </LinearLayout>
 		    
 		    <!-- Photos -->
@@ -221,7 +222,19 @@
                     
                     </TableRow>
                  </TableLayout>
-                 		    
+ 
+ 			<ImageView android:id="@+id/thumbnail"
+	            android:src="@drawable/androidmarker"
+	            android:adjustViewBounds="true"
+	            android:layout_width="64px"
+	            android:layout_height="64px" 
+	            android:layout_gravity="right"	
+	             /> 	
+			<Gallery 
+				android:id="@+id/picturesTaken" 
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"/>
+				
 		    <!-- Reporter -->
 		    <TextView
                 android:id="@+id/reporter_label"
@@ -230,13 +243,14 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 />
+                
                 <View
                   android:layout_width="fill_parent"
                   android:layout_height="1dp"
-                  android:background="#ffffff"
-                   
+                  android:background="#ffffff"   
                   android:layout_marginBottom="2dp"
                   />
+                  
 		    <LinearLayout
 		        android:id="@+id/reporter_container"
 		        android:orientation="vertical"

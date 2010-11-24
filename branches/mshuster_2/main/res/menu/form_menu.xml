@@ -6,4 +6,6 @@
     <item android:id="@+id/menu_about"
           android:icon="@drawable/ic_menu_help"
           android:title="About" />
+<item android:title="Big Picture" android:id="@+id/big_picture" android:icon="@drawable/camera_icon_32x32"></item>
+<item android:title="Small Picture" android:id="@+id/small_picture" android:icon="@drawable/camera_icon_32x32"></item>
 </menu>

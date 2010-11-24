@@ -10,8 +10,8 @@ Check off as complete.
   * Maps: clicking on incident, 
   * Clean up code
   * Update android
-  * UI:  icon, tab icons, colors, styles, 
-  * Style
+  * UI:  icon, tab icons, colors, styles [SONY]
+  * Style [SONY]
   * ImageViewing
   * Error handling: check all if-then's, consistent message for error toasts, use good wording
   * using string.xml for strings

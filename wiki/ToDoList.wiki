@@ -4,13 +4,15 @@
 
 Check off as complete.
 
-* Integrate
-* Functionality check
-* Clean up code
-* Update android
-* UI
-* Style
-* ImageViewing
+  * Integrate
+  * Functionality check: map works, form summary corresponds to form submitted/clicked incident
+  * form summary should show all pictures (get from db and show in gridview)
+  * Maps: clicking on incident, 
+  * Clean up code
+  * Update android
+  * UI:  icon, tab icons, colors, styles, 
+  * Style
+  * ImageViewing
 
 
 = Details =

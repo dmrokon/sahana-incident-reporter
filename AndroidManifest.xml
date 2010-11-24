@@ -4,20 +4,24 @@
       android:versionCode="1"
       android:versionName="1.0">
     <application android:icon="@drawable/icon" android:label="@string/app_name">
-        <activity android:name=".IncidentReporter"
+    	<activity android:name=".IncidentReporter"
                   android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SubmitForm"></activity>
-	<!--  <activity android:name=".MapList"></activity>  NOT INCLUDED AS TAB IN MAIN, SO CAUSES CRASH ON APP LAUNCH-->
-		<activity android:name=".IncidentListView"></activity>
-		<activity android:name=".IncidentReportSummary"></activity>
-	   <!--   <service android:name=".SahanaLocatorService" android:enabled="true"/> -->
+        <activity android:name=".SubmitForm" android:label="@string/app_name"></activity>
+		<activity android:name=".IncidentListView" android:label="@string/app_name"></activity>
+		<activity android:name=".IncidentReportSummary" android:label="@string/app_name"></activity>
+		<activity android:name=".IncidentMap" android:label="@string/app_name"
+     			android:theme="@android:style/Theme.NoTitleBar">
+			<action android:name="android.intent.action.MAIN" />
+     	</activity>  	   
+     	<!--   <service android:name=".SahanaLocatorService" android:enabled="true"/> -->
+    <uses-library android:name="com.google.android.maps" />
     </application>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-sdk android:minSdkVersion="6" />
-
+    <uses-sdk android:minSdkVersion="7" />
 </manifest> 

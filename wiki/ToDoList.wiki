@@ -13,6 +13,8 @@ Check off as complete.
   * UI:  icon, tab icons, colors, styles, 
   * Style
   * ImageViewing
+  * Error handling: check all if-then's, consistent message for error toasts, use good wording
+  * using string.xml for strings
 
 
 = Details =

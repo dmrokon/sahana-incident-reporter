@@ -8,14 +8,14 @@ Check off as complete.
   * Functionality check: map works, form summary corresponds to form submitted/clicked incident
   * form summary should show all pictures (get from db and show in gridview)
   * Maps: clicking on incident, 
-  * Clean up code
+  * Clean up code -SONY (SubmitForm and FormSummary)
   * Update android
-  * UI:  icon, tab icons, colors, styles [SONY]
-  * Style [SONY]
+  * UI:  icon, tab icons, colors, styles -SONY
+  * Style -SONY
   * ImageViewing
   * Error handling: check all if-then's, consistent message for error toasts, use good wording
   * using string.xml for strings, UI constants in a file
-  * About page [MARK]
+  * About page -MARK
 
 
 = Details =

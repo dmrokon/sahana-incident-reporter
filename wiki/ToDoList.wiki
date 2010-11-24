@@ -15,6 +15,7 @@ Check off as complete.
   * ImageViewing
   * Error handling: check all if-then's, consistent message for error toasts, use good wording
   * using string.xml for strings, UI constants in a file
+  * About page [MARK]
 
 
 = Details =

@@ -177,6 +177,7 @@ public class SubmitForm extends Activity{
 	private DatabaseAdapter db = new DatabaseAdapter(this);
 	private ArrayList<String> ThumbnailsArray = new ArrayList<String>();
 	private ArrayList<String> PicturesArray = new ArrayList<String>();
+	private static IncidentReport lastIncidentReportSubmitted = null; 
 	
 	EditText reporter_name_edittext;
 	EditText reporter_contact_edittext;
@@ -335,12 +336,6 @@ public class SubmitForm extends Activity{
         	}
         });
         
-		//photo gallery set up
-        
-		//mGallery = (Gallery)findViewById(R.id.picturesTaken);
-		//mImageView = (ImageView)findViewById(R.id.thumbnail);
-		//displayGallery();
-        
         //load Reporter preferences
     	final Button add_reporter = (Button)findViewById(R.id.reporter_add);
     	add_reporter.setOnClickListener(new OnClickListener(){
@@ -421,8 +416,8 @@ public class SubmitForm extends Activity{
 			public void onClick(View view) {
 				Spinner category_spinner = (Spinner)findViewById(R.id.category_spinner);
 				newCategory = IncidentReport.Category.values()[category_spinner.getSelectedItemPosition()];
+				
 				newLocation.setLocationName("None"); //reverse-geocode for actual value
-				//TODO:set IncidentReport instance
 				
 				newIncidentReport = new IncidentReport();
 				newIncidentReport.setIncidentDate(new Date());
@@ -450,7 +445,7 @@ public class SubmitForm extends Activity{
         
     }
     
-    private static IncidentReport lastIncidentReportSubmitted = null; 
+    
     public static IncidentReport getLastIncidentReportSubmitted()
     {
     	return lastIncidentReportSubmitted; 
@@ -464,10 +459,7 @@ public class SubmitForm extends Activity{
 	    Log.i("db", "close");
     }
     
-	/**
-	 * Reloads the Gallery to prevent crashes in case the user
-	 *  has deleted an image in a sub-Activity.
-	 */
+
     @Override
     public void onResume() {
 	    super.onResume();

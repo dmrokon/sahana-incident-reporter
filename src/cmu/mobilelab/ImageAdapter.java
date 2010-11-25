@@ -21,11 +21,6 @@ import android.widget.BaseAdapter;
 import android.widget.Gallery;
 import android.widget.ImageView;
 
-/**
- * Used for putting images in the view
- * @author pgautam
- *
- */
 class ImageAdapter extends BaseAdapter {
     int mGalleryItemBackground;
 	private Context context;
@@ -55,11 +50,7 @@ class ImageAdapter extends BaseAdapter {
         return position;
     }
 
-    /**
-     * Called repeatedly to render the View of each item in the gallery.
-     */
     public View getView(final int position, View convertView, ViewGroup parent) {
-		Log.i(TAG, "Get view = " + position);
 		final ImageView i = new ImageView(context);
 		final String photo = uris.get(position);
 		i.setImageURI(Uri.parse(photo));

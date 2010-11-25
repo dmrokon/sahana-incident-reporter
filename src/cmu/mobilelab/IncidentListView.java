@@ -28,7 +28,7 @@ public class IncidentListView extends ListActivity {
         	Log.w("DATABASE", "No records found");
         }
         else {
-	        final ArrayList<IncidentReport> items = db.getReports(1);
+	        final ArrayList<IncidentReport> items = db.getReports();
 	        //db.close();
 	        Log.i("count",((Integer)items.size()).toString());
 	        IncidentReport report = items.get(0);

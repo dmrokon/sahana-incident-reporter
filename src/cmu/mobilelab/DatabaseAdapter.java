@@ -23,7 +23,7 @@ import android.widget.Toast;
 public class DatabaseAdapter implements IDataAccessConnector{
 	private static final String TAG = "DatabaseAdapter";
 	private static final String DATABASE_NAME = "incidentReporter.db";
-	private static final int DATABASE_VERSION = 14;
+	private static final int DATABASE_VERSION = 15;
 	private static final String DATABASE_INCIDENTS_TABLE = "incidents";
 	private static final String DATABASE_IMAGES_TABLE = "images";
 	private static final String DATABASE_IMPACTS_TABLE = "impacts";
@@ -165,8 +165,6 @@ public class DatabaseAdapter implements IDataAccessConnector{
 			}
 		}
 	    
-	    //TODO: Insert photos
-	    
 	    Iterator photoIterator = photos.iterator();
 	    
 	    while (photoIterator.hasNext()) {
@@ -174,10 +172,10 @@ public class DatabaseAdapter implements IDataAccessConnector{
 	        String photo = (String)photoIterator.next(); 
 	    	
 	        photoInsertString = "INSERT INTO images VALUES (" +
-			"NULL, '" + 
+			"NULL," + 
+			incident_id + ", '" +
 			photo
-			+ "', " +
-			incident_id +
+			+ "'" +
 			"); ";
 	        
 			try {
@@ -255,7 +253,7 @@ public class DatabaseAdapter implements IDataAccessConnector{
 			Log.i("incident_id", incident_id.toString());
 			
 			
-			String getImpactString = "SELECT impact_type, impact_value FROM incidents, impacts WHERE impacts.incident_id = "+ incident_id.toString() + " LIMIT " + intNumReports.toString() + ";";
+			String getImpactString = "SELECT impact_type, impact_value FROM impacts WHERE impacts.incident_id = "+ incident_id.toString() + ";";
 			SQLiteCursor c_impact = (SQLiteCursor)sqldb.rawQuery(getImpactString, null);
 			
 			try {
@@ -294,7 +292,7 @@ public class DatabaseAdapter implements IDataAccessConnector{
 				Log.i("impact", newImpact.toString());
 				c_impact.moveToNext();
 			};
-			
+			c_impact.close();
 			Log.i("newImpact", newImpact.toString());
 			
 			report.setIncidentImpact(newImpact);
@@ -304,16 +302,66 @@ public class DatabaseAdapter implements IDataAccessConnector{
 
 			//TODO: Photos
 			
+			String getPhotoString = "SELECT image_uri FROM images WHERE images.incident_id = "+ incident_id.toString() + ";";
+			SQLiteCursor c_photo = (SQLiteCursor)sqldb.rawQuery(getPhotoString, null);
+			
+			try {
+				c_photo = (SQLiteCursor)sqldb.rawQuery(getPhotoString, null);
+			} catch(Exception e) {
+				Log.i("Error", e.getMessage());		
+			}
+			
 			ArrayList<String> photos = new ArrayList<String>();
-			photos.add("None");
+			String image_uri = null;
+			
+			Log.i("num_photos", ((Integer)c_photo.getCount()).toString());
+			
+			c_photo.moveToFirst();
+			while(!(c_photo.isAfterLast())) {
+				for (int image_column = 0;image_column < c_photo.getColumnCount(); image_column++) {
+					String column_name = c_photo.getColumnName(image_column);
+					
+					if (column_name.equals("image_uri")) {
+						image_uri = c_photo.getString(image_column);
+					}
+				}
+				
+				photos.add(image_uri);
+				Log.i("image_uri", image_uri);
+				c_photo.moveToNext();
+			};
+			c_photo.close();
+			
 			report.setPhotoFileLocations(photos);
 
-			
 			reports.add(report);
+			
 			c.moveToNext();
 		}
+		c.close();
 		
 		return reports;
+	}
+	
+	public ArrayList<IncidentReport> getReports(){
+		String getIncidentString = "SELECT count(*) FROM incidents;";
+		SQLiteCursor c = null;
+		int num_reports = 0;
+		
+		try {
+			Log.i("incidentString", getIncidentString);
+			c = (SQLiteCursor)sqldb.rawQuery(getIncidentString, null);
+			//Integer num_rows = (Integer)c.getCount();
+			//Log.i("num_rows", num_rows.toString());
+			c.moveToFirst();
+			num_reports = c.getInt(0);
+			c.close();
+			//Log.i("getString", );
+		} catch(Exception e) {
+			Log.i("Error", e.toString());//e.getMessage());		
+		}
+		
+		return this.getReports(num_reports);
 	}
 	
 	public IncidentReport getReport(){

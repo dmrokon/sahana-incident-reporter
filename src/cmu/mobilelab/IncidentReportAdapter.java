@@ -42,9 +42,9 @@ class IncidentReportAdapter extends ArrayAdapter<IncidentReport> {
                 if (iv != null && ir.getPhotoFileLocations().size() != 0)
                 {
                 
-                	//String ir_str = ir.getPhotoFileLocations().get(0); 
-                	//Uri uri = Uri.parse(ir_str); 
-                	//iv.setImageURI(uri); 
+                	String ir_str = ir.getPhotoFileLocations().get(0); 
+                	Uri uri = Uri.parse(ir_str); 
+                	iv.setImageURI(uri); 
                 	
                 }
                 if (tt != null) {

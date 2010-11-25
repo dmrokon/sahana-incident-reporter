@@ -23,7 +23,7 @@ import android.widget.Toast;
 public class DatabaseAdapter implements IDataAccessConnector{
 	private static final String TAG = "DatabaseAdapter";
 	private static final String DATABASE_NAME = "incidentReporter.db";
-	private static final int DATABASE_VERSION = 11;
+	private static final int DATABASE_VERSION = 14;
 	private static final String DATABASE_INCIDENTS_TABLE = "incidents";
 	private static final String DATABASE_IMAGES_TABLE = "images";
 	private static final String DATABASE_IMPACTS_TABLE = "impacts";
@@ -111,11 +111,8 @@ public class DatabaseAdapter implements IDataAccessConnector{
 		String comments = report.getIncidentComments();
 		
 		ArrayList<String> photos = report.getPhotoFileLocations();
-		
 		Map<ImpactType, Integer> impactMap = report.getIncidentImpact().getImpact();
 		Iterator impactIterator = impactMap.entrySet().iterator();
-		
-		//SimpleDateFormat date_format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.sss");
 		
 		String incidentInsertString = "INSERT INTO incidents VALUES (" +
 			"NULL,'" +
@@ -169,6 +166,27 @@ public class DatabaseAdapter implements IDataAccessConnector{
 		}
 	    
 	    //TODO: Insert photos
+	    
+	    Iterator photoIterator = photos.iterator();
+	    
+	    while (photoIterator.hasNext()) {
+	    	String photoInsertString;
+	        String photo = (String)photoIterator.next(); 
+	    	
+	        photoInsertString = "INSERT INTO images VALUES (" +
+			"NULL, '" + 
+			photo
+			+ "', " +
+			incident_id +
+			"); ";
+	        
+			try {
+				Log.i("photoInsertString", photoInsertString);
+				sqldb.execSQL(photoInsertString);
+			} catch(Exception e) {
+				Log.i("Error", e.getMessage());
+			}
+		}
 	}
 
 	@Override

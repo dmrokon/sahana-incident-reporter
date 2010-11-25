@@ -1,6 +1,12 @@
 package cmu.mobilelab;
 
+import java.util.ArrayList;
+
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -9,6 +15,8 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Gallery;
 import android.widget.ImageView;
@@ -20,25 +28,23 @@ import android.widget.ImageView;
  */
 class ImageAdapter extends BaseAdapter {
     int mGalleryItemBackground;
-	private Context mContext;
-	private Cursor mCursor;
+	private Context context;
+	private ArrayList<String> uris;
 	private static final String TAG = "ImageAdapter";
 
 
-    public ImageAdapter(Cursor cursor, Context c) {
-        mContext = c;
-        mCursor = cursor;
+    public ImageAdapter(ArrayList<String> photoUris, Context c) {
+        context = c;
+        uris = photoUris;
         // See res/values/attrs.xml for the  defined values here for styling
-        TypedArray a = mContext.obtainStyledAttributes(R.styleable.Gallery1);
+        TypedArray a = context.obtainStyledAttributes(R.styleable.imageGallery);
         mGalleryItemBackground = a.getResourceId(
-                R.styleable.Gallery1_android_galleryItemBackground, 0);
+                R.styleable.imageGallery_android_galleryItemBackground, 0);
         a.recycle();
-		Log.i(TAG, "ImageAdapter count = " + getCount());
-
     }
 
     public int getCount() {
-      return mCursor.getCount();
+      return uris.size();
     }
 
     public Object getItem(int position) {
@@ -52,26 +58,52 @@ class ImageAdapter extends BaseAdapter {
     /**
      * Called repeatedly to render the View of each item in the gallery.
      */
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 		Log.i(TAG, "Get view = " + position);
-		ImageView i = new ImageView(mContext);
-    	mCursor.requery();
-    	  	
-    	 if (convertView == null) {
-    		mCursor.moveToPosition(position);
-    		int id = mCursor.getInt(mCursor.getColumnIndexOrThrow(MediaStore.Images.ImageColumns._ID));
-    		Uri uri = Uri.withAppendedPath(MediaStore.Images.Thumbnails.EXTERNAL_CONTENT_URI, ""+id);
- //   		Uri uri = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, ""+id);
-    		Log.i(TAG, "Image Uri = " + uri.toString());
-    		try {
-    			i.setImageURI(uri);
-    			i.setScaleType(ImageView.ScaleType.FIT_XY);
-    			i.setLayoutParams(new Gallery.LayoutParams(136, 136));
-    			i.setBackgroundResource(mGalleryItemBackground);
-    		} catch (Exception e) {
-    			Log.i(TAG, "Exception " + e.getStackTrace());
-    		}
-    	}
+		final ImageView i = new ImageView(context);
+		final String photo = uris.get(position);
+		i.setImageURI(Uri.parse(photo));
+		i.setScaleType(ImageView.ScaleType.FIT_XY);
+		i.setLayoutParams(new Gallery.LayoutParams(136, 136));
+		i.setBackgroundResource(mGalleryItemBackground);
+		i.setOnClickListener(new OnClickListener(){
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent();  
+				intent.setAction(android.content.Intent.ACTION_VIEW);    
+				intent.setDataAndType(Uri.parse(photo), "image/*");
+				context.startActivity(intent);
+			}
+			
+		});
+		
+		i.setOnLongClickListener(new OnLongClickListener(){
+			@Override
+			public boolean onLongClick(View v) {
+				AlertDialog.Builder long_alert_builder = new AlertDialog.Builder(context);
+        		long_alert_builder.setMessage("Remove Photo?")
+        		       .setCancelable(true)
+        		       .setPositiveButton("Remove", new DialogInterface.OnClickListener() {
+        		           public void onClick(DialogInterface dialog, int id) {
+        						i.setVisibility(View.GONE);
+        						uris.remove(position);
+        		          }
+        		       })
+        		       .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        		           public void onClick(DialogInterface dialog, int id) {
+        		               //return nothing if the dialog is canceled 
+        		        	   dialog.cancel();
+        		           }
+        		       });
+        		
+        		AlertDialog remove_photo_alert = long_alert_builder.create();
+        		remove_photo_alert.show();
+				
+				return false;
+			}
+
+		});
+		
     	return i;
     }    
     

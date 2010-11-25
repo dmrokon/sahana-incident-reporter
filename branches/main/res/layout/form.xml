@@ -222,14 +222,7 @@
                     
                     </TableRow>
                  </TableLayout>
- 
- 			<ImageView android:id="@+id/thumbnail"
-	            android:src="@drawable/androidmarker"
-	            android:adjustViewBounds="true"
-	            android:layout_width="64px"
-	            android:layout_height="64px" 
-	            android:layout_gravity="right"	
-	             /> 	
+
 			<Gallery 
 				android:id="@+id/picturesTaken" 
 				android:layout_width="fill_parent"

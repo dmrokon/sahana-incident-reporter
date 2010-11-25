@@ -49,11 +49,13 @@ public class IncidentReporter extends TabActivity {
         tabHost.addTab(spec);
 
         // Do the same for the other tabs
+        /*
         intent = new Intent().setClass(this, IncidentMap.class);
         spec = tabHost.newTabSpec(MAP_TAG).setIndicator("Map Reports",
                           res.getDrawable(R.drawable.ic_menu_mapmode))
                       .setContent(intent);
         tabHost.addTab(spec);
+        */
         
         Intent startIntent = this.getIntent(); 
         onNewIntent(startIntent); 
@@ -90,10 +92,12 @@ public class IncidentReporter extends TabActivity {
 			{
 				getTabHost().setCurrentTabByTag(FORM_TAG); 
 			}
+			/*
 			else if (switchToTab.equals(IncidentMap.class.toString()))
 			{
 				getTabHost().setCurrentTabByTag(MAP_TAG); 
 			}
+			*/
 		}
     }
     
@@ -105,9 +109,11 @@ public class IncidentReporter extends TabActivity {
     	else if(lastTab == SUMMARY_TAG)
     		return IncidentReportSummary.class.toString(); 
     	else if(lastTab == LIST_TAG)
-    		return IncidentListView.class.toString(); 
+    		return IncidentListView.class.toString();
+    	/*
     	else if(lastTab == MAP_TAG)
-    		return IncidentMap.class.toString(); 
+    		return IncidentMap.class.toString();
+    	*/ 
     	else
     		return ""; //this should throw an exception actually
     }    

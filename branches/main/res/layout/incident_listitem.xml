@@ -19,14 +19,21 @@
             android:layout_height="0dip"
             android:layout_weight="1"
             android:gravity="center_vertical"
+            android:textStyle="bold"
         />
-        <TextView
+         <TextView
+            android:id="@+id/line1"
             android:layout_width="fill_parent"
             android:layout_height="0dip"
-            android:layout_weight="1" 
-            android:id="@+id/body"
-            android:singleLine="true"
-            android:ellipsize="marquee"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+        />
+        <TextView
+            android:id="@+id/line2"
+            android:layout_width="fill_parent"
+            android:layout_height="0dip"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
         />
     </LinearLayout>
 </LinearLayout>

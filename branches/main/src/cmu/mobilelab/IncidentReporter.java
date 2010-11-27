@@ -30,32 +30,30 @@ public class IncidentReporter extends TabActivity {
         intent = new Intent().setClass(this, SubmitForm.class);
 
         // Initialize a TabSpec for each tab and add it to the TabHost
-        spec = tabHost.newTabSpec(FORM_TAG).setIndicator("Submit Form",
+        spec = tabHost.newTabSpec(FORM_TAG).setIndicator("New",
                           res.getDrawable(R.drawable.ic_menu_add))
                       .setContent(intent);
         tabHost.addTab(spec);
 
+        intent = new Intent().setClass(this, IncidentReportSummary.class);
+        spec = tabHost.newTabSpec(SUMMARY_TAG).setIndicator("View Last",
+                          res.getDrawable(R.drawable.ic_menu_mapmode))
+                      .setContent(intent);
+        tabHost.addTab(spec);
+        
         // Do the same for the other tabs
         intent = new Intent().setClass(this, IncidentListView.class);
-        spec = tabHost.newTabSpec(LIST_TAG).setIndicator("List Reports",
+        spec = tabHost.newTabSpec(LIST_TAG).setIndicator("List All",
                           res.getDrawable(R.drawable.ic_menu_friendslist))
                       .setContent(intent);
         tabHost.addTab(spec);
 
-        intent = new Intent().setClass(this, IncidentReportSummary.class);
-        spec = tabHost.newTabSpec(SUMMARY_TAG).setIndicator("Incident Summary Report",
-                          res.getDrawable(R.drawable.ic_menu_mapmode))
-                      .setContent(intent);
-        tabHost.addTab(spec);
-
         // Do the same for the other tabs
-        /*
         intent = new Intent().setClass(this, IncidentMap.class);
-        spec = tabHost.newTabSpec(MAP_TAG).setIndicator("Map Reports",
+        spec = tabHost.newTabSpec(MAP_TAG).setIndicator("Map All",
                           res.getDrawable(R.drawable.ic_menu_mapmode))
                       .setContent(intent);
         tabHost.addTab(spec);
-        */
         
         Intent startIntent = this.getIntent(); 
         onNewIntent(startIntent); 
@@ -92,12 +90,10 @@ public class IncidentReporter extends TabActivity {
 			{
 				getTabHost().setCurrentTabByTag(FORM_TAG); 
 			}
-			/*
 			else if (switchToTab.equals(IncidentMap.class.toString()))
 			{
 				getTabHost().setCurrentTabByTag(MAP_TAG); 
 			}
-			*/
 		}
     }
     
@@ -110,10 +106,8 @@ public class IncidentReporter extends TabActivity {
     		return IncidentReportSummary.class.toString(); 
     	else if(lastTab == LIST_TAG)
     		return IncidentListView.class.toString();
-    	/*
     	else if(lastTab == MAP_TAG)
-    		return IncidentMap.class.toString();
-    	*/ 
+    		return IncidentMap.class.toString(); 
     	else
     		return ""; //this should throw an exception actually
     }    

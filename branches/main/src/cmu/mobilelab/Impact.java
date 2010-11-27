@@ -6,8 +6,50 @@ import java.util.Set;
 
 public class Impact {
 	
-	public enum ImpactType { PEOPLE_AFFECTED, PEOPLE_INJURED, PEOPLE_DECEASED, HOUSES_DESTROYED, 
-		HOUSES_DAMAGED, COWS_LOST}
+	public enum ImpactType { 
+		
+		PEOPLE_AFFECTED
+		{
+		    public String toString() 
+		    {
+		        return "People Affected";
+		    }
+		}, 
+		PEOPLE_INJURED
+		{
+		    public String toString() 
+		    {
+		        return "People Injured";
+		    }
+		}, 
+		PEOPLE_DECEASED
+		{
+		    public String toString() 
+		    {
+		        return "People Deceased";
+		    }
+		}, 
+		HOUSES_DESTROYED
+		{
+		    public String toString() 
+		    {
+		        return "Houses Destroyed";
+		    }
+		}, 
+		HOUSES_DAMAGED
+		{
+		    public String toString() 
+		    {
+		        return "Houses Damaged";
+		    }
+		}, 
+		COWS_LOST
+		{
+		    public String toString() 
+		    {
+		        return "Cows Lost";
+		    }
+		}}
 	
 	/* 
 	 	Single field to allow customisable types of impacts to be defined:

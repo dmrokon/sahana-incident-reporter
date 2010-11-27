@@ -43,7 +43,7 @@ public class IncidentReportSummary extends Activity {
         {// check if this was a result of a submit form action
         	reportToShow = SubmitForm.getLastIncidentReportSubmitted();
         }
-        else if(IncidentReporter.getLastTab().equals(IncidentListView.class.toString()));
+        else if(IncidentReporter.getLastTab().equals(IncidentListView.class.toString()))
         {// check if this was a result of a list incident clicked action
         	reportToShow = IncidentListView.getLastSelectedIncident(); 
         }

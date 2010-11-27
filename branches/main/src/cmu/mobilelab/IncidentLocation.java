@@ -2,9 +2,9 @@ package cmu.mobilelab;
 
 public class IncidentLocation 
 {
-	private double mLatitude; 
-	private double mLongitude;
-	private String locationName;
+	private double mLatitude = 0.0; 
+	private double mLongitude = 0.0;
+	private String locationName = "";
 	
 	public IncidentLocation(){};
 	

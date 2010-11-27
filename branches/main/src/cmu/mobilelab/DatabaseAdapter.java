@@ -144,16 +144,17 @@ public class DatabaseAdapter implements IDataAccessConnector{
 		
 	    while (impactIterator.hasNext()) {
 	    	String impactInsertString;
-	        Map.Entry pairs = (Map.Entry)impactIterator.next();
-	        Log.i("impact", pairs.getKey() + " = " + (Integer)pairs.getValue());
-	        
-	        Impact.ImpactType impactType = ImpactType.valueOf(pairs.getKey().toString());
+	        Map.Entry<ImpactType, Integer> pairs = (Map.Entry<ImpactType, Integer>) impactIterator.next();
+	       
+	        Impact.ImpactType impactType = pairs.getKey();
 	        Integer impactValue = (Integer)pairs.getValue();
+	        
+	        Log.i("impact", impactType + " = " + impactValue);
 	        
 	        impactInsertString = "INSERT INTO impacts VALUES (" +
 			"NULL," + 
 			impactType.ordinal() + "," +
-			(Integer)pairs.getValue() + "," +
+			impactValue + "," +
 			incident_id +
 			"); ";
 	        

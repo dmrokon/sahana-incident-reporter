@@ -32,8 +32,9 @@ class IncidentReportAdapter extends ArrayAdapter<IncidentReport> {
             IncidentReport ir = items.get(position);
             if (ir != null) {
             	ImageView iv = (ImageView) v.findViewById(R.id.photo); 
-                TextView tt = (TextView) v.findViewById(R.id.body);
-                TextView bt = (TextView) v.findViewById(R.id.header);
+                TextView ht = (TextView) v.findViewById(R.id.header);
+                TextView l1 = (TextView) v.findViewById(R.id.line1);
+                TextView l2 = (TextView) v.findViewById(R.id.line2); 
                 
             	Resources res = v.getContext().getResources();
             	Drawable drawable = res.getDrawable(R.drawable.ic_menu_camera);
@@ -47,14 +48,19 @@ class IncidentReportAdapter extends ArrayAdapter<IncidentReport> {
                 	iv.setImageURI(uri); 
                 	
                 }
-                if (tt != null) {
-                      tt.setText("Date: "+ ir.getIncidentDate().toString() + 
-                    		  ", Location: " + ir.getIncidentLocation().toString());                           
-                      }
-                if(bt != null){
-                      bt.setText("Status: "+ ir.getIncidentImpact().toString() +  
-                    		  ", Reporter: " + ir.getIncidentReporter().toString() + 
-                    		  ", Category: " + ir.getIncidentCategory().toString());
+                
+                if(ht != null)
+                {
+                	ht.setText(ir.getIncidentCategory().toString() + ", " + 
+                				ir.getIncidentLocation().toString() ); 
+                }
+                if(l1 != null)
+                {
+                	l1.setText(ir.getIncidentDate().toLocaleString());   
+                }
+                if (l2 != null) 
+                {
+                	 l2.setText(ir.getIncidentImpact().toString());          
                 }
             }
             return v;

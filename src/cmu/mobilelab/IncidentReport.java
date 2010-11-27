@@ -5,8 +5,56 @@ import java.util.Date;
 
 public class IncidentReport {
 	
-	public enum Category { FLOOD, LANDSLIDE, ROADS_BROKEN, BRIDGES_BROKEN, 
-		BUILDINGS_COLLAPSED, PEOPLE_TRAPPED, POWER_FAILURE}
+	public enum Category { 
+		FLOOD
+		{
+		    public String toString() 
+		    {
+		        return "Flood";
+		    }
+		}, 
+		LANDSLIDE
+		{
+		    public String toString() 
+		    {
+		        return "Landslide";
+		    }
+		}, 
+		ROADS_BROKEN
+		{
+		    public String toString() 
+		    {
+		        return "Roads Broken";
+		    }
+		}, 
+		BRIDGES_BROKEN
+		{
+		    public String toString() 
+		    {
+		        return "Bridges Broken";
+		    }
+		}, 
+		BUILDINGS_COLLAPSED
+		{
+		    public String toString() 
+		    {
+		        return "Buildings Collapsed";
+		    }
+		}, 
+		PEOPLE_TRAPPED
+		{
+		    public String toString() 
+		    {
+		        return "People Trapped";
+		    }
+		}, 
+		POWER_FAILURE
+		{
+		    public String toString() 
+		    {
+		        return "Power Failure";
+		    }
+		}}
 	
 	/**
 	 * Date
@@ -21,7 +69,7 @@ Photo(s)
 	 **/
 	
 	private Date 				incidentDate; 
-	private IncidentLocation 		incidentLocation; 
+	private IncidentLocation 	incidentLocation; 
 	private Category 			incidentCategory; 
 	private Reporter 			incidentReporter; 
 	private String				incidentComments; 

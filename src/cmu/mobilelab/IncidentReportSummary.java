@@ -51,38 +51,41 @@ public class IncidentReportSummary extends Activity {
         // TODO: check if reportToShow is not null, then fill summary with data from it
         
         if (reportToShow != null) {
-			Date date = reportToShow.getIncidentDate();
-			Reporter reporter = reportToShow.getIncidentReporter();
-			Integer category = (Integer)reportToShow.getIncidentCategory().ordinal();
-			IncidentLocation location = reportToShow.getIncidentLocation(); 
-			Double latitude = location.getLatitude();
-			Double longitude = location.getLongitude();
+			//Date date = reportToShow.getIncidentDate();
+			//Reporter reporter = reportToShow.getIncidentReporter();
+			//Integer category = (Integer)reportToShow.getIncidentCategory().ordinal();
+			//IncidentLocation location = reportToShow.getIncidentLocation(); 
+			//Double latitude = location.getLatitude();
+			//Double longitude = location.getLongitude();
 			
 			String comments = reportToShow.getIncidentComments();
 			
 			imageUris = reportToShow.getPhotoFileLocations();
-			Map<ImpactType, Integer> impactMap = reportToShow.getIncidentImpact().getImpact();
-			Iterator impactIterator = impactMap.entrySet().iterator();
+			// Map<ImpactType, Integer> impactMap = reportToShow.getIncidentImpact().getImpact();
+			// Iterator impactIterator = impactMap.entrySet().iterator();
 			
 			TextView category_view = (TextView)findViewById(R.id.category);
-			category_view.setText(IncidentReport.Category.values()[category].toString());
+			// category_view.setText(IncidentReport.Category.values()[category].toString());
+			category_view.setText(reportToShow.getIncidentCategory().toString()); 
 			
 			TextView date_view = (TextView)findViewById(R.id.incidentDate);
-			date_view.setText(date.toGMTString());
+			date_view.setText(reportToShow.getIncidentDate().toLocaleString());
 			
 			TextView location_view = (TextView)findViewById(R.id.incidentLocation);
-			location_view.setText(latitude.toString() + ", " + longitude.toString());
+			// location_view.setText(latitude.toString() + ", " + longitude.toString());
+			location_view.setText(reportToShow.getIncidentLocation().toString()); 
+			
+			TextView impacts_view = (TextView)findViewById(R.id.impacts); 
+			impacts_view.setText(reportToShow.getIncidentImpact().toString()); 
+			
+			TextView reporter_view = (TextView)findViewById(R.id.reporterInfo); 
+			reporter_view.setText(reportToShow.getIncidentReporter().toString()); 
+			
+	        GridView gridView = (GridView) findViewById(R.id.photo_grid);
+	        gridView.setAdapter(new ImageAdapter(this));     
 			
 			TextView comments_view = (TextView)findViewById(R.id.comments);
 			comments_view.setText(comments);
-			
-			/*
-			reporter.getReporterName() 
-			reporter.getContactDetails()
-			*/
-	        
-	        GridView gridView = (GridView) findViewById(R.id.photo_grid);
-	        gridView.setAdapter(new ImageAdapter(this));     
         }
     }
  

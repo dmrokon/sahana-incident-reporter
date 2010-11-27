@@ -191,7 +191,7 @@ public class SubmitForm extends Activity{
 	private Impact newImpact = new Impact();
 	private IncidentReport.Category newCategory;
 	private Reporter newReporter = new Reporter();
-	private IncidentLocation newLocation;
+	private IncidentLocation newLocation = new IncidentLocation();
 	private DatabaseAdapter db = new DatabaseAdapter(this);
 	private ArrayList<String> ThumbnailsArray = new ArrayList<String>();
 	private ArrayList<String> PicturesArray = new ArrayList<String>();
@@ -467,11 +467,9 @@ public class SubmitForm extends Activity{
 				Spinner category_spinner = (Spinner)findViewById(R.id.category_spinner);
 				newCategory = IncidentReport.Category.values()[category_spinner.getSelectedItemPosition()];
 				
-				newLocation.setLocationName("None"); //reverse-geocode for actual value
-				
 				newIncidentReport = new IncidentReport();
 				newIncidentReport.setIncidentDate(new Date());
-				newIncidentReport.setIncidentReporter(new Reporter("Mark", "mshuster@cmu.edu"));
+				newIncidentReport.setIncidentReporter(newReporter);
 				newIncidentReport.setIncidentLocation(newLocation);
 				newIncidentReport.setIncidentCategory(newCategory);
 				newIncidentReport.setIncidentComments(((EditText)findViewById(R.id.comments_text)).getText().toString());

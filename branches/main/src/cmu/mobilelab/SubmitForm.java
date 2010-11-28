@@ -162,6 +162,30 @@ public class SubmitForm extends Activity{
 		}
 		return false;
 	}
+	
+	public IncidentLocation getLocationFromAddress(String address)
+	{
+		IncidentLocation resIncidentLocation = null; 
+		
+		Geocoder geoCoder = new Geocoder(this, Locale.getDefault());    
+        try {
+            List<Address> addresses = geoCoder.getFromLocationName(
+                address, 5);
+            String add = "";
+            if (addresses.size() > 0) {
+            	resIncidentLocation = 
+            		new IncidentLocation(address, 
+                        (int) (addresses.get(0).getLatitude()), 
+                        (int) (addresses.get(0).getLongitude()));
+               // mc.animateTo(p);    
+               // mapView.invalidate();
+            }    
+        } catch (IOException e) {
+        	Log.i("IO Exception in Reverse Geocoder", e.toString()); 
+        }
+		
+		return resIncidentLocation; 
+	}
 
 	public IncidentLocation getCurrentBestLocation() {
 		
@@ -188,8 +212,8 @@ public class SubmitForm extends Activity{
                 getBaseContext(), Locale.getDefault());
         try {
             List<Address> addresses = geoCoder.getFromLocation(
-                currBestLocation.getLatitude(), //  / 1E6, 
-                currBestLocation.getLongitude(), 1); // / 1E6, 1);
+                currBestLocation.getLatitude(),
+                currBestLocation.getLongitude(), 1); 
 
             String add = "";
             if (addresses.size() > 0) 

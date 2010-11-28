@@ -299,7 +299,7 @@ public class SubmitForm extends Activity{
         		impact_widget.addView(impact_value_edittext);
         		
         		AlertDialog.Builder impact_builder = new AlertDialog.Builder(view.getContext());
-        		impact_builder.setMessage("Please add an impact")
+        		impact_builder.setMessage("Please add an impact.")
         		       .setCancelable(true)
         		       .setPositiveButton("Add", new DialogInterface.OnClickListener() {
         		           public void onClick(DialogInterface dialog, int id) {
@@ -320,10 +320,12 @@ public class SubmitForm extends Activity{
         		        	   impact_type_view.setText(selected_impact_type_string);
         		        	   impact_type_view.setLayoutParams(new TableRow.LayoutParams(1));
         		        	   impact_type_view.setLayoutParams(new TableRow.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+        		        	   impact_type_view.setTextAppearance(getParent(), R.style.Body);
         		        	   
         		        	   //generate textview for value
         		        	   TextView impact_value_view = new TextView(view.getContext());
         		        	   impact_value_view.setText(selected_impact_value_string);
+        		        	   impact_value_view.setTextAppearance(getParent(), R.style.Body);
         		        	   impact_value_view.setLayoutParams(new TableRow.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
         		        	   impact_value_view.setGravity(Gravity.RIGHT);
         		        	   
@@ -594,11 +596,13 @@ public class SubmitForm extends Activity{
 	    //generate textview for name
 	    TextView reporter_name_view = new TextView(this);
 	    reporter_name_view.setText(reporter_name);
+	    reporter_name_view.setTextAppearance(getParent(), R.style.Body);
 	    reporter_name_view.setLayoutParams(new LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 	    
  	    //generate textview for contact
  	    TextView reporter_contact_view = new TextView(this);
 	    reporter_contact_view.setText(reporter_contact);
+	    reporter_contact_view.setTextAppearance(getParent(), R.style.Body);
 	    reporter_contact_view.setLayoutParams(new LayoutParams(LinearLayout.LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
  	   
 	    LinearLayout reporter_container = (LinearLayout)findViewById(R.id.reporter_container);

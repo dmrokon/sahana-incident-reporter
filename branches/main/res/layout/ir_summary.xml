@@ -47,7 +47,7 @@
 	<TextView
 		style="@style/SummaryLabel"
 		android:id="@+id/impact"
-		android:text="Impact:" />
+		android:text="Impact" />
 	
 	<TextView
 		style="@style/SummaryBody"
@@ -57,7 +57,7 @@
 	
 	<TextView
 		style="@style/SummaryLabel"
-		android:text="Comments:"
+		android:text="Comments"
 		android:id="@+id/comment" />
 	
 	<TextView
@@ -85,7 +85,7 @@
 	<TextView
 		style="@style/SummaryLabel"
 		android:id="@+id/reporter" 
-		android:text="Reporter:"/>
+		android:text="Reporter"/>
 	
 	<TextView
 		style="@style/SummaryBody" 

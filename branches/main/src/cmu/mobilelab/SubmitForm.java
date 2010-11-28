@@ -53,7 +53,7 @@ import cmu.mobilelab.ImageAdapter;
 public class SubmitForm extends Activity{
 	
 	/*
-     * PHOTO GALLERY STUFF
+     * PHOTO GALLERY CONTENT
      */
     
     private static final String TAG = "CameraGallery";
@@ -61,7 +61,7 @@ public class SubmitForm extends Activity{
     private ArrayList<String> attachedPhotoUris = new ArrayList<String>();
 	
 	/**
-	 * GPS STUFF
+	 * GPS CONTENT
 	 */
 
 	private static int UPDATE_TIME = 30000;
@@ -181,7 +181,7 @@ public class SubmitForm extends Activity{
 	}
 
 	/**
-	 * END GPS STUFF
+	 * END GPS CONTENT
 	 */
 	
 	public static final String SHARED_PREFERENCES = "incidentreporter_prefs";

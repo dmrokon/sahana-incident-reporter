@@ -7,11 +7,11 @@
     android:padding="0dp"
     android:screenOrientation="portrait"
     >
-    <ScrollView 
+        
+    <ScrollView
         android:id="@+id/MainScrollView"
         android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        
+        android:layout_width="fill_parent"        
         android:padding="0dp"
         >
 	    
@@ -21,252 +21,224 @@
 	    android:layout_width="fill_parent" 
 	    android:layout_height="fill_parent"
 	    android:padding="10dp"
-	    >    
-	       <!-- Datetime -->
-		    <TextView 
-		        android:text="Date"
-		        android:id="@+id/timestampLabel"
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_marginTop="5dp"
-		        />
-		        <View
-		          android:layout_width="fill_parent"
-		          android:layout_height="1dp"
-		          android:background="#ffffff"
-		           
-                  android:layout_marginBottom="2dp"
-		          />
-		   
+	    >
+    	
+	    <!-- DATE AND TIME -->
+	    
+	    <TextView
+	    	style="@style/Label"
+	        android:text="Date"
+	        android:id="@+id/timestampLabel"
+	        android:layout_marginTop="5dp"
+	        />
+	    <TextView
+			style="@style/Body"
+	        android:id="@+id/timestampText"
+	        android:editable="true"
+	        android:padding="5dp"
+	        android:textSize="16dp"
+	        />
+	    <View
+			style="@style/Divider"
+	        />
+
+	    <!-- LOCATION/COORDINATES -->
+	    
+	    <TextView 
+	    	style="@style/Label"
+	        android:text="Location"
+	        android:id="@+id/location_label"
+	      />
+
+	    <LinearLayout
+	        android:orientation="horizontal"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_gravity="right"
+	        >
+
 		    <TextView
-		        android:id="@+id/timestampText"
-		        android:layout_width="fill_parent"
+		    	style="@style/Body"
+		        android:id="@+id/currLocTextView"
+		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:editable="true"
-		        android:padding="5dp"
-		        android:textSize="16dp"
-		        />
-		    
-		    <!-- Location/coords -->
-		    <TextView 
-		        android:text="Location"
-		        android:id="@+id/location_label"
-		        android:layout_width="fill_parent"
+		        android:layout_gravity="fill_horizontal"
+		        android:layout_weight="1"
+		        android:paddingLeft="5dp"
+		  	>
+		    </TextView>
+
+		    <Button
+		        android:id="@+id/currLocButton"
+		        android:layout_width="wrap_content"
 		        android:layout_height="wrap_content"
-		        android:layout_marginTop="5dp"
-		      />
-		      <View
-                  android:layout_width="fill_parent"
-                  android:layout_height="1dp"
-                  android:background="#ffffff"
-                   
-                  android:layout_marginBottom="2dp"
-                  />
-		    <LinearLayout
-		        android:orientation="horizontal"
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
+		        android:drawableLeft="@drawable/ic_menu_mapmode"
 		        android:layout_gravity="right"
-		        >
-			    <TextView
-			        android:id="@+id/currLocTextView"
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:layout_gravity="fill_horizontal"
-			        android:layout_weight="1"
-			        android:padding="5dp"
-			        android:textSize="16dp">
-			    </TextView>
-			    <Button
-			        android:id="@+id/currLocButton"
-			        android:layout_width="wrap_content"
-			        android:layout_height="wrap_content"
-			        android:drawableLeft="@drawable/ic_menu_mapmode"
-			        android:layout_gravity="right"
-			        android:padding="2dp"
-			     />
-		     </LinearLayout>
+		        android:padding="2dp"
+		     />
+		     
+	     </LinearLayout>
 
-		     <!-- Comments -->
-		     <TextView 
-		        android:text="Comments"
-		        android:id="@+id/comments_label"
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_marginTop="5dp"
-			    />
-			    <View
-                  android:layout_width="fill_parent"
-                  android:layout_height="1dp"
-                  android:background="#ffffff"
-                   
-                    android:layout_marginBottom="2dp"
-                  />
-		    <EditText
-		        android:id="@+id/comments_text"
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
-		        android:padding="5dp"
-		        android:minLines="3"
-		        android:gravity="top"/>
+		<View
+			style="@style/Divider"
+	        />
+
+	     <!-- COMMENTS -->
+	     <TextView 
+	     	style="@style/Label"
+	        android:id="@+id/comments_label"
+	        android:text="Comments"
 		    />
-		    
-		    <!-- Category -->
-		    <TextView
-		        android:id="@+id/category_label"
-		        android:text="Category"
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_marginTop="5dp"
-		        />
-	           <View
-                 android:layout_width="fill_parent"
-                 android:layout_height="1dp"
-                 android:background="#ffffff"
-                  
-                 android:layout_marginBottom="2dp"
-                 />
-		    <Spinner
-		        android:id="@+id/category_spinner"
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
-		        android:prompt="@string/category_prompt"
-		        />
-		        
-		    <!-- Impact -->
-		    <TextView
-		        android:id="@+id/impact_label"
-		        android:text="Impact"
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_marginTop="5dp"
-		        />
-		      <View
-                  android:layout_width="fill_parent"
-                  android:layout_height="1dp"
-                  android:background="#ffffff"
-                   
-                  android:layout_marginBottom="2dp"
-                  />
-		    <LinearLayout
-		        android:orientation="vertical"
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content">
-		        <Button
-		            android:id="@+id/impact_button"
-		            android:text="Add Impact"
-		            android:layout_width="fill_parent"
-		            android:layout_height="wrap_content"
-		            android:drawableLeft="@drawable/ic_menu_add"
-		            android:layout_gravity="right"
-		            android:padding="2dp"
-		         />
+                 
+	    <EditText
+	        android:id="@+id/comments_text"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:padding="5dp"
+	        android:minLines="3"
+	        android:gravity="top"/>
+	    />
+	    
+	    <View
+			style="@style/Divider"
+	        />
+	        
+	    <!-- CATEGORY -->
 
-		         <TableLayout 
-				    android:layout_width="fill_parent"
-				    android:layout_height="fill_parent"
-				    android:stretchColumns="1"
-				    android:id="@+id/impact_table"
-				    >
-				
-				    <TableRow>
-				        <!-- <TextView
-				            android:layout_column="1"
-				            android:text="Open..."
-				            android:padding="3dp" />
-				        <TextView
-				            android:text="Ctrl-O"
-				            android:gravity="right"
-				            android:padding="3dp" />-->
-				    </TableRow>
-                    
-                   <!--  <View
-                        android:layout_height="2dp"
-                        android:background="#FF00CC00"
-                        /> -->
-				 </TableLayout>
+	    <TextView
+	    	style="@style/Label"
+	        android:id="@+id/category_label"
+	        android:text="Category"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="5dp"
+	        />
 
-		    </LinearLayout>
-		    
-		    <!-- Photos -->
-		    <TextView
-		        android:id="@+id/photo_label"
-		        android:text="Photos"
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_marginTop="5dp"
-		        />
-		      <View
-                  android:layout_width="fill_parent"
-                  android:layout_height="1dp"
-                  android:background="#ffffff"
-                   
-                  android:layout_marginBottom="2dp"
-                  />
+	    <Spinner
+	        android:id="@+id/category_spinner"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:prompt="@string/category_prompt"
+	        />
+	        
+	    <View
+			style="@style/Divider"
+	        />
+	        
+	    <!-- IMPACT -->
+	    
+	    <TextView
+	    	style="@style/Label"
+	        android:id="@+id/impact_label"
+	        android:text="Impact"
+	        />
+	        
+	    <LinearLayout
+	        android:orientation="vertical"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content">
+	        
 	        <Button
-	            android:id="@+id/photo_add_button"
-	            android:text="Add Photo"
+	            android:id="@+id/impact_button"
+	            android:text="Add Impact"
 	            android:layout_width="fill_parent"
 	            android:layout_height="wrap_content"
-	            android:drawableLeft="@drawable/ic_menu_camera"
+	            android:drawableLeft="@drawable/ic_menu_add"
 	            android:layout_gravity="right"
 	            android:padding="2dp"
 	         />
-                 <TableLayout 
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:stretchColumns="1"
-                    android:id="@+id/photo_thumb_table"
-                    >
-                    <TableRow>
-                    
-                    </TableRow>
-                 </TableLayout>
+	        
+	        <TableLayout 
+			    android:layout_width="fill_parent"
+			    android:layout_height="fill_parent"
+			    android:stretchColumns="1"
+			    android:id="@+id/impact_table"
+			    >
+			
+			    <TableRow>
+			    </TableRow>
+			 </TableLayout>
 
-			<Gallery 
-				android:id="@+id/picturesTaken" 
-				android:layout_width="fill_parent"
-				android:layout_height="wrap_content"/>
-				
-		    <!-- Reporter -->
-		    <TextView
-                android:id="@+id/reporter_label"
-                android:text="Reporter"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+	    </LinearLayout>
+
+	    <View
+			style="@style/Divider"
+	        />
+
+	    <!-- PHOTOS -->
+	    <TextView
+	    	style="@style/Label"
+	        android:id="@+id/photo_label"
+	        android:text="Photos"
+	    />
+	    
+        <Button
+            android:id="@+id/photo_add_button"
+            android:text="Add Photo"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_menu_camera"
+            android:layout_gravity="right"
+            android:padding="2dp"
+         />
+
+         <TableLayout 
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:stretchColumns="1"
+            android:id="@+id/photo_thumb_table"
+            >
+
+            <TableRow>
+            </TableRow>
+
+         </TableLayout>
+
+		<Gallery 
+			android:id="@+id/picturesTaken" 
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"/>
+
+		<View
+			style="@style/Divider"
+	        />
+
+	    <!-- REPORTER -->
+	    <TextView
+	    	style="@style/Label"
+               android:id="@+id/reporter_label"
+               android:text="Reporter"
+               />
+
+	    <LinearLayout
+	        android:id="@+id/reporter_container"
+	        android:orientation="vertical"
+               android:layout_width="fill_parent"
+               android:layout_height="wrap_content">
+               
+               <Button
+                   android:id="@+id/reporter_add"
+                   android:text="Add Your Contact Information"
+                   android:layout_width="fill_parent"
+                   android:layout_height="wrap_content"
+                   android:drawableLeft="@drawable/ic_menu_add"
+                   android:padding="2dp"
                 />
                 
-                <View
-                  android:layout_width="fill_parent"
-                  android:layout_height="1dp"
-                  android:background="#ffffff"   
-                  android:layout_marginBottom="2dp"
-                  />
-                  
-		    <LinearLayout
-		        android:id="@+id/reporter_container"
-		        android:orientation="vertical"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:padding="10dp">
-                <Button
-                    android:id="@+id/reporter_add"
-                    android:text="Add Your Contact Information"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_menu_add"
-                    android:padding="2dp"
-                 />
-            </LinearLayout>
+           </LinearLayout>
 
-		    <Button
-		        android:id="@+id/submit_button"
-		        android:text="Submit Report"
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
-		        android:layout_marginTop="10dp"
-		    />
+		<View
+			style="@style/Divider"
+	        />
+
+		<!-- SUBMIT REPORT -->
+	    <Button
+	        android:id="@+id/submit_button"
+	        android:text="Submit Report"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_marginTop="100dp"
+	    />
 	    </LinearLayout>
     </ScrollView>
 </LinearLayout>

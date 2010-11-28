@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<style name="Label">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+	    <item name="android:textColor">@color/gold</item>
+        <item name="android:textSize">22dp</item>
+	</style>
+	<style name="Divider">
+	    <item name="android:layout_width">fill_parent</item>
+	    <item name="android:layout_height">0.5dp</item>
+		<item name="android:background">@color/darkgray</item>
+		<item name="android:layout_marginBottom">10dp</item>
+		<item name="android:layout_marginTop">10dp</item>
+	</style>
+	<style name="Body" parent="@android:style/TextAppearance.Medium">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+		<item name="android:textColor">@color/white</item>
+		<item name="android:typeface">sans</item>
+	</style>
+	<style name="Instructions" parent="@android:style/TextAppearance.Small">
+	    <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+		<item name="android:textColor">@color/white</item>
+		<item name="android:typeface">sans</item>
+	</style>
+	<style name="SummaryHeader" parent="@android:style/TextAppearance.Large">
+		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:textColor">@color/gold</item>
+	</style>
+	<style name="SummaryHeader2" parent="@android:style/TextAppearance.Small">
+		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:textColor">@color/white</item>
+	</style>
+	<style name="SummaryLabel" parent="@android:style/TextAppearance.Small">
+		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:textColor">@color/gray</item>
+		<item name="android:layout_marginTop">20dp</item>
+	</style>
+	<style name="SummaryBody" parent="@android:style/TextAppearance.Medium">
+		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:textColor">@color/white</item>
+	</style>
+	<style name="ListHeader" parent="@android:style/TextAppearance.Large">
+		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">0dip</item>
+		<item name="android:layout_weight">2</item>
+		<item name="android:textColor">@color/gold</item>
+		<item name="android:gravity">center_vertical</item>
+	</style>
+	<style name="ListBody" parent="@android:style/TextAppearance.Small">
+		<item name="android:layout_width">fill_parent</item>
+		<item name="android:layout_height">0dip</item>
+		<item name="android:layout_weight">1</item>
+		<item name="android:textColor">@color/white</item>
+		<item name="android:gravity">bottom</item>
+	</style>
+	<style name="ListDivider">
+	    <item name="android:layout_width">fill_parent</item>
+	    <item name="android:layout_height">0.5dp</item>
+		<item name="android:background">@color/darkgray</item>
+	</style>
+</resources>

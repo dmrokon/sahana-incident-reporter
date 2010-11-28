@@ -1,58 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="vertical" android:layout_width="fill_parent"
-	android:layout_height="fill_parent" android:padding="10dip">
+    android:id="@+id/ContainerLayout2" 
+    android:orientation="vertical"
+    android:layout_width="fill_parent" 
+    android:layout_height="fill_parent"
+    android:padding="0dp"
+    android:screenOrientation="portrait"
+    >
+        
+    <ScrollView
+        android:id="@+id/SummaryScrollView"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"        
+        android:padding="0dp"
+        >
 
-	<TextView android:text="Category" android:id="@+id/category"
-		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:textSize="18sp" android:textStyle="bold"
-		android:paddingBottom="3dip" android:textColor="#ffffff" />
+	<LinearLayout
+		android:id="@+id/SummaryLayout"
+		android:orientation="vertical"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent" 
+		android:padding="10dip">
 
-	<View android:layout_width="fill_parent" android:layout_height="1dip"
-		android:background="#FFFFFF" />
+	<TextView
+		style="@style/SummaryHeader"
+		android:text="Category" 
+		android:id="@+id/category"
+		 />
 
-	<TextView android:id="@+id/incidentDate" android:text="12:59pm, 10/7/2010"
-		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:textSize="14sp" android:paddingTop="5sp" />
+	<TextView
+		style="@style/SummaryHeader2"
+		android:id="@+id/incidentDate"
+		android:text="Time, Date"
+		/>
 
-	<TextView android:id="@+id/incidentLocation" android:text="Place, Region"
-		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:textSize="14sp" />
+	<TextView
+		style="@style/SummaryHeader2"
+		android:id="@+id/incidentLocation" 
+		android:text="Place, Region"/>
+
+	<View
+		style="@style/Divider"
+	/>
 	
-	<TextView android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:textSize="14sp"
-		android:textStyle="bold" android:paddingTop="15sp"
-		android:paddingBottom="2sp" android:textColor="#ffffff" android:id="@+id/impact"
-		android:text="Impact" />
+	<TextView
+		style="@style/SummaryLabel"
+		android:id="@+id/impact"
+		android:text="Impact:" />
 	
-	<TextView android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:text="Impacts"
+	<TextView
+		style="@style/SummaryBody"
+		android:text="Impacts"
 		android:id="@+id/impacts" />
 	
-	<TextView android:layout_width="fill_parent" android:layout_height="wrap_content" 
-		android:textSize="14sp" android:textStyle="bold" android:paddingTop="15sp" 
-		android:paddingBottom="2sp" android:textColor="#ffffff" android:id="@+id/reporter" 
-		android:text="Reporter"/>
 	
-	<TextView android:layout_width="fill_parent" android:layout_height="wrap_content" 
-		android:text="Reporter Info" android:id="@+id/reporterInfo"/>
-	
-	<TextView android:text="Comments" android:layout_width="fill_parent" 
-		android:layout_height="wrap_content" android:textSize="14sp" android:textStyle="bold" 
-		android:paddingTop="15sp" android:paddingBottom="2sp" android:textColor="#ffffff" 
+	<TextView
+		style="@style/SummaryLabel"
+		android:text="Comments:"
 		android:id="@+id/comment" />
 	
-	<TextView android:id="@+id/comments" android:text="Enter whatever comments. Keep going..." 
-		android:layout_width="fill_parent" android:layout_height="wrap_content" />
+	<TextView
+		style="@style/SummaryBody"
+		android:id="@+id/comments"
+		android:text="Sample comments." />
+			
+	<TextView
+		style="@style/SummaryLabel"
+		android:id="@+id/photo_label"
+		android:text="Photos:"
+		/>
 		
-	<TextView android:id="@+id/photo_label" android:text="Photos" android:layout_width="fill_parent" 
-		android:layout_height="wrap_content" android:textSize="14sp" android:textStyle="bold" 
-		android:paddingTop="15sp" android:paddingBottom="2dip" android:textColor="#ffffff" />
-		
-	<GridView android:id="@+id/photo_grid" android:layout_width="fill_parent" 
-		android:layout_height="fill_parent" android:numColumns="3" android:verticalSpacing="3dp" 
-		android:horizontalSpacing="3dp" android:columnWidth="120dp" android:stretchMode="columnWidth" 
+	<GridView
+		android:id="@+id/photo_grid"
+		android:layout_width="fill_parent" 
+		android:layout_height="fill_parent"
+		android:numColumns="3"
+		android:verticalSpacing="3dp" 
+		android:horizontalSpacing="3dp" 
+		android:columnWidth="120dp"
+		android:stretchMode="columnWidth" 
 		android:gravity="center"/>
 
+	<TextView
+		style="@style/SummaryLabel"
+		android:id="@+id/reporter" 
+		android:text="Reporter:"/>
+	
+	<TextView
+		style="@style/SummaryBody" 
+		android:text="Reporter Info"
+		android:id="@+id/reporterInfo"/>
+
+</LinearLayout>
+</ScrollView>
 </LinearLayout>

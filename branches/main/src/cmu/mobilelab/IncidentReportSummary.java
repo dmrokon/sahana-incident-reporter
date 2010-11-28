@@ -34,7 +34,6 @@ public class IncidentReportSummary extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ir_summary);
-        
 
         // This is what will be used to populate the summary form
         IncidentReport reportToShow = null; 
@@ -42,10 +41,17 @@ public class IncidentReportSummary extends Activity {
         if (IncidentReporter.getLastTab().equals(SubmitForm.class.toString()))
         {// check if this was a result of a submit form action
         	reportToShow = SubmitForm.getLastIncidentReportSubmitted();
+        	Log.i("SUMMARY SOURCE:", "submit form");
         }
         else if(IncidentReporter.getLastTab().equals(IncidentListView.class.toString()))
         {// check if this was a result of a list incident clicked action
         	reportToShow = IncidentListView.getLastSelectedIncident(); 
+        	Log.i("SUMMARY SOURCE:", "list view");
+        }
+        else
+        {
+        	Log.i("SUMMARY SOURCE:", "none");
+        	showToast(this, "No report to show.");
         }
         
         // TODO: check if reportToShow is not null, then fill summary with data from it
@@ -86,9 +92,13 @@ public class IncidentReportSummary extends Activity {
 			
 			TextView comments_view = (TextView)findViewById(R.id.comments);
 			comments_view.setText(comments);
-        }
+        }   
     }
  
+    private void showToast(Context mContext, String text) {
+    	Toast.makeText(mContext, text, Toast.LENGTH_SHORT).show();
+    }
+    
     public class ImageAdapter extends BaseAdapter 
     {
         private Context context;
@@ -143,5 +153,4 @@ public class IncidentReportSummary extends Activity {
             return imageView;
         }
     }
-    
 }

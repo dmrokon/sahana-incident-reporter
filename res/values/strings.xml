@@ -9,4 +9,5 @@
 	<color name="lightgray">#BFBFBF</color>
 	<color name="gold">#FF9900</color>
 	<color name="darkgray">#404040</color>
+<color name="black">#000000</color>
 </resources>

@@ -31,27 +31,27 @@ public class IncidentReporter extends TabActivity {
 
         // Initialize a TabSpec for each tab and add it to the TabHost
         spec = tabHost.newTabSpec(FORM_TAG).setIndicator("New",
-                          res.getDrawable(R.drawable.ic_menu_add))
+                          res.getDrawable(R.drawable.ic_tab_addform))
                       .setContent(intent);
         tabHost.addTab(spec);
 
         intent = new Intent().setClass(this, IncidentReportSummary.class);
         spec = tabHost.newTabSpec(SUMMARY_TAG).setIndicator("View Last",
-                          res.getDrawable(R.drawable.ic_menu_mapmode))
+                          res.getDrawable(R.drawable.ic_tab_viewform))
                       .setContent(intent);
         tabHost.addTab(spec);
         
         // Do the same for the other tabs
         intent = new Intent().setClass(this, IncidentListView.class);
         spec = tabHost.newTabSpec(LIST_TAG).setIndicator("List All",
-                          res.getDrawable(R.drawable.ic_menu_friendslist))
+                          res.getDrawable(R.drawable.ic_tab_listview))
                       .setContent(intent);
         tabHost.addTab(spec);
 
         // Do the same for the other tabs
         intent = new Intent().setClass(this, IncidentMap.class);
         spec = tabHost.newTabSpec(MAP_TAG).setIndicator("Map All",
-                          res.getDrawable(R.drawable.ic_menu_mapmode))
+                          res.getDrawable(R.drawable.ic_tab_mapview))
                       .setContent(intent);
         tabHost.addTab(spec);
         

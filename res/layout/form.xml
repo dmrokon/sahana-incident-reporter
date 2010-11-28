@@ -35,8 +35,6 @@
 			style="@style/Body"
 	        android:id="@+id/timestampText"
 	        android:editable="true"
-	        android:padding="5dp"
-	        android:textSize="16dp"
 	        />
 	    <View
 			style="@style/Divider"
@@ -64,7 +62,6 @@
 		        android:layout_height="wrap_content"
 		        android:layout_gravity="fill_horizontal"
 		        android:layout_weight="1"
-		        android:paddingLeft="5dp"
 		  	>
 		    </TextView>
 
@@ -138,27 +135,25 @@
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content">
 	        
-	        <Button
-	            android:id="@+id/impact_button"
-	            android:text="Add Impact"
-	            android:layout_width="fill_parent"
-	            android:layout_height="wrap_content"
-	            android:drawableLeft="@drawable/ic_menu_add"
-	            android:layout_gravity="right"
-	            android:padding="2dp"
-	         />
-	        
-	        <TableLayout 
+	        <TableLayout
 			    android:layout_width="fill_parent"
 			    android:layout_height="fill_parent"
 			    android:stretchColumns="1"
 			    android:id="@+id/impact_table"
 			    >
 			
-			    <TableRow>
+			    <TableRow
+			   		 style="@style/Body">
 			    </TableRow>
 			 </TableLayout>
 
+	    	<Button
+				style="@style/FormButton"
+	            android:id="@+id/impact_button"
+	            android:text="Add Impact"
+	            android:drawableRight="@drawable/ic_add"
+	         />
+			 
 	    </LinearLayout>
 
 	    <View
@@ -172,17 +167,20 @@
 	        android:text="Photos"
 	    />
 	    
+	   	<Gallery 
+			android:id="@+id/picturesTaken" 
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"/>
+	    
         <Button
+        	style="@style/FormButton"
             android:id="@+id/photo_add_button"
             android:text="Add Photo"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_menu_camera"
-            android:layout_gravity="right"
-            android:padding="2dp"
+            android:drawableRight="@drawable/ic_menu_camera"
          />
 
-         <TableLayout 
+
+<!--     <TableLayout 
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:stretchColumns="1"
@@ -192,12 +190,7 @@
             <TableRow>
             </TableRow>
 
-         </TableLayout>
-
-		<Gallery 
-			android:id="@+id/picturesTaken" 
-			android:layout_width="fill_parent"
-			android:layout_height="wrap_content"/>
+         </TableLayout>  -->
 
 		<View
 			style="@style/Divider"
@@ -217,12 +210,10 @@
                android:layout_height="wrap_content">
                
                <Button
+               		style="@style/FormButton"
                    android:id="@+id/reporter_add"
                    android:text="Add Your Contact Information"
-                   android:layout_width="fill_parent"
-                   android:layout_height="wrap_content"
-                   android:drawableLeft="@drawable/ic_menu_add"
-                   android:padding="2dp"
+                   android:drawableRight="@drawable/ic_add"
                 />
                 
            </LinearLayout>
@@ -237,7 +228,7 @@
 	        android:text="Submit Report"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
-	        android:layout_marginTop="100dp"
+	        android:layout_marginTop="50dp"
 	    />
 	    </LinearLayout>
     </ScrollView>

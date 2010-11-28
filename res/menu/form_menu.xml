@@ -4,6 +4,6 @@
           android:icon="@drawable/ic_menu_preferences"
           android:title="Preferences" />
     <item android:id="@+id/menu_about"
-          android:icon="@drawable/ic_menu_help"
-          android:title="About" />
+    	  android:icon="@drawable/ic_menu_info_details"
+    	  android:title="About" />
 </menu>

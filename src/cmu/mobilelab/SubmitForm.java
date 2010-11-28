@@ -1,7 +1,11 @@
 package cmu.mobilelab;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentValues;
@@ -12,6 +16,8 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.CursorIndexOutOfBoundsException;
 import android.graphics.Bitmap;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -158,20 +164,50 @@ public class SubmitForm extends Activity{
 	}
 
 	public IncidentLocation getCurrentBestLocation() {
+		
+		IncidentLocation currBestLocation = new IncidentLocation(0,0); 
+		
 		if (mCurrentBestLocation != null)
-			return new IncidentLocation(mCurrentBestLocation.getLatitude(),
+		{
+			currBestLocation = new IncidentLocation(mCurrentBestLocation.getLatitude(),
 					mCurrentBestLocation.getLongitude());
+		}
 		else {
 			// this is just so we can immediately get some location even if it
 			// isn't accurate
 			Location lastKnownLocation = mLocationManager
 					.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 			if (lastKnownLocation != null)
-				return new IncidentLocation(lastKnownLocation.getLatitude(),
+			{
+				currBestLocation = new IncidentLocation(lastKnownLocation.getLatitude(),
 						lastKnownLocation.getLongitude());
-			else
-				return new IncidentLocation(0, 0);
+			}
 		}
+		
+		Geocoder geoCoder = new Geocoder(
+                getBaseContext(), Locale.getDefault());
+        try {
+            List<Address> addresses = geoCoder.getFromLocation(
+                currBestLocation.getLatitude(), //  / 1E6, 
+                currBestLocation.getLongitude(), 1); // / 1E6, 1);
+
+            String add = "";
+            if (addresses.size() > 0) 
+            {
+                for (int i=0; i<addresses.get(0).getMaxAddressLineIndex(); 
+                     i++)
+                   add += addresses.get(0).getAddressLine(i) + "\n";
+            }
+
+            currBestLocation.setLocationName(add); 
+            Toast.makeText(getBaseContext(), add, Toast.LENGTH_SHORT).show();
+        }
+        catch (IOException e) 
+        {                
+            Log.i("IO Exception in Geocoder", e.toString()); 
+        }
+        
+        return currBestLocation;     
 	}
 
 	@Override

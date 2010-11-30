@@ -33,6 +33,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -394,12 +395,31 @@ public class SubmitForm extends Activity{
         		        	   newRow.addView(impact_value_view);
         		        	   
         		        	   //TODO: Provide undo for added impacts
-        		        	   /* newRow.setOnLongClickListener(new OnLongClickListener(){
-        		        		   public boolean onLongClick(View view){
-        		        			   newRow.removeView(view);
-        		        			   return true;
+        		        	   newRow.setOnLongClickListener(new OnLongClickListener(){
+	    		        		   public boolean onLongClick(View view){
+					       				AlertDialog.Builder long_alert_builder = new AlertDialog.Builder(view.getContext());
+					            		long_alert_builder.setMessage("Remove Impact?")
+					            		       .setCancelable(true)
+					            		       .setPositiveButton("Remove", new DialogInterface.OnClickListener() {
+					            		           public void onClick(DialogInterface dialog, int id) {
+					            						//i.setVisibility(View.GONE);
+					            						//newRow.removeView(view);
+					        		        			TableLayout impact_table = (TableLayout)findViewById(R.id.impact_table);
+					        		        			impact_table.removeView(newRow);
+					            		          }
+					            		       })
+					            		       .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+					            		           public void onClick(DialogInterface dialog, int id) {
+					            		               //return nothing if the dialog is canceled 
+					            		        	   dialog.cancel();
+					            		           }
+					            		       });
+					            		
+					            		AlertDialog remove_impact_alert = long_alert_builder.create();
+					            		remove_impact_alert.show();
+					            		return true;
         		        		   }
-        		        	   });*/
+        		        	   });
         		        	   
         		        	   //add new row to impact table
         		        	   TableLayout impact_table = (TableLayout)findViewById(R.id.impact_table);		        	   
@@ -473,8 +493,8 @@ public class SubmitForm extends Activity{
         		reporter_widget.addView(reporter_contact_label);
         		reporter_widget.addView(reporter_contact_edittext);
         		
-        		AlertDialog.Builder impact_builder = new AlertDialog.Builder(view.getContext());
-        		impact_builder.setMessage("Please add your information")
+        		AlertDialog.Builder reporter_builder = new AlertDialog.Builder(view.getContext());
+        		reporter_builder.setMessage("Please add your information")
         		       .setCancelable(true)
         		       .setPositiveButton("Add", new DialogInterface.OnClickListener() {
         		           public void onClick(DialogInterface dialog, int id) {
@@ -483,7 +503,6 @@ public class SubmitForm extends Activity{
         		        	   //Log.i("reporter_contact", reporter_contact);
         		        	   newReporter.setReporterName(reporter_name);
         		        	   newReporter.setContactDetails(reporter_contact);
-        		        	   
         		        	   
         		        	   displayReporter();
         		        	   add_reporter.setVisibility(View.GONE);
@@ -499,7 +518,7 @@ public class SubmitForm extends Activity{
         		       })
         		       .setView(reporter_widget); //add the display widget to the dialog
         		
-        		AlertDialog reporter_alert = impact_builder.create();
+        		AlertDialog reporter_alert = reporter_builder.create();
         		//launch the alert dialog
         		reporter_alert.show();
         	}	
@@ -507,12 +526,12 @@ public class SubmitForm extends Activity{
     	
     	
         // Restore preferences
-        /*SharedPreferences settings = getSharedPreferences(SHARED_PREFERENCES, 0);
+        SharedPreferences settings = getSharedPreferences(SHARED_PREFERENCES, 0);
         String reporter_name = settings.getString("reporter_name", null);
         String reporter_contact = settings.getString("reporter_contact", null);
         Log.i("reporter_name", reporter_name);
         
-        if (reporter_name == null) {
+        if (reporter_name.length() < 1) {
         	add_reporter.setVisibility(View.VISIBLE);
         }
         else{
@@ -520,7 +539,7 @@ public class SubmitForm extends Activity{
         	newReporter.setReporterName(reporter_name);
         	newReporter.setContactDetails(reporter_contact);        	
         	displayReporter();
-        }*/
+        }
         
         //Submission OnClick
         Button submitButton = (Button)findViewById(R.id.submit_button);
@@ -587,40 +606,11 @@ public class SubmitForm extends Activity{
        super.onStop();
 
 	   // Save reporter in shared preferences
-	   SharedPreferences settings = getSharedPreferences(SHARED_PREFERENCES, 0);
+	   /*SharedPreferences settings = getSharedPreferences(SHARED_PREFERENCES, 0);
 	   SharedPreferences.Editor editor = settings.edit();
 	   editor.putString("reporter_name", newReporter.getReporterName());
 	   editor.putString("reporter_contact", newReporter.getContactDetails());
-	   editor.commit();
-    }
-
-    
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.form_menu, menu);
-        return true;
-    }
-    
-
-	@Override
-	public boolean onMenuItemSelected(int featureId, MenuItem item) {
-		return true;	
-	}
-
-    
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle item selection
-        switch (item.getItemId()) {
-        case R.id.menu_about:
-            //TODO:About activity
-            return true;
-        case R.id.menu_preferences:
-            //TODO:preferences activity
-            return true;
-        default:
-            return super.onOptionsItemSelected(item);
-        }
+	   editor.commit();*/
     }
 
     @Override

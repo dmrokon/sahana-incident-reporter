@@ -2,6 +2,7 @@
 <resources>
     <string name="hello">Hello World, SahanaIncidentReporter!</string>
     <string name="app_name">Sahana Incident Reporter</string>
+    <string name="about">This prototype of the Sahana Incident Report for Android was developed by Mahvish Nagda, Mark Shuster and Sony Verma at Carnegie Mellon University.</string>
     <color name="orange">#FF6600</color>
 	<color name="white">#FFFFFF</color>
 	<color name="blue">#6699FF</color>

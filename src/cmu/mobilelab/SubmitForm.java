@@ -254,8 +254,6 @@ public class SubmitForm extends Activity{
 	private Reporter newReporter = new Reporter();
 	private IncidentLocation newLocation = new IncidentLocation();
 	private DatabaseAdapter db = new DatabaseAdapter(this);
-	private ArrayList<String> ThumbnailsArray = new ArrayList<String>();
-	private ArrayList<String> PicturesArray = new ArrayList<String>();
 	private static IncidentReport lastIncidentReportSubmitted = null; 
 	
 	EditText reporter_name_edittext;
@@ -271,12 +269,7 @@ public class SubmitForm extends Activity{
 	    
 	    //TODO:Instantiate Database Connection
 	    db.open();
-	    
-	    //Place images
-	    if (ThumbnailsArray.size() > 0) {
-	    	//loadAttachedImages();
-	    }
-	    
+	        
         //Set Current Timestamp
         TextView timestamp_TextView = (TextView)findViewById(R.id.timestampText);
         Date timestamp = new Date();
@@ -562,6 +555,11 @@ public class SubmitForm extends Activity{
 				view.setClickable(false);
 				
 				lastIncidentReportSubmitted = newIncidentReport; 
+				
+				Toast toast = Toast.makeText(view.getContext(),
+						"Your report has been submitted",
+						Toast.LENGTH_SHORT);
+				toast.show();
 			
 				//Launch Individual Report Page
 				Intent intent = new Intent(SubmitForm.this, IncidentReporter.class);

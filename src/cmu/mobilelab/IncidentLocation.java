@@ -69,6 +69,6 @@ public class IncidentLocation
 	
 	public String toString()
 	{
-		return this.mLocationName + " ( " + this.mLatitude + ", " + this.mLongitude + " )"; 
+		return this.mLocationName + "( " + this.mLatitude + ", " + this.mLongitude + " )"; 
 	}
 }

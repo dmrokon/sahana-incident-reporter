@@ -20,6 +20,8 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
@@ -55,15 +57,24 @@ public class IncidentReportSummary extends Activity {
         }
         
         // TODO: check if reportToShow is not null, then fill summary with data from it
-        
-        if (reportToShow != null) {
+    	TextView empty_msg  = (TextView)findViewById(R.id.empty_msg);
+    	ScrollView scrollview = (ScrollView)findViewById(R.id.SummaryScrollView);
+    	
+        if (reportToShow == null) {
+        	Log.i("reportToShow", "No report found");
+        	scrollview.setVisibility(ScrollView.INVISIBLE);
+        	empty_msg.setVisibility(TextView.VISIBLE);
+        }
+        else {
+        	scrollview.setVisibility(ScrollView.VISIBLE);
+        	empty_msg.setVisibility(TextView.GONE);
 			//Date date = reportToShow.getIncidentDate();
 			//Reporter reporter = reportToShow.getIncidentReporter();
 			//Integer category = (Integer)reportToShow.getIncidentCategory().ordinal();
 			//IncidentLocation location = reportToShow.getIncidentLocation(); 
 			//Double latitude = location.getLatitude();
 			//Double longitude = location.getLongitude();
-			
+        	
 			String comments = reportToShow.getIncidentComments();
 			
 			imageUris = reportToShow.getPhotoFileLocations();

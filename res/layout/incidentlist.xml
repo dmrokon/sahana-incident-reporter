@@ -15,6 +15,6 @@
      <TextView android:id="@id/android:empty"
                android:layout_width="fill_parent"
                android:layout_height="fill_parent"
-               android:background="#FFFFFF"
-               android:text="No data"/>
+               android:background="#000000"
+               android:text="No records found."/>
  </LinearLayout>

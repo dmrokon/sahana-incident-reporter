@@ -8,7 +8,15 @@
     android:padding="0dp"
     android:screenOrientation="portrait"
     >
-        
+    
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"  
+        android:text="No record was selected.  Please select a record." 
+        android:id="@+id/empty_msg"
+        android:visibility="gone"
+         />
+       
     <ScrollView
         android:id="@+id/SummaryScrollView"
         android:layout_height="wrap_content"

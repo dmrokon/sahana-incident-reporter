@@ -29,11 +29,12 @@ public class IncidentListView extends ListActivity {
         }
         else {
 	        final ArrayList<IncidentReport> items = db.getReports();
-	        //db.close();
+	        
 	        Log.i("count",((Integer)items.size()).toString());
 	        IncidentReport report = items.get(0);
 	        Log.i("report_comments", report.getIncidentComments());
 	        Log.i("report_reporter", report.getIncidentReporter().getReporterName());
+	        
 	        // Create the array adapter to bind the array to the listview
 	        final IncidentReportAdapter arrayAdapter;
 	        

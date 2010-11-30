@@ -51,7 +51,7 @@ class IncidentReportAdapter extends ArrayAdapter<IncidentReport> {
                 
                 if(ht != null)
                 {
-                	ht.setText(ir.getIncidentCategory().toString() + ", " + 
+                	ht.setText(ir.getIncidentCategory().toString() + "\n " + 
                 				ir.getIncidentLocation().toString() ); 
                 }
                 if(l1 != null)

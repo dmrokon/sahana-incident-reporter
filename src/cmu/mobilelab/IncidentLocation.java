@@ -67,8 +67,13 @@ public class IncidentLocation
         return hashCode;
     }
 	
+	public String latlonString()
+	{
+		return " ( " + this.mLatitude + ", " + this.mLongitude + " )"; 
+	}
+	
 	public String toString()
 	{
-		return this.mLocationName + "( " + this.mLatitude + ", " + this.mLongitude + " )"; 
+		return this.mLocationName + " ( " + this.mLatitude + ", " + this.mLongitude + " )"; 
 	}
 }

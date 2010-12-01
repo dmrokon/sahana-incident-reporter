@@ -107,6 +107,10 @@ public class DatabaseAdapter implements IDataAccessConnector{
 		IncidentLocation location = report.getIncidentLocation(); 
 		Double latitude = location.getLatitude();
 		Double longitude = location.getLongitude();
+		if (latitude == null || longitude == null){
+			latitude = 0.0;
+			longitude = 0.0;
+		}
 		
 		String comments = report.getIncidentComments();
 		

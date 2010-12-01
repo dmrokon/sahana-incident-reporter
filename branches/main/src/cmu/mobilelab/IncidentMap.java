@@ -35,7 +35,7 @@ public class IncidentMap extends MapActivity {
         mapView.setBuiltInZoomControls(true);
         
         List<Overlay> mapOverlays = mapView.getOverlays();
-        Drawable drawable = this.getResources().getDrawable(R.drawable.icon);
+        Drawable drawable = this.getResources().getDrawable(R.drawable.map_marker);
         IncidentItemizedOverlay itemizedoverlay = new IncidentItemizedOverlay(drawable);
         
         // TODO : get current location and center over that? do we want to do that?

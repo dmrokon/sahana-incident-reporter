@@ -92,8 +92,7 @@ public class IncidentReporter extends TabActivity {
     public void onNewIntent (Intent intent) {
       super.onNewIntent(intent);
   
-      //	lastTab = currTab; 
-      //	currTab = getTabHost().getCurrentTabTag(); 
+      	// http://stackoverflow.com/questions/1711785/android-single-top-launch-mode-and-onnewintent-method
       	lastTab =  getTabHost().getCurrentTabTag(); 
 		
       	// get the result passed in: last tab and next tab

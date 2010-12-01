@@ -53,10 +53,10 @@ public class IncidentReportSummary extends Activity {
         else
         {
         	Log.i("SUMMARY SOURCE:", "none");
-        	showToast(this, "No report to show.");
+        	//showToast(this, "No report to show.");
         }
         
-        // TODO: check if reportToShow is not null, then fill summary with data from it
+        // empty message for if there is no report to show
     	TextView empty_msg  = (TextView)findViewById(R.id.empty_msg);
     	ScrollView scrollview = (ScrollView)findViewById(R.id.SummaryScrollView);
     	
@@ -68,29 +68,19 @@ public class IncidentReportSummary extends Activity {
         else {
         	scrollview.setVisibility(ScrollView.VISIBLE);
         	empty_msg.setVisibility(TextView.GONE);
-			//Date date = reportToShow.getIncidentDate();
-			//Reporter reporter = reportToShow.getIncidentReporter();
-			//Integer category = (Integer)reportToShow.getIncidentCategory().ordinal();
-			//IncidentLocation location = reportToShow.getIncidentLocation(); 
-			//Double latitude = location.getLatitude();
-			//Double longitude = location.getLongitude();
         	
 			String comments = reportToShow.getIncidentComments();
 			
 			imageUris = reportToShow.getPhotoFileLocations();
-			// Map<ImpactType, Integer> impactMap = reportToShow.getIncidentImpact().getImpact();
-			// Iterator impactIterator = impactMap.entrySet().iterator();
 			
 			TextView category_view = (TextView)findViewById(R.id.category);
-			// category_view.setText(IncidentReport.Category.values()[category].toString());
 			category_view.setText(reportToShow.getIncidentCategory().toString()); 
 			
 			TextView date_view = (TextView)findViewById(R.id.incidentDate);
 			date_view.setText(reportToShow.getIncidentDate().toLocaleString());
 			
 			TextView location_view = (TextView)findViewById(R.id.incidentLocation);
-			// location_view.setText(latitude.toString() + ", " + longitude.toString());
-			location_view.setText(reportToShow.getIncidentLocation().toString()); 
+			location_view.setText(reportToShow.getIncidentLocation().getLocationName()); 
 			
 			TextView impacts_view = (TextView)findViewById(R.id.impacts); 
 			impacts_view.setText(reportToShow.getIncidentImpact().toString()); 

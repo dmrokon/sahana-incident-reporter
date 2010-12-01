@@ -163,7 +163,14 @@ public class IncidentReporter extends TabActivity {
         case R.id.menu_about:
             //TODO:About activity
         	AlertDialog.Builder about_builder = new AlertDialog.Builder(this);
-    		about_builder.setCancelable(true).setTitle("About").setMessage(R.string.about);
+    		about_builder.setCancelable(true).setTitle("About").setMessage(R.string.about)
+    			.setCancelable(true)
+    			.setNegativeButton("Return", new DialogInterface.OnClickListener() {
+ 		           public void onClick(DialogInterface dialog, int id) {
+		               //return nothing if the dialog is canceled 
+		        	   dialog.cancel();
+		           }
+		       });
     		AlertDialog about_alert = about_builder.create();
     		about_alert.show();
             return true;

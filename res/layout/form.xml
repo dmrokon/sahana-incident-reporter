@@ -46,6 +46,7 @@
 	    	style="@style/Label"
 	        android:text="Location"
 	        android:id="@+id/location_label"
+	        android:visibility="gone"
 	      />
 
 	    <LinearLayout
@@ -53,6 +54,7 @@
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:layout_gravity="right"
+	        android:visibility="gone"
 	        >
 
 		    <TextView
@@ -78,6 +80,7 @@
 
 		<View
 			style="@style/Divider"
+			android:visibility="gone"
 	        />
 
 	     <!-- COMMENTS -->

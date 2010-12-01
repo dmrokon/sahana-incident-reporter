@@ -34,7 +34,8 @@ class IncidentReportAdapter extends ArrayAdapter<IncidentReport> {
             	ImageView iv = (ImageView) v.findViewById(R.id.photo); 
                 TextView ht = (TextView) v.findViewById(R.id.header);
                 TextView l1 = (TextView) v.findViewById(R.id.line1);
-                TextView l2 = (TextView) v.findViewById(R.id.line2); 
+                TextView l2 = (TextView) v.findViewById(R.id.line2);
+                TextView l3 = (TextView) v.findViewById(R.id.line3); 
                 
             	Resources res = v.getContext().getResources();
             	Drawable drawable = res.getDrawable(R.drawable.ic_menu_camera);
@@ -51,16 +52,19 @@ class IncidentReportAdapter extends ArrayAdapter<IncidentReport> {
                 
                 if(ht != null)
                 {
-                	ht.setText(ir.getIncidentCategory().toString() + "\n " + 
-                				ir.getIncidentLocation().toString() ); 
+                	ht.setText(ir.getIncidentCategory().toString()); 
                 }
-                if(l1 != null)
+                if (l1 != null)
                 {
-                	l1.setText(ir.getIncidentDate().toLocaleString());   
+                	l1.setText(ir.getIncidentLocation().getLocationName());   
                 }
                 if (l2 != null) 
                 {
-                	 l2.setText(ir.getIncidentImpact().toString());          
+                	l2.setText(ir.getIncidentDate().toLocaleString());       
+                }
+                if (l3 != null) 
+                {
+                	 l3.setText(ir.getIncidentImpact().toString());          
                 }
             }
             return v;

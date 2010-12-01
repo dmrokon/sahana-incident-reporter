@@ -555,6 +555,10 @@ public class SubmitForm extends Activity{
 				Spinner category_spinner = (Spinner)findViewById(R.id.category_spinner);
 				newCategory = IncidentReport.Category.values()[category_spinner.getSelectedItemPosition()];
 				
+        		newLocation = getCurrentBestLocation(); 
+        		TextView currLocationTextView = (TextView)findViewById(R.id.currLocTextView); 
+        		currLocationTextView.setText(newLocation.toString());
+        		
 				newIncidentReport = new IncidentReport();
 				newIncidentReport.setIncidentDate(new Date());
 				newIncidentReport.setIncidentReporter(newReporter);

@@ -17,13 +17,17 @@
             android:id="@+id/header"
             android:layout_weight="1"
         />
+        <TextView
+            style="@style/ListBody"
+            android:id="@+id/line1"
+        />
          <TextView
          	style="@style/ListBody"
-            android:id="@+id/line1"
+            android:id="@+id/line2"
         />
         <TextView
         	style="@style/ListBody"
-            android:id="@+id/line2"
+            android:id="@+id/line3"
         />
     </LinearLayout>
 </LinearLayout>

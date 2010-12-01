@@ -36,6 +36,17 @@ public class IncidentReportSummary extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ir_summary);
+        showReport();
+    }
+    
+    @Override
+    public void onResume() {
+	    super.onResume();
+        setContentView(R.layout.ir_summary);
+        showReport();
+    }
+    
+    private void showReport() {
 
         // This is what will be used to populate the summary form
         IncidentReport reportToShow = null; 
@@ -93,7 +104,7 @@ public class IncidentReportSummary extends Activity {
 			
 			TextView comments_view = (TextView)findViewById(R.id.comments);
 			comments_view.setText(comments);
-        }   
+        }
     }
  
     private void showToast(Context mContext, String text) {

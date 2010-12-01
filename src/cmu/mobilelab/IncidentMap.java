@@ -36,14 +36,14 @@ public class IncidentMap extends MapActivity {
         
         List<Overlay> mapOverlays = mapView.getOverlays();
         Drawable drawable = this.getResources().getDrawable(R.drawable.map_marker);
-        IncidentItemizedOverlay itemizedoverlay = new IncidentItemizedOverlay(drawable);
+        IncidentItemizedOverlay itemizedoverlay = new IncidentItemizedOverlay(drawable, this);
         
         // TODO : get current location and center over that? do we want to do that?
         // get list of incidents and add all of them to map? why do we want current incident
         
-        MockObjectConnector db = new MockObjectConnector(); 
+        DatabaseAdapter db = new DatabaseAdapter(this); 
         db.open(); 
-        ArrayList<IncidentReport> reports = db.getReports(new Integer(2)); 
+        ArrayList<IncidentReport> reports = db.getReports(); 
         db.close(); 
         
         for(IncidentReport ir : reports)

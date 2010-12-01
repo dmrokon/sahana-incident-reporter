@@ -236,10 +236,10 @@ public class DatabaseAdapter implements IDataAccessConnector{
 					newLocation.setLocationName(c.getString(column));
 				}
 				else if (column_name.equals("location_lat")) {
-					newLocation.setLongitude(c.getDouble(column));
+					newLocation.setLatitude(c.getDouble(column));
 				}
 				else if (column_name.equals("location_long")) {
-					newLocation.setLatitude(c.getDouble(column));
+					newLocation.setLongitude(c.getDouble(column));
 				}
 				else if (column_name.equals("comments")) {
 					report.setIncidentComments(c.getString(column));

@@ -3,7 +3,7 @@
       package="cmu.mobilelab"
       android:versionCode="1"
       android:versionName="1.0">
-    <application android:icon="@drawable/ic_launcher_sahana" android:label="@string/app_name">
+    <application android:icon="@drawable/ic_launcher_sahana" android:label="@string/app_name" android:debuggable="true">
         <activity android:name=".IncidentReporter"
                   android:label="@string/app_name"
                   android:launchMode="singleTop"

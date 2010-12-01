@@ -31,6 +31,11 @@ public class IncidentMap extends MapActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ir_map);
 
+    }
+    
+    @Override
+    public void onResume() {
+	    super.onResume();
         MapView mapView = (MapView) findViewById(R.id.mapview);
         mapView.setBuiltInZoomControls(true);
         
@@ -61,6 +66,7 @@ public class IncidentMap extends MapActivity {
         
         mapOverlays.add(itemizedoverlay);
     }
+
 
 	@Override
 	protected boolean isRouteDisplayed() {

@@ -169,8 +169,7 @@ public class JsonGeocoder {
 					if (addrComp.getJSONObject(i).getJSONArray("types")
 							.getString(0).equals("country")) {
 						address += addrComp.getJSONObject(i).getString(
-								"short_name")
-								+ ", ";
+								"short_name");
 						break;
 					}
 				} catch (JSONException ex) {

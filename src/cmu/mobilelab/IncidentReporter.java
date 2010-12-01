@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TableLayout;
 import android.widget.TextView;
+import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TableRow.LayoutParams;
 
 
@@ -69,14 +70,30 @@ public class IncidentReporter extends TabActivity {
                       .setContent(intent);
         tabHost.addTab(spec);
         
+      /* tabHost.setOnTabChangedListener(new OnTabChangeListener()
+        {
+
+			@Override
+			public void onTabChanged(String tabId) {
+				// TODO Auto-generated method stub
+				lastTab = currTab; 
+				currTab = getTabHost().getCurrentTabTag(); 
+			}
+        	
+        }); */
+     
         Intent startIntent = this.getIntent(); 
         onNewIntent(startIntent); 
+        
+        
     }
     
     @Override
     public void onNewIntent (Intent intent) {
       super.onNewIntent(intent);
   
+      //	lastTab = currTab; 
+      //	currTab = getTabHost().getCurrentTabTag(); 
       	lastTab =  getTabHost().getCurrentTabTag(); 
 		
       	// get the result passed in: last tab and next tab
@@ -111,7 +128,8 @@ public class IncidentReporter extends TabActivity {
 		}
     }
     
-    private static String lastTab = FORM_TAG; 
+    private static String currTab = FORM_TAG; 
+    private static String lastTab = currTab; 
     public static String getLastTab()
     {
     	if(lastTab == FORM_TAG)

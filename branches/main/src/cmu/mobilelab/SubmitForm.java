@@ -239,7 +239,7 @@ public class SubmitForm extends Activity{
 			String add = JsonGeocoder.getAddress(JsonGeocoder.getLocationInfo(currBestLocation));
 
             currBestLocation.setLocationName(add); 
-            Toast.makeText(getBaseContext(), add, Toast.LENGTH_SHORT).show();
+          //  Toast.makeText(getBaseContext(), add, Toast.LENGTH_SHORT).show();
         }
         catch (Exception e) 
         {                

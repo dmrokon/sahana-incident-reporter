@@ -164,11 +164,14 @@ public class SubmitForm extends Activity{
 		return false;
 	}
 	
+	//http://code.google.com/p/android/issues/detail?id=8816&q=geocoder&colspec=ID%20Type%20Status%20Owner%20Summary%20Stars
 	public IncidentLocation getLocationFromAddress(String address)
 	{
-		IncidentLocation resIncidentLocation = null; 
 		
-		Geocoder geoCoder = new Geocoder(this, Locale.getDefault());    
+		IncidentLocation resIncidentLocation = null; 
+		try
+		{
+		/* Geocoder geoCoder = new Geocoder(this, Locale.getDefault());    
         try {
             List<Address> addresses = geoCoder.getFromLocationName(
                 address, 5);
@@ -183,8 +186,14 @@ public class SubmitForm extends Activity{
             }    
         } catch (IOException e) {
         	Log.i("IO Exception in Reverse Geocoder", e.toString()); 
-        }
+        }*/
 		
+		resIncidentLocation = JsonGeocoder.getLocation(JsonGeocoder.getLocationInfo(address));  
+		
+		}catch(Exception e)
+		{
+			e.printStackTrace(); 
+		}
 		return resIncidentLocation; 
 	}
 
@@ -198,7 +207,7 @@ public class SubmitForm extends Activity{
 					mCurrentBestLocation.getLongitude());
 		}
 		else {
-			// this is just so we can immediately get some location even if it
+			// this is just so we can imivmediately get some location even if it
 			// isn't accurate
 			Location lastKnownLocation = mLocationManager
 					.getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -209,7 +218,7 @@ public class SubmitForm extends Activity{
 			}
 		}
 		
-		Geocoder geoCoder = new Geocoder(
+		/* Geocoder geoCoder = new Geocoder(
                 getBaseContext(), Locale.getDefault());
         try {
             List<Address> addresses = geoCoder.getFromLocation(
@@ -222,14 +231,19 @@ public class SubmitForm extends Activity{
                 for (int i=0; i<addresses.get(0).getMaxAddressLineIndex(); 
                      i++)
                    add += addresses.get(0).getAddressLine(i) + "\n";
-            }
+            } 
+            */
+		
+		try
+		{
+			String add = JsonGeocoder.getAddress(JsonGeocoder.getLocationInfo(currBestLocation));
 
             currBestLocation.setLocationName(add); 
             Toast.makeText(getBaseContext(), add, Toast.LENGTH_SHORT).show();
         }
-        catch (IOException e) 
+        catch (Exception e) 
         {                
-            Log.i("IO Exception in Geocoder", e.toString()); 
+            Log.i("Exception in Geocoder", e.toString()); 
         }
         
         return currBestLocation;     
@@ -522,9 +536,9 @@ public class SubmitForm extends Activity{
         SharedPreferences settings = getSharedPreferences(SHARED_PREFERENCES, 0);
         String reporter_name = settings.getString("reporter_name", null);
         String reporter_contact = settings.getString("reporter_contact", null);
-        Log.i("reporter_name", reporter_name);
+//        Log.i("reporter_name", reporter_name);
         
-        if (reporter_name.length() < 1) {
+        if (reporter_name  != null && reporter_name.length() < 1) {
         	add_reporter.setVisibility(View.VISIBLE);
         }
         else{

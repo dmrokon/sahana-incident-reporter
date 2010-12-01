@@ -19,9 +19,9 @@ public class IncidentItemizedOverlay extends ItemizedOverlay {
 		}
 	
 	public IncidentItemizedOverlay(Drawable defaultMarker, Context context) {
-		  super(defaultMarker);
+		  super(boundCenterBottom(defaultMarker));
 		  mContext = context;
-		}
+		} 
 
 	@Override
 	protected OverlayItem createItem(int i) {

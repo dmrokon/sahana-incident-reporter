@@ -61,7 +61,7 @@ public class IncidentListView extends ListActivity {
 	            	
 	            	//Launch Individual Report Page
 					Intent intent = new Intent(IncidentListView.this, IncidentReporter.class);
-					intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK); 
+					intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP); 
 					intent.putExtra("switch_to", IncidentReportSummary.class.toString()); 
 					intent.setAction(Intent.ACTION_VIEW);
 					startActivity(intent);

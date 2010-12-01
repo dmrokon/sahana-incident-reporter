@@ -21,6 +21,22 @@ public class IncidentListView extends ListActivity {
         setContentView(R.layout.incidentlist);
         
         // Create an array of to-do items
+    }
+    
+    @Override
+    public void onPause() {
+	    super.onPause();
+	    //TODO:Close DB connection
+	    db.close();
+	    Log.i("db", "close");
+    }
+    
+    @Override
+    public void onResume() {
+	    super.onResume();
+	    //TODO:Open DB connection
+	    db = new DatabaseAdapter(this);
+
         //db = new MockObjectConnector();
         //db = new DatabaseAdapter(this);
         db.open();
@@ -68,23 +84,6 @@ public class IncidentListView extends ListActivity {
 	            }
 	          });
         }
-    }
-    
-    @Override
-    public void onPause() {
-	    super.onPause();
-	    //TODO:Close DB connection
-	    db.close();
-	    Log.i("db", "close");
-    }
-    
-    @Override
-    public void onResume() {
-	    super.onResume();
-	    //TODO:Open DB connection
-	    db = new DatabaseAdapter(this);
-	    db.open();
-	    Log.i("db", "open");
     }
     
     private static IncidentReport currentSelectedIncident = null; 

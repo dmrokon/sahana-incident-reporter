@@ -534,8 +534,8 @@ public class SubmitForm extends Activity{
     	
         // Restore preferences
         SharedPreferences settings = getSharedPreferences(SHARED_PREFERENCES, 0);
-        String reporter_name = settings.getString("reporter_name", null);
-        String reporter_contact = settings.getString("reporter_contact", null);
+        String reporter_name = settings.getString("reporter_name", "");
+        String reporter_contact = settings.getString("reporter_contact", "");
 //        Log.i("reporter_name", reporter_name);
         
         if (reporter_name  != null && reporter_name.length() < 1) {
@@ -570,7 +570,7 @@ public class SubmitForm extends Activity{
 				newIncidentReport.setPhotoFileLocations(attachedPhotoUris);
 
 				db.insertReport(newIncidentReport);
-				view.setClickable(false);
+				// view.setClickable(false);
 				
 				lastIncidentReportSubmitted = newIncidentReport; 
 				

@@ -178,8 +178,8 @@ public class IncidentReporter extends TabActivity {
             //TODO:preferences activity
     	    
             SharedPreferences settings = getSharedPreferences(SHARED_PREFERENCES, 0);
-            String reporter_name = settings.getString("reporter_name", null);
-            String reporter_contact = settings.getString("reporter_contact", null);
+            String reporter_name = settings.getString("reporter_name", "");
+            String reporter_contact = settings.getString("reporter_contact", "");
             Log.i("reporter_name", reporter_name);
             
         	

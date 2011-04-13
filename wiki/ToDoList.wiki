@@ -4,19 +4,20 @@
 
 Check off as complete.
 
-  * Integrate
-  * Functionality check: map works, form summary corresponds to form submitted/clicked incident
+  * Integrate - mahvish
+  * Functionality check: map works, form summary corresponds to form submitted/clicked incident - mahvish
   * form summary should show all pictures (get from db and show in gridview)
-  * Maps: clicking on incident, 
-  * Clean up code -SONY (SubmitForm and FormSummary)
+  * Maps: clicking on incident, -mahvish
+  * Clean up code 
   * Update android
   * UI:  icon, tab icons, colors, styles -SONY
   * Style -SONY
   * ImageViewing
   * Error handling: check all if-then's, consistent message for error toasts, use good wording
-  * using string.xml for strings, UI constants in a file
+  * using string.xml for strings, UI constants in a file -mahvish
   * About page -MARK
-
+  * Geocoding -mahvish
+  * GPS -mahvish
 
 = Details =
 
